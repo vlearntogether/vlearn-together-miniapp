@@ -40,6 +40,12 @@
             cursor: pointer;
             margin-top: 12px;
         }
+
+        #course-message {
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -59,19 +65,34 @@
 
         <div class="courses">
 
-            <button>📚 Beginner | Level 1–2</button>
+            <button onclick="showCourse('Beginner | Level 1–2')">
+                📚 Beginner | Level 1–2
+            </button>
 
-            <button>📚 Elementary | Level 3–4</button>
+            <button onclick="showCourse('Elementary | Level 3–4')">
+                📚 Elementary | Level 3–4
+            </button>
 
-            <button>📚 Pre-intermediate | Level 5–6</button>
+            <button onclick="showCourse('Pre-intermediate | Level 5–6')">
+                📚 Pre-intermediate | Level 5–6
+            </button>
 
-            <button>📚 Intermediate | Level 7–8</button>
+            <button onclick="showCourse('Intermediate | Level 7–8')">
+                📚 Intermediate | Level 7–8
+            </button>
 
         </div>
+
+        <div id="course-message"></div>
 
     </div>
 
     <script>
+        function showCourse(courseName) {
+            document.getElementById("course-message").textContent =
+                "You selected: " + courseName;
+        }
+
         const tg = window.Telegram.WebApp;
 
         tg.ready();
