@@ -5,607 +5,439 @@
 
     <meta charset="UTF-8">
 
-    <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
     <title>Vlearn Together</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 
     <style>
 
-        /* ==================================================
-           TELEGRAM THEME
-        ================================================== */
-
-        :root {
-
-            --bg-color:
-                var(--tg-theme-bg-color, #ffffff);
-
-            --text-color:
-                var(--tg-theme-text-color, #222222);
-
-            --hint-color:
-                var(--tg-theme-hint-color, #777777);
-
-            --button-color:
-                var(--tg-theme-button-color, #3390ec);
-
-            --button-text-color:
-                var(--tg-theme-button-text-color, #ffffff);
-
-            --secondary-bg:
-                var(--tg-theme-secondary-bg-color, #f2f2f2);
-
-        }
-
-
         * {
-
             box-sizing: border-box;
-
         }
 
 
         body {
 
+            margin: 0;
+
+            padding: 0;
+
             font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
                 Arial,
-                "Noto Sans Khmer",
                 sans-serif;
 
-            background-color:
-                var(--bg-color);
+            background: var(--tg-theme-bg-color, #ffffff);
 
-            color:
-                var(--text-color);
+            color: var(--tg-theme-text-color, #222222);
 
-            text-align:
-                center;
-
-            padding:
-                25px 18px 35px;
-
-            margin:
-                0;
-
-            min-height:
-                100vh;
-
+            min-height: 100vh;
         }
 
 
         .container {
 
-            max-width:
-                500px;
+            width: 100%;
 
-            margin:
-                0 auto;
+            max-width: 520px;
 
+            margin: 0 auto;
+
+            padding: 24px 18px 40px;
         }
 
 
-        /* ==================================================
-           WELCOME
-        ================================================== */
+        .welcome {
 
-        #telegram-user {
+            font-size: 17px;
 
-            font-size:
-                16px;
+            font-weight: 600;
 
-            margin:
-                5px 0 20px;
+            margin-bottom: 18px;
 
             color:
-                var(--text-color);
-
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
         }
 
 
         .brand {
 
-            font-size:
-                32px;
+            text-align: center;
 
-            font-weight:
-                700;
+            font-size: 32px;
 
-            color:
-                #1683e6;
+            font-weight: 800;
 
-            margin:
-                5px 0 10px;
+            color: #1976d2;
 
+            margin-bottom: 10px;
         }
 
 
-        .description {
+        .intro {
 
-            font-size:
-                17px;
+            text-align: center;
 
-            line-height:
-                1.5;
+            font-size: 17px;
+
+            line-height: 1.5;
+
+            margin-bottom: 28px;
 
             color:
-                var(--text-color);
-
-            margin-bottom:
-                25px;
-
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
         }
 
-
-        /* ==================================================
-           PAGE TITLES
-        ================================================== */
 
         .page-title {
 
-            font-size:
-                24px;
+            text-align: center;
 
-            font-weight:
-                700;
+            font-size: 25px;
 
-            margin:
-                25px 0 5px;
+            font-weight: 750;
 
+            margin-bottom: 8px;
         }
 
 
         .khmer-title {
 
-            font-size:
-                16px;
+            text-align: center;
 
-            line-height:
-                1.5;
+            font-size: 18px;
 
-            color:
-                var(--hint-color);
+            margin-bottom: 22px;
 
-            margin-bottom:
-                22px;
-
+            line-height: 1.6;
         }
 
 
-        /* ==================================================
-           COURSE CARDS
-        ================================================== */
+        .course-button {
 
-        .course-card {
+            width: 100%;
 
-            width:
-                100%;
+            border: none;
 
-            padding:
-                18px 16px;
+            border-radius: 14px;
 
-            margin-top:
-                13px;
+            padding: 17px 16px;
 
-            border:
-                1px solid
-                rgba(128, 128, 128, 0.25);
+            margin-top: 12px;
 
-            border-radius:
-                14px;
+            font-size: 17px;
 
-            background-color:
-                var(--secondary-bg);
+            font-weight: 650;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
 
             color:
-                var(--text-color);
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
 
-            cursor:
-                pointer;
-
-            text-align:
-                center;
-
-            transition:
-                transform 0.15s ease;
-
+            transition: transform 0.12s ease;
         }
 
 
-        .course-card:active {
+        .course-button:active {
 
-            transform:
-                scale(0.98);
+            transform: scale(0.98);
+        }
 
+
+        .level-button {
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 17px 16px;
+
+            margin-top: 12px;
+
+            font-size: 17px;
+
+            font-weight: 650;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
+        }
+
+
+        .price-card {
+
+            margin-top: 22px;
+
+            padding: 24px 18px;
+
+            border-radius: 18px;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            text-align: center;
         }
 
 
         .course-name {
 
-            font-size:
-                18px;
+            font-size: 23px;
 
-            font-weight:
-                700;
+            font-weight: 750;
 
-            line-height:
-                1.4;
-
-        }
-
-
-        .course-khmer {
-
-            display:
-                block;
-
-            font-size:
-                15px;
-
-            font-weight:
-                400;
-
-            line-height:
-                1.5;
-
-            margin-top:
-                5px;
-
-            color:
-                var(--hint-color);
-
-        }
-
-
-        /* ==================================================
-           LEVEL BUTTONS
-        ================================================== */
-
-        .level-card {
-
-            width:
-                100%;
-
-            padding:
-                17px 15px;
-
-            margin-top:
-                12px;
-
-            border:
-                1px solid
-                rgba(128, 128, 128, 0.25);
-
-            border-radius:
-                13px;
-
-            background-color:
-                var(--secondary-bg);
-
-            color:
-                var(--text-color);
-
-            font-size:
-                18px;
-
-            font-weight:
-                600;
-
-            cursor:
-                pointer;
-
-            transition:
-                transform 0.15s ease;
-
-        }
-
-
-        .level-card:active {
-
-            transform:
-                scale(0.98);
-
-        }
-
-
-        /* ==================================================
-           COURSE DETAILS
-        ================================================== */
-
-        #selected-course {
-
-            font-size:
-                23px;
-
-            font-weight:
-                700;
-
-            line-height:
-                1.4;
-
-            margin:
-                25px 0 18px;
-
+            margin-bottom: 18px;
         }
 
 
         .price {
 
-            font-size:
-                22px;
+            font-size: 28px;
 
-            margin:
-                12px 0;
+            font-weight: 800;
 
+            margin-bottom: 8px;
         }
 
 
-        .original-price {
+        .old-price {
 
-            text-decoration:
-                line-through;
+            text-decoration: line-through;
 
-            color:
-                var(--hint-color);
+            opacity: 0.55;
 
-            margin-right:
-                7px;
+            margin-right: 7px;
 
+            font-size: 21px;
         }
 
 
-        .discount-price {
+        .new-price {
 
-            font-weight:
-                700;
+            font-size: 28px;
 
+            font-weight: 800;
         }
 
 
-        .saving {
+        .discount {
 
-            font-size:
-                17px;
+            margin-top: 14px;
 
-            font-weight:
-                700;
+            font-size: 18px;
 
-            margin:
-                18px 0 25px;
-
+            font-weight: 700;
         }
 
 
-        /* ==================================================
-           PAYMENT BOX
-        ================================================== */
+        .remark-title {
 
-        .payment-box {
+            margin-top: 25px;
 
-            margin-top:
-                20px;
+            font-size: 17px;
 
-            padding:
-                20px 16px;
-
-            border-radius:
-                14px;
-
-            background-color:
-                var(--secondary-bg);
-
+            font-weight: 700;
         }
 
 
-        .payment-title {
+        .remark {
 
-            font-size:
-                18px;
+            margin-top: 10px;
 
-            font-weight:
-                700;
+            padding: 15px;
 
-            line-height:
-                1.5;
+            border-radius: 12px;
 
-            margin-bottom:
-                12px;
+            background:
+                var(
+                    --tg-theme-bg-color,
+                    #ffffff
+                );
 
-        }
+            border: 1px solid
+                var(
+                    --tg-theme-hint-color,
+                    #999999
+                );
 
+            font-size: 22px;
 
-        #remark {
+            font-weight: 800;
 
-            font-size:
-                24px;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                1px;
-
-            margin:
-                15px 0;
-
-        }
-
-
-        /* ==================================================
-           IMPORTANT MESSAGE
-        ================================================== */
-
-        .important {
-
-            text-align:
-                left;
-
-            font-size:
-                16px;
-
-            line-height:
-                1.7;
-
-            margin:
-                20px 0;
-
-        }
-
-
-        .important-title {
-
-            font-weight:
-                700;
-
-            margin-bottom:
-                5px;
-
-        }
-
-
-        /* ==================================================
-           BUTTONS
-        ================================================== */
-
-        .primary-button {
-
-            width:
-                100%;
-
-            padding:
-                15px;
-
-            margin-top:
-                12px;
-
-            border:
-                none;
-
-            border-radius:
-                11px;
-
-            background-color:
-                var(--button-color);
-
-            color:
-                var(--button-text-color);
-
-            font-size:
-                17px;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
-
+            letter-spacing: 1px;
         }
 
 
         .copy-button {
 
-            width:
-                100%;
+            width: 100%;
 
-            padding:
-                14px;
+            border: none;
 
-            margin-top:
-                8px;
+            border-radius: 12px;
 
-            border:
-                none;
+            padding: 13px;
 
-            border-radius:
-                11px;
+            margin-top: 10px;
 
-            background-color:
-                var(--button-color);
+            font-size: 16px;
 
-            color:
-                var(--button-text-color);
+            font-weight: 650;
 
-            font-size:
-                17px;
+            cursor: pointer;
 
-            font-weight:
-                600;
+            background: #e9ecef;
 
-            cursor:
-                pointer;
+            color: #222222;
+        }
 
+
+        .important {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(
+                    255,
+                    193,
+                    7,
+                    0.12
+                );
+
+            font-size: 15px;
+
+            line-height: 1.55;
+
+            text-align: left;
+        }
+
+
+        .register-button {
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 17px;
+
+            margin-top: 20px;
+
+            font-size: 17px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            background: #1976d2;
+
+            color: #ffffff;
         }
 
 
         .back-button {
 
-            width:
-                100%;
+            width: 100%;
 
-            padding:
-                13px;
+            border: none;
 
-            margin-top:
-                25px;
+            background: transparent;
 
-            border:
-                none;
+            color: #e53935;
+
+            font-size: 16px;
+
+            font-weight: 650;
+
+            padding: 15px 5px;
+
+            margin-top: 18px;
+
+            cursor: pointer;
+
+        }
+
+
+        .success {
+
+            margin-top: 20px;
+
+            padding: 16px;
+
+            border-radius: 12px;
 
             background:
-                transparent;
+                rgba(
+                    46,
+                    125,
+                    50,
+                    0.12
+                );
 
-            color:
-                #e53935;
+            line-height: 1.5;
 
-            font-size:
-                17px;
+            text-align: center;
 
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
-
+            font-weight: 650;
         }
 
 
-        #status-message {
+        .hidden {
 
-            margin-top:
-                18px;
-
-            font-size:
-                16px;
-
-            font-weight:
-                700;
-
-            line-height:
-                1.5;
-
+            display: none;
         }
 
-
-        /* ==================================================
-           PAGES
-        ================================================== */
-
-        .page {
-
-            display:
-                none;
-
-        }
-
-
-        .page.active {
-
-            display:
-                block;
-
-        }
 
     </style>
 
@@ -618,143 +450,117 @@
 <div class="container">
 
 
-    <!-- ==================================================
-         WELCOME
-    ================================================== -->
+    <!-- ================================================== -->
+    <!-- HOME PAGE -->
+    <!-- ================================================== -->
 
-    <p id="telegram-user"></p>
+    <section id="homePage">
 
-
-    <div class="brand">
-
-        Vlearn Together
-
-    </div>
+        <div
+            id="telegram-user"
+            class="welcome"
+        ></div>
 
 
-    <p class="description">
-
-        Learn English online with our video courses.
-
-    </p>
+        <div class="brand">
+            Vlearn Together
+        </div>
 
 
-    <!-- ==================================================
-         PAGE 1
-         MAJOR COURSES
-    ================================================== -->
+        <div class="intro">
 
-    <div
-        id="page-categories"
-        class="page active"
-    >
-
-        <div class="page-title">
-
-            Choose Your Course
+            Learn English online with our video courses.
 
         </div>
 
 
-        <!-- GENERAL ENGLISH -->
+        <div class="page-title">
+            Choose Your Course
+        </div>
+
 
         <button
-            class="course-card"
-            onclick="showCategory('general')"
+            class="course-button"
+            onclick="openMajorCourse('general')"
         >
 
-            <span class="course-name">
+            General English Programme
 
-                General English Programme
+            <br>
 
-            </span>
-
-
-            <span class="course-khmer">
-
+            <span>
                 កម្មវិធីភាសាអង់គ្លេសទូទៅ
-
             </span>
 
         </button>
 
 
-        <!-- GRAMMAR -->
-
         <button
-            class="course-card"
-            onclick="showCategory('grammar')"
+            class="course-button"
+            onclick="openMajorCourse('grammar')"
         >
 
-            <span class="course-name">
+            English Grammar Course
 
-                English Grammar Course
+            <br>
 
-            </span>
-
-
-            <span class="course-khmer">
-
+            <span>
                 វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
-
             </span>
 
         </button>
 
-
-        <!-- VOCABULARY -->
 
         <button
-            class="course-card"
-            onclick="showCategory('vocabulary')"
+            class="course-button"
+            onclick="openMajorCourse('vocabulary')"
         >
 
-            <span class="course-name">
+            English Vocabulary Course
 
-                English Vocabulary Course
+            <br>
 
-            </span>
-
-
-            <span class="course-khmer">
-
+            <span>
                 វគ្គវាក្យសព្ទភាសាអង់គ្លេស
-
             </span>
 
         </button>
 
-    </div>
+    </section>
 
 
-    <!-- ==================================================
-         PAGE 2
-         LEVELS
-    ================================================== -->
+    <!-- ================================================== -->
+    <!-- LEVEL PAGE -->
+    <!-- ================================================== -->
 
-    <div
-        id="page-levels"
-        class="page"
+    <section
+        id="levelPage"
+        class="hidden"
     >
 
+        <div class="brand">
+            Vlearn Together
+        </div>
+
+
         <div
-            id="level-title"
+            id="majorTitle"
             class="page-title"
         ></div>
 
 
         <div
-            id="level-khmer"
+            id="majorKhmer"
             class="khmer-title"
         ></div>
 
 
-        <div id="level-list"></div>
+        <div id="levelButtons"></div>
 
 
         <button
             class="back-button"
-            onclick="showCategories()"
+            onclick="goHome()"
         >
 
             ← Back to Courses
@@ -765,112 +571,32 @@
 
         </button>
 
-    </div>
+    </section>
 
 
-    <!-- ==================================================
-         PAGE 3
-         COURSE DETAILS
-    ================================================== -->
+    <!-- ================================================== -->
+    <!-- COURSE DETAILS PAGE -->
+    <!-- ================================================== -->
 
-    <div
-        id="page-details"
-        class="page"
+    <section
+        id="coursePage"
+        class="hidden"
     >
 
-
-        <div
-            id="selected-course"
-        ></div>
-
-
-        <div
-            id="price"
-            class="price"
-        ></div>
-
-
-        <div
-            id="saving"
-            class="saving"
-        ></div>
-
-
-        <div class="payment-box">
-
-
-            <!-- PAYMENT REMARK TITLE -->
-
-            <div class="payment-title">
-
-                🔐 លេខសម្គាល់ការទូទាត់
-
-            </div>
-
-
-            <!-- REMARK -->
-
-            <div
-                id="remark"
-            ></div>
-
-
-            <!-- COPY -->
-
-            <button
-                class="copy-button"
-                onclick="copyRemark()"
-            >
-
-                📋 ចម្លងលេខសម្គាល់
-
-            </button>
-
-
-            <!-- IMPORTANT -->
-
-            <div class="important">
-
-                <div class="important-title">
-
-                    ⚠️ សំខាន់៖
-
-                </div>
-
-
-                សូមចម្លងលេខសម្គាល់ការទូទាត់នេះ
-                ឱ្យបានត្រឹមត្រូវ ហើយបិទភ្ជាប់វាទៅក្នុងប្រអប់
-                <b>Remark</b>
-                នៅពេលធ្វើការទូទាត់។
-
-            </div>
-
-
-            <!-- REGISTER / PAYMENT -->
-
-            <button
-                class="primary-button"
-                onclick="registerCourse()"
-            >
-
-                ✅ បន្តការចុះឈ្មោះ
-
-            </button>
-
-
-            <div
-                id="status-message"
-            ></div>
-
-
+        <div class="brand">
+            Vlearn Together
         </div>
 
 
-        <!-- BACK -->
+        <div
+            id="courseCard"
+            class="price-card"
+        ></div>
+
 
         <button
             class="back-button"
-            onclick="showLevels()"
+            onclick="goLevels()"
         >
 
             ← Back to Courses
@@ -881,8 +607,7 @@
 
         </button>
 
-
-    </div>
+    </section>
 
 
 </div>
@@ -891,532 +616,414 @@
 <script>
 
 
-// ========================================================
-// TELEGRAM
-// ========================================================
+    // =====================================================
+    // TELEGRAM
+    // =====================================================
 
-const tg =
-    window.Telegram.WebApp;
+    const tg =
+        window.Telegram.WebApp;
 
 
-tg.ready();
+    tg.ready();
 
-tg.expand();
+    tg.expand();
 
 
-// ========================================================
-// TELEGRAM USER
-// ========================================================
+    // =====================================================
+    // TELEGRAM USER
+    // =====================================================
 
-const user =
-    tg.initDataUnsafe.user;
+    const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
 
 
-if (user) {
+    if (user) {
 
-    const fullName = [
-
-        user.first_name,
-
-        user.last_name
-
-    ]
-    .filter(Boolean)
-    .join(" ");
-
-
-    document.getElementById(
-        "telegram-user"
-    ).textContent =
-
-        "👋 Welcome, " +
-
-        (
-            fullName ||
-            "student"
-        ) +
-
-        "!";
-
-}
-
-else {
-
-    document.getElementById(
-        "telegram-user"
-    ).textContent =
-
-        "👋 Welcome!";
-
-}
-
-
-// ========================================================
-// COURSE DATA
-// ========================================================
-
-const courses = [
-
-    /* ====================================================
-       GENERAL ENGLISH
-    ==================================================== */
-
-    {
-
-        category:
-            "general",
-
-        level:
-            "Beginner | Level 1–2",
-
-        detailName:
-            "General English | Beginner 1–2",
-
-        original:
-            30,
-
-        price:
-            15,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAY1e499924g"
-
-    },
-
-
-    {
-
-        category:
-            "general",
-
-        level:
-            "Elementary | Level 3–4",
-
-        detailName:
-            "General English | Elementary 3–4",
-
-        original:
-            32,
-
-        price:
-            16,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAY12499938C"
-
-    },
-
-
-    {
-
-        category:
-            "general",
-
-        level:
-            "Pre-intermediate | Level 5–6",
-
-        detailName:
-            "General English | Pre-intermediate 5–6",
-
-        original:
-            38,
-
-        price:
-            19,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYW4499941w"
-
-    },
-
-
-    {
-
-        category:
-            "general",
-
-        level:
-            "Intermediate | Level 7–8",
-
-        detailName:
-            "General English | Intermediate 7–8",
-
-        original:
-            40,
-
-        price:
-            20,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYoS499945e"
-
-    },
-
-
-    /* ====================================================
-       ENGLISH GRAMMAR
-    ==================================================== */
-
-    {
-
-        category:
-            "grammar",
-
-        level:
-            "Elementary",
-
-        detailName:
-            "English Grammar | Elementary",
-
-        original:
-            42,
-
-        price:
-            25.20,
-
-        discount:
-            40,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAY0V500157n"
-
-    },
-
-
-    {
-
-        category:
-            "grammar",
-
-        level:
-            "Intermediate",
-
-        detailName:
-            "English Grammar | Intermediate",
-
-        original:
-            45,
-
-        price:
-            27,
-
-        discount:
-            40,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYqL500160G"
-
-    },
-
-
-    {
-
-        category:
-            "grammar",
-
-        level:
-            "Advanced",
-
-        detailName:
-            "English Grammar | Advanced",
-
-        original:
-            50,
-
-        price:
-            30,
-
-        discount:
-            40,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYKr500161M"
-
-    },
-
-
-    /* ====================================================
-       ENGLISH VOCABULARY
-    ==================================================== */
-
-    {
-
-        category:
-            "vocabulary",
-
-        level:
-            "Elementary",
-
-        detailName:
-            "English Vocabulary | Elementary",
-
-        original:
-            20,
-
-        price:
-            10,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYHH5001622"
-
-    },
-
-
-    {
-
-        category:
-            "vocabulary",
-
-        level:
-            "Intermediate",
-
-        detailName:
-            "English Vocabulary | Intermediate",
-
-        original:
-            22,
-
-        price:
-            11,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYi3500163U"
-
-    },
-
-
-    {
-
-        category:
-            "vocabulary",
-
-        level:
-            "Upper-intermediate",
-
-        detailName:
-            "English Vocabulary | Upper-intermediate",
-
-        original:
-            24,
-
-        price:
-            12,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAY1u500164h"
-
-    },
-
-
-    {
-
-        category:
-            "vocabulary",
-
-        level:
-            "Advanced",
-
-        detailName:
-            "English Vocabulary | Advanced",
-
-        original:
-            26,
-
-        price:
-            13,
-
-        discount:
-            50,
-
-        paymentLink:
-            "https://link.payway.com.kh/ABAPAYrH500165p"
-
-    }
-
-];
-
-
-// ========================================================
-// VARIABLES
-// ========================================================
-
-let selectedCourse =
-    null;
-
-
-let paymentRemark =
-    "";
-
-
-let selectedCategory =
-    "";
-
-
-// ========================================================
-// HIDE ALL PAGES
-// ========================================================
-
-function hideAllPages() {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            page => {
-
-                page.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-}
-
-
-// ========================================================
-// PAGE 1
-// ========================================================
-
-function showCategories() {
-
-    hideAllPages();
-
-
-    document
-        .getElementById(
-            "page-categories"
-        )
-        .classList.add(
-            "active"
-        );
-
-}
-
-
-// ========================================================
-// PAGE 2
-// ========================================================
-
-function showCategory(
-    category
-) {
-
-    selectedCategory =
-        category;
-
-
-    hideAllPages();
-
-
-    document
-        .getElementById(
-            "page-levels"
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    let title =
-        "";
-
-    let khmer =
-        "";
-
-
-    if (
-        category ===
-        "general"
-    ) {
-
-        title =
-            "General English Programme";
-
-        khmer =
-            "កម្មវិធីភាសាអង់គ្លេសទូទៅ";
-
-    }
-
-
-    else if (
-        category ===
-        "grammar"
-    ) {
-
-        title =
-            "English Grammar Course";
-
-        khmer =
-            "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស";
-
-    }
-
-
-    else if (
-        category ===
-        "vocabulary"
-    ) {
-
-        title =
-            "English Vocabulary Course";
-
-        khmer =
-            "វគ្គវាក្យសព្ទភាសាអង់គ្លេស";
-
-    }
-
-
-    document.getElementById(
-        "level-title"
-    ).textContent =
-        title;
-
-
-    document.getElementById(
-        "level-khmer"
-    ).textContent =
-        khmer;
-
-
-    const levelList =
         document.getElementById(
-            "level-list"
+            "telegram-user"
+        ).textContent =
+            "👋 Welcome, " +
+            (
+                user.first_name ||
+                "student"
+            ) +
+            "!";
+
+    }
+    else {
+
+        document.getElementById(
+            "telegram-user"
+        ).textContent =
+            "👋 Welcome!";
+
+    }
+
+
+    // =====================================================
+    // COURSE DATA
+    // =====================================================
+
+    const courses = {
+
+
+        // -------------------------------------------------
+        // GENERAL ENGLISH
+        // -------------------------------------------------
+
+        general: {
+
+            title:
+                "General English Programme",
+
+            khmer:
+                "កម្មវិធីភាសាអង់គ្លេសទូទៅ",
+
+            levels: [
+
+                {
+                    name:
+                        "Beginner | Level 1–2",
+
+                    botCourse:
+                        "General English | Beginner 1–2",
+
+                    oldPrice:
+                        30,
+
+                    price:
+                        15,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Elementary | Level 3–4",
+
+                    botCourse:
+                        "General English | Elementary 3–4",
+
+                    oldPrice:
+                        32,
+
+                    price:
+                        16,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Pre-intermediate | Level 5–6",
+
+                    botCourse:
+                        "General English | Pre-intermediate 5–6",
+
+                    oldPrice:
+                        38,
+
+                    price:
+                        19,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Intermediate | Level 7–8",
+
+                    botCourse:
+                        "General English | Intermediate 7–8",
+
+                    oldPrice:
+                        40,
+
+                    price:
+                        20,
+
+                    discount:
+                        50
+                }
+
+            ]
+
+        },
+
+
+        // -------------------------------------------------
+        // ENGLISH GRAMMAR
+        // -------------------------------------------------
+
+        grammar: {
+
+            title:
+                "English Grammar Course",
+
+            khmer:
+                "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស",
+
+            levels: [
+
+                {
+                    name:
+                        "Elementary",
+
+                    botCourse:
+                        "English Grammar | Elementary",
+
+                    oldPrice:
+                        42,
+
+                    price:
+                        25.20,
+
+                    discount:
+                        40
+                },
+
+                {
+                    name:
+                        "Intermediate",
+
+                    botCourse:
+                        "English Grammar | Intermediate",
+
+                    oldPrice:
+                        45,
+
+                    price:
+                        27,
+
+                    discount:
+                        40
+                },
+
+                {
+                    name:
+                        "Advanced",
+
+                    botCourse:
+                        "English Grammar | Advanced",
+
+                    oldPrice:
+                        50,
+
+                    price:
+                        30,
+
+                    discount:
+                        40
+                }
+
+            ]
+
+        },
+
+
+        // -------------------------------------------------
+        // ENGLISH VOCABULARY
+        // -------------------------------------------------
+
+        vocabulary: {
+
+            title:
+                "English Vocabulary Course",
+
+            khmer:
+                "វគ្គវាក្យសព្ទភាសាអង់គ្លេស",
+
+            levels: [
+
+                {
+                    name:
+                        "Elementary",
+
+                    botCourse:
+                        "English Vocabulary | Elementary",
+
+                    oldPrice:
+                        20,
+
+                    price:
+                        10,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Intermediate",
+
+                    botCourse:
+                        "English Vocabulary | Intermediate",
+
+                    oldPrice:
+                        22,
+
+                    price:
+                        11,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Upper-intermediate",
+
+                    botCourse:
+                        "English Vocabulary | Upper-intermediate",
+
+                    oldPrice:
+                        24,
+
+                    price:
+                        12,
+
+                    discount:
+                        50
+                },
+
+                {
+                    name:
+                        "Advanced",
+
+                    botCourse:
+                        "English Vocabulary | Advanced",
+
+                    oldPrice:
+                        26,
+
+                    price:
+                        13,
+
+                    discount:
+                        50
+                }
+
+            ]
+
+        }
+
+    };
+
+
+    // =====================================================
+    // CURRENT COURSE
+    // =====================================================
+
+    let currentMajor =
+        null;
+
+    let currentLevel =
+        null;
+
+
+    // =====================================================
+    // GENERATE REMARK
+    // =====================================================
+
+    function generateRemark() {
+
+        const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+
+        let code = "";
+
+
+        for (
+            let i = 0;
+            i < 6;
+            i++
+        ) {
+
+            code +=
+                characters[
+                    Math.floor(
+                        Math.random() *
+                        characters.length
+                    )
+                ];
+
+        }
+
+
+        return "VT-" + code;
+
+    }
+
+
+    // =====================================================
+    // OPEN MAJOR COURSE
+    // =====================================================
+
+    function openMajorCourse(
+        major
+    ) {
+
+        currentMajor =
+            major;
+
+
+        const data =
+            courses[major];
+
+
+        document.getElementById(
+            "homePage"
+        ).classList.add(
+            "hidden"
         );
 
 
-    levelList.innerHTML =
-        "";
+        document.getElementById(
+            "coursePage"
+        ).classList.add(
+            "hidden"
+        );
 
 
-    courses
-        .filter(
-            course =>
-                course.category ===
-                category
-        )
-        .forEach(
-            course => {
+        document.getElementById(
+            "levelPage"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "majorTitle"
+        ).textContent =
+            data.title;
+
+
+        document.getElementById(
+            "majorKhmer"
+        ).textContent =
+            data.khmer;
+
+
+        const levelContainer =
+            document.getElementById(
+                "levelButtons"
+            );
+
+
+        levelContainer.innerHTML =
+            "";
+
+
+        data.levels.forEach(
+            (
+                level,
+                index
+            ) => {
 
 
                 const button =
@@ -1426,348 +1033,405 @@ function showCategory(
 
 
                 button.className =
-                    "level-card";
+                    "level-button";
 
 
                 button.textContent =
-                    course.level;
+                    level.name;
 
 
                 button.onclick =
                     function() {
 
-                        showCourse(
-                            courses.indexOf(
-                                course
-                            )
+                        openCourse(
+                            index
                         );
 
                     };
 
 
-                levelList.appendChild(
+                levelContainer.appendChild(
                     button
                 );
 
             }
         );
 
-}
-
-
-// ========================================================
-// GENERATE VT REMARK
-// ========================================================
-
-function generateRemark() {
-
-    const characters =
-        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-
-    let code =
-        "";
-
-
-    const array =
-        new Uint32Array(
-            6
-        );
-
-
-    crypto.getRandomValues(
-        array
-    );
-
-
-    for (
-        let i = 0;
-        i < 6;
-        i++
-    ) {
-
-        code +=
-            characters[
-                array[i] %
-                characters.length
-            ];
-
     }
 
 
-    return "VT-" + code;
+    // =====================================================
+    // OPEN COURSE DETAILS
+    // =====================================================
 
-}
+    function openCourse(
+        index
+    ) {
 
-
-// ========================================================
-// PAGE 3
-// ========================================================
-
-function showCourse(
-    index
-) {
-
-    selectedCourse =
-        courses[index];
-
-
-    paymentRemark =
-        generateRemark();
-
-
-    hideAllPages();
-
-
-    document
-        .getElementById(
-            "page-details"
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    document.getElementById(
-        "selected-course"
-    ).textContent =
-        selectedCourse.detailName;
-
-
-    document.getElementById(
-        "price"
-    ).innerHTML =
-
-        '<span class="original-price">$' +
-
-        selectedCourse.original
-            .toFixed(2) +
-
-        '</span> → ' +
-
-        '<span class="discount-price">$' +
-
-        selectedCourse.price
-            .toFixed(2) +
-
-        '</span>';
-
-
-    document.getElementById(
-        "saving"
-    ).textContent =
-
-        "🏷️ បញ្ចុះតម្លៃ " +
-
-        selectedCourse.discount +
-
-        "%";
-
-
-    document.getElementById(
-        "remark"
-    ).textContent =
-        paymentRemark;
-
-
-    document.getElementById(
-        "status-message"
-    ).textContent =
-        "";
-
-}
-
-
-// ========================================================
-// BACK TO LEVELS
-// ========================================================
-
-function showLevels() {
-
-    showCategory(
-        selectedCategory
-    );
-
-}
-
-
-// ========================================================
-// COPY REMARK
-// ========================================================
-
-async function copyRemark() {
-
-    try {
-
-        await navigator
-            .clipboard
-            .writeText(
-                paymentRemark
-            );
+        currentLevel =
+            courses[
+                currentMajor
+            ].levels[index];
 
 
         document.getElementById(
-            "status-message"
-        ).textContent =
+            "levelPage"
+        ).classList.add(
+            "hidden"
+        );
 
-            "✅ លេខសម្គាល់ការទូទាត់ត្រូវបានចម្លង!";
+
+        document.getElementById(
+            "coursePage"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        renderCourse();
 
     }
 
 
-    catch (error) {
+    // =====================================================
+    // RENDER COURSE
+    // =====================================================
 
-        alert(
+    function renderCourse() {
 
-            "សូមចម្លងលេខសម្គាល់ការទូទាត់ដោយដៃ:\n\n" +
+        const course =
+            currentLevel;
 
-            paymentRemark
 
-        );
+        const remark =
+            generateRemark();
+
+
+        course.remark =
+            remark;
+
+
+        const card =
+            document.getElementById(
+                "courseCard"
+            );
+
+
+        card.innerHTML = `
+
+            <div class="course-name">
+
+                ${course.name}
+
+            </div>
+
+
+            <div class="price">
+
+                <span class="old-price">
+
+                    $${course.oldPrice.toFixed(2)}
+
+                </span>
+
+
+                <span class="new-price">
+
+                    $${course.price.toFixed(2)}
+
+                </span>
+
+            </div>
+
+
+            <div class="discount">
+
+                Save ${course.discount}%
+
+                <br>
+
+                សន្សំបាន ${course.discount}%
+
+            </div>
+
+
+            <div class="remark-title">
+
+                Payment Remark
+
+                <br>
+
+                លេខសម្គាល់ការទូទាត់
+
+            </div>
+
+
+            <div
+                id="remarkText"
+                class="remark"
+            >
+
+                ${remark}
+
+            </div>
+
+
+            <button
+                class="copy-button"
+                onclick="copyRemark()"
+            >
+
+                📋 Copy Remark
+
+                <br>
+
+                ចម្លងលេខសម្គាល់
+
+            </button>
+
+
+            <div class="important">
+
+                ⚠️ <strong>Important:</strong>
+
+                <br><br>
+
+                Copy this exact Payment Remark
+                and paste it into the
+                <strong>Remark</strong> field
+                when making your payment.
+
+                <br><br>
+
+                សូមចម្លងលេខសម្គាល់ការទូទាត់នេះ
+                ហើយបិទភ្ជាប់វាទៅក្នុងប្រអប់
+                <strong>Remark</strong>
+                នៅពេលធ្វើការទូទាត់។
+
+            </div>
+
+
+            <button
+                class="register-button"
+                onclick="registerCourse()"
+            >
+
+                ✅ Continue Registration
+
+                <br>
+
+                បន្តការចុះឈ្មោះ
+
+            </button>
+
+        `;
 
     }
 
-}
+
+    // =====================================================
+    // COPY REMARK
+    // =====================================================
+
+    async function copyRemark() {
+
+        if (!currentLevel) {
+
+            return;
+
+        }
 
 
-// ========================================================
-// REGISTER + OPEN PAYWAY
-// ========================================================
+        try {
 
-function registerCourse() {
+            await navigator.clipboard.writeText(
+                currentLevel.remark
+            );
 
 
-    if (
-        !selectedCourse
-    ) {
+            tg.showPopup({
 
-        alert(
-            "សូមជ្រើសរើសវគ្គសិក្សាជាមុនសិន។"
-        );
+                title:
+                    "Copied",
 
-        return;
+                message:
+                    "Payment Remark copied successfully.",
+
+                buttons: [
+                    {
+                        type:
+                            "ok"
+                    }
+                ]
+
+            });
+
+        }
+        catch (error) {
+
+            alert(
+                "Payment Remark: " +
+                currentLevel.remark
+            );
+
+        }
 
     }
 
 
-    if (
-        !paymentRemark
-    ) {
+    // =====================================================
+    // SEND REGISTRATION TO BOT
+    // =====================================================
 
-        alert(
-            "លេខសម្គាល់ការទូទាត់មិនមានទេ។"
+    function registerCourse() {
+
+        if (!currentLevel) {
+
+            return;
+
+        }
+
+
+        const registration = {
+
+            remark:
+                currentLevel.remark,
+
+            course:
+                currentLevel.botCourse,
+
+            price:
+                currentLevel.price,
+
+            discount:
+                currentLevel.discount
+
+        };
+
+
+        const dataString =
+            JSON.stringify(
+                registration
+            );
+
+
+        console.log(
+            "===================================="
         );
 
-        return;
-
-    }
-
-
-    // ====================================================
-    // REGISTRATION DATA
-    // ====================================================
-
-    const registrationData = {
-
-        remark:
-            paymentRemark,
-
-        course:
-            selectedCourse.detailName,
-
-        price:
-            selectedCourse.price,
-
-        discount:
-            selectedCourse.discount,
-
-        paymentLink:
-            selectedCourse.paymentLink
-
-    };
-
-
-    const dataString =
-        JSON.stringify(
-            registrationData
+        console.log(
+            "SENDING REGISTRATION TO BOT"
         );
 
+        console.log(
+            "Registration:",
+            registration
+        );
 
-    // ====================================================
-    // SAVE REGISTRATION DATA
-    // ====================================================
-
-    try {
-
-        tg.sendData(
+        console.log(
+            "JSON:",
             dataString
         );
 
+
+        try {
+
+            tg.sendData(
+                dataString
+            );
+
+
+            console.log(
+                "✅ tg.sendData() was called successfully."
+            );
+
+
+        }
+        catch (error) {
+
+            console.log(
+                "❌ tg.sendData() ERROR:",
+                error
+            );
+
+
+            alert(
+                "Registration could not be sent. "
+                +
+                "Please open the Mini App again."
+            );
+
+        }
+
     }
 
-    catch (error) {
 
-        console.log(
-            "Registration error:",
-            error
+    // =====================================================
+    // BACK TO HOME
+    // =====================================================
+
+    function goHome() {
+
+        currentMajor =
+            null;
+
+        currentLevel =
+            null;
+
+
+        document.getElementById(
+            "levelPage"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "coursePage"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "homePage"
+        ).classList.remove(
+            "hidden"
         );
 
     }
 
 
-    // ====================================================
-    // OPEN ABA PAYWAY
-    // ====================================================
+    // =====================================================
+    // BACK TO LEVELS
+    // =====================================================
 
-    setTimeout(
-        function() {
+    function goLevels() {
 
-            try {
+        if (!currentMajor) {
 
-                tg.openLink(
-                    selectedCourse.paymentLink
-                );
+            goHome();
 
-            }
+            return;
 
-            catch (error) {
-
-                console.log(
-                    "PayWay opening error:",
-                    error
-                );
+        }
 
 
-                // Fallback
-
-                window.open(
-                    selectedCourse.paymentLink,
-                    "_blank"
-                );
-
-            }
-
-        },
-        500
-    );
+        document.getElementById(
+            "coursePage"
+        ).classList.add(
+            "hidden"
+        );
 
 
-    // ====================================================
-    // STATUS
-    // ====================================================
+        document.getElementById(
+            "levelPage"
+        ).classList.remove(
+            "hidden"
+        );
 
-    document.getElementById(
-        "status-message"
-    ).textContent =
+    }
 
-        "💳 កំពុងបើកទំព័រទូទាត់...";
-
-}
-
-
-// ========================================================
-// END
-// ========================================================
 
 </script>
 
