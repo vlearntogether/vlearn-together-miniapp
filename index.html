@@ -46,6 +46,31 @@
             font-size: 18px;
             font-weight: bold;
         }
+
+        #payment-section {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f2f2f2;
+        }
+
+        #remark {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        #copy-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 17px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -85,13 +110,28 @@
 
         <div id="course-message"></div>
 
+        <div id="payment-section">
+
+            <h3 id="selected-course"></h3>
+
+            <p>🔐 Your Payment Remark:</p>
+
+            <div id="remark"></div>
+
+            <button id="copy-button" onclick="copyRemark()">
+                📋 Copy Remark
+            </button>
+
+            <p>
+                ⚠️ Copy this Remark and paste it into the
+                Remark field when you make your payment.
+            </p>
+
+        </div>
+
     </div>
 
     <script>
-        function showCourse(courseName) {
-            document.getElementById("course-message").textContent =
-                "You selected: " + courseName;
-        }
 
         const tg = window.Telegram.WebApp;
 
@@ -107,6 +147,70 @@
             document.getElementById("telegram-user").textContent =
                 "👋 Welcome to Vlearn Together!";
         }
+
+
+        let paymentRemark = "";
+
+
+        function generateRemark() {
+
+            const characters =
+                "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+            let code = "";
+
+            const array = new Uint32Array(6);
+
+            crypto.getRandomValues(array);
+
+            for (let i = 0; i < 6; i++) {
+                code += characters[array[i] % characters.length];
+            }
+
+            return "VT-" + code;
+        }
+
+
+        function showCourse(courseName) {
+
+            paymentRemark = generateRemark();
+
+            document.getElementById("course-message").textContent =
+                "You selected: " + courseName;
+
+            document.getElementById("selected-course").textContent =
+                "📚 " + courseName;
+
+            document.getElementById("remark").textContent =
+                paymentRemark;
+
+            document.getElementById("payment-section").style.display =
+                "block";
+        }
+
+
+        async function copyRemark() {
+
+            try {
+
+                await navigator.clipboard.writeText(paymentRemark);
+
+                alert(
+                    "✅ Remark copied!\n\n" +
+                    paymentRemark +
+                    "\n\nPlease paste it into the Remark field when you make your payment."
+                );
+
+            } catch (error) {
+
+                alert(
+                    "Please copy this Remark manually:\n\n" +
+                    paymentRemark
+                );
+
+            }
+        }
+
     </script>
 
 </body>
