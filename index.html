@@ -76,6 +76,20 @@
         }
 
 
+        .back-button,
+        .register-button,
+        .copy-button,
+        .pay-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 17px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+
         #category-section {
             display: block;
         }
@@ -84,13 +98,6 @@
         #level-section {
             display: none;
             margin-top: 25px;
-        }
-
-
-        #course-message {
-            margin-top: 20px;
-            font-size: 17px;
-            font-weight: bold;
         }
 
 
@@ -149,23 +156,17 @@
         }
 
 
-        .copy-button,
-        .pay-button,
-        .back-button {
-            width: 100%;
-            padding: 15px;
-            font-size: 17px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-
         .instruction {
             font-size: 16px;
             line-height: 1.5;
             margin-top: 18px;
+        }
+
+
+        #status-message {
+            margin-top: 18px;
+            font-size: 17px;
+            font-weight: bold;
         }
 
     </style>
@@ -179,6 +180,10 @@
 <div class="container">
 
 
+    <!-- ================================================= -->
+    <!-- TELEGRAM USER -->
+    <!-- ================================================= -->
+
     <p id="telegram-user"></p>
 
 
@@ -186,12 +191,12 @@
 
 
     <p>
-        Learn English online with our video courses.
+        🇬🇧 Learn English online with our video courses.
     </p>
 
 
     <!-- ================================================= -->
-    <!-- MAIN CATEGORY SECTION -->
+    <!-- CATEGORY SECTION -->
     <!-- ================================================= -->
 
     <div id="category-section">
@@ -263,13 +268,6 @@
 
 
     <!-- ================================================= -->
-    <!-- COURSE MESSAGE -->
-    <!-- ================================================= -->
-
-    <div id="course-message"></div>
-
-
-    <!-- ================================================= -->
     <!-- PAYMENT SECTION -->
     <!-- ================================================= -->
 
@@ -309,20 +307,28 @@
 
             ⚠️ <b>Important:</b><br>
 
-            Copy the Payment Remark above and paste it into
-            the <b>Remark</b> field when you make your payment.
+            Copy this exact Payment Remark and paste it
+            into the <b>Remark</b> field when making your payment.
 
         </p>
 
 
-        <button
-            id="pay-button"
-            class="pay-button"
-            onclick="makePayment()">
+        <!-- ================================================= -->
+        <!-- REGISTER BUTTON -->
+        <!-- ================================================= -->
 
-            💳 Pay via ABA
+        <button
+            class="register-button"
+            onclick="registerCourse()">
+
+            ✅ Continue Registration
 
         </button>
+
+
+        <div
+            id="status-message">
+        </div>
 
 
     </div>
@@ -335,7 +341,7 @@
 
 
 // ========================================================
-// TELEGRAM
+// TELEGRAM WEB APP
 // ========================================================
 
 const tg = window.Telegram.WebApp;
@@ -350,14 +356,18 @@ const user = tg.initDataUnsafe.user;
 
 if (user) {
 
-    document.getElementById("telegram-user").textContent =
+    document.getElementById(
+        "telegram-user"
+    ).textContent =
         "👋 Welcome, " +
         (user.first_name || "student") +
         "!";
 
 } else {
 
-    document.getElementById("telegram-user").textContent =
+    document.getElementById(
+        "telegram-user"
+    ).textContent =
         "👋 Welcome to Vlearn Together!";
 
 }
@@ -377,7 +387,8 @@ const courses = [
         original: 30,
         price: 15,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAY1e499924g"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY1e499924g"
     },
 
     {
@@ -386,7 +397,8 @@ const courses = [
         original: 32,
         price: 16,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAY12499938C"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY12499938C"
     },
 
     {
@@ -395,7 +407,8 @@ const courses = [
         original: 38,
         price: 19,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAYW4499941w"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYW4499941w"
     },
 
     {
@@ -404,7 +417,8 @@ const courses = [
         original: 40,
         price: 20,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAYoS499945e"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYoS499945e"
     },
 
 
@@ -416,7 +430,8 @@ const courses = [
         original: 42,
         price: 25.20,
         discount: 40,
-        paymentLink: "https://link.payway.com.kh/ABAPAY0V500157n"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY0V500157n"
     },
 
     {
@@ -425,7 +440,8 @@ const courses = [
         original: 45,
         price: 27,
         discount: 40,
-        paymentLink: "https://link.payway.com.kh/ABAPAYqL500160G"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYqL500160G"
     },
 
     {
@@ -434,7 +450,8 @@ const courses = [
         original: 50,
         price: 30,
         discount: 40,
-        paymentLink: "https://link.payway.com.kh/ABAPAYKr500161M"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYKr500161M"
     },
 
 
@@ -446,7 +463,8 @@ const courses = [
         original: 20,
         price: 10,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAYHH5001622"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYHH5001622"
     },
 
     {
@@ -455,7 +473,8 @@ const courses = [
         original: 22,
         price: 11,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAYi3500163U"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYi3500163U"
     },
 
     {
@@ -464,7 +483,8 @@ const courses = [
         original: 24,
         price: 12,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAY1u500164h"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY1u500164h"
     },
 
     {
@@ -473,7 +493,8 @@ const courses = [
         original: 26,
         price: 13,
         discount: 50,
-        paymentLink: "https://link.payway.com.kh/ABAPAYrH500165p"
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYrH500165p"
     }
 
 ];
@@ -483,13 +504,13 @@ const courses = [
 // VARIABLES
 // ========================================================
 
-let paymentRemark = "";
-
 let selectedCourse = null;
+
+let paymentRemark = "";
 
 
 // ========================================================
-// GENERATE VT REMARK
+// GENERATE REMARK
 // ========================================================
 
 function generateRemark() {
@@ -499,15 +520,22 @@ function generateRemark() {
 
     let code = "";
 
-    const array = new Uint32Array(6);
+    const array =
+        new Uint32Array(6);
 
     crypto.getRandomValues(array);
 
 
-    for (let i = 0; i < 6; i++) {
+    for (
+        let i = 0;
+        i < 6;
+        i++
+    ) {
 
         code +=
-            characters[array[i] % characters.length];
+            characters[
+                array[i] % characters.length
+            ];
 
     }
 
@@ -521,7 +549,6 @@ function generateRemark() {
 // ========================================================
 
 function showCategory(category) {
-
 
     document.getElementById(
         "category-section"
@@ -538,13 +565,10 @@ function showCategory(category) {
     ).style.display = "none";
 
 
-    document.getElementById(
-        "course-message"
-    ).textContent = "";
-
-
     const levelButtons =
-        document.getElementById("level-buttons");
+        document.getElementById(
+            "level-buttons"
+        );
 
 
     levelButtons.innerHTML = "";
@@ -555,19 +579,22 @@ function showCategory(category) {
 
     if (category === "general") {
 
-        title = "General English Programme";
+        title =
+            "General English Programme";
 
     }
 
     else if (category === "grammar") {
 
-        title = "English Grammar Course";
+        title =
+            "English Grammar Course";
 
     }
 
     else if (category === "vocabulary") {
 
-        title = "English Vocabulary Course";
+        title =
+            "English Vocabulary Course";
 
     }
 
@@ -578,46 +605,55 @@ function showCategory(category) {
 
 
     courses
-        .filter(course => course.category === category)
-        .forEach(course => {
+        .filter(
+            course =>
+                course.category === category
+        )
+        .forEach(
+            course => {
+
+                const index =
+                    courses.indexOf(course);
 
 
-            const index =
-                courses.indexOf(course);
+                const button =
+                    document.createElement(
+                        "button"
+                    );
 
 
-            const button =
-                document.createElement("button");
+                button.className =
+                    "level-button";
 
 
-            button.className =
-                "level-button";
+                button.textContent =
+                    course.name
+                        .replace(
+                            title + " | ",
+                            ""
+                        );
 
 
-            button.textContent =
-                course.name.replace(
-                    title + " | ",
-                    ""
+                button.onclick =
+                    function() {
+
+                        showCourse(index);
+
+                    };
+
+
+                levelButtons.appendChild(
+                    button
                 );
 
-
-            button.onclick =
-                function() {
-
-                    showCourse(index);
-
-                };
-
-
-            levelButtons.appendChild(button);
-
-        });
+            }
+        );
 
 }
 
 
 // ========================================================
-// BACK TO CATEGORY
+// BACK TO CATEGORIES
 // ========================================================
 
 function backToCategories() {
@@ -637,9 +673,9 @@ function backToCategories() {
     ).style.display = "none";
 
 
-    document.getElementById(
-        "course-message"
-    ).textContent = "";
+    selectedCourse = null;
+
+    paymentRemark = "";
 
 }
 
@@ -650,20 +686,12 @@ function backToCategories() {
 
 function showCourse(index) {
 
-
     selectedCourse =
         courses[index];
 
 
     paymentRemark =
         generateRemark();
-
-
-    document.getElementById(
-        "course-message"
-    ).textContent =
-        "You selected: " +
-        selectedCourse.name;
 
 
     document.getElementById(
@@ -705,11 +733,8 @@ function showCourse(index) {
 
 
     document.getElementById(
-        "pay-button"
-    ).textContent =
-        "💳 Pay $" +
-        selectedCourse.price.toFixed(2) +
-        " via ABA";
+        "status-message"
+    ).textContent = "";
 
 
     document.getElementById(
@@ -726,7 +751,6 @@ function showCourse(index) {
 
 async function copyRemark() {
 
-
     try {
 
         await navigator.clipboard.writeText(
@@ -736,9 +760,7 @@ async function copyRemark() {
 
         alert(
             "✅ Payment Remark copied!\n\n" +
-            paymentRemark +
-            "\n\n" +
-            "Please paste it into the Remark field when you make your payment."
+            paymentRemark
         );
 
     }
@@ -756,11 +778,10 @@ async function copyRemark() {
 
 
 // ========================================================
-// PAY VIA ABA
+// REGISTER COURSE
 // ========================================================
 
-function makePayment() {
-
+function registerCourse() {
 
     if (!selectedCourse) {
 
@@ -784,13 +805,48 @@ function makePayment() {
     }
 
 
-    window.open(
-        selectedCourse.paymentLink,
-        "_blank"
+    const registrationData = {
+
+        remark: paymentRemark,
+
+        course: selectedCourse.name,
+
+        price: selectedCourse.price,
+
+        discount: selectedCourse.discount,
+
+        paymentLink:
+            selectedCourse.paymentLink
+
+    };
+
+
+    const dataString =
+        JSON.stringify(
+            registrationData
+        );
+
+
+    // ====================================================
+    // SEND DATA TO TELEGRAM BOT
+    // ====================================================
+
+    tg.sendData(
+        dataString
     );
+
+
+    document.getElementById(
+        "status-message"
+    ).textContent =
+        "✅ Registration sent successfully!";
 
 }
 
+
+// ========================================================
+// END
+// ========================================================
 
 </script>
 
