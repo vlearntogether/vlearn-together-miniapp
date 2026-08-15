@@ -2,12 +2,11 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
     <meta
@@ -19,20 +18,15 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
     <style>
 
         * {
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
             padding: 0;
-
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -40,249 +34,188 @@
                 Arial,
                 sans-serif;
 
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #222222);
+
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 20px 18px 35px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 800;
+            color: #1976d2;
+            margin-bottom: 18px;
+        }
+
+        .welcome {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .intro {
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.55;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 750;
+            margin-bottom: 8px;
+        }
+
+        .khmer-title {
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .course-button,
+        .level-button {
+            width: 100%;
+            border: none;
+            border-radius: 13px;
+            padding: 16px;
+            margin-top: 11px;
+            font-size: 16px;
+            font-weight: 650;
+            text-align: left;
+            cursor: pointer;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
+        }
+
+        .course-button:active,
+        .level-button:active,
+        .primary-button:active,
+        .secondary-button:active,
+        .back-button:active {
+            transform: scale(0.98);
+        }
+
+        .price-card {
+            margin-top: 15px;
+            padding: 22px 18px;
+            border-radius: 17px;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            text-align: center;
+        }
+
+        .course-name {
+            font-size: 22px;
+            font-weight: 750;
+            line-height: 1.35;
+            margin-bottom: 16px;
+        }
+
+        .price {
+            font-size: 27px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            opacity: 0.55;
+            margin-right: 7px;
+            font-size: 20px;
+        }
+
+        .new-price {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .discount {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .payment-info {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+
             background:
                 var(
                     --tg-theme-bg-color,
                     #ffffff
                 );
 
-            color:
+            border: 1px solid
                 var(
-                    --tg-theme-text-color,
-                    #222222
+                    --tg-theme-hint-color,
+                    #999999
                 );
-
-            min-height: 100vh;
-        }
-
-
-        .container {
-
-            width: 100%;
-
-            max-width: 520px;
-
-            margin: 0 auto;
-
-            padding: 20px 18px 35px;
-        }
-
-
-        .brand {
-
-            text-align: center;
-
-            font-size: 30px;
-
-            font-weight: 800;
-
-            color: #1976d2;
-
-            margin-bottom: 10px;
-        }
-
-
-        .welcome {
-
-            text-align: center;
-
-            font-size: 16px;
-
-            font-weight: 600;
-
-            margin-bottom: 20px;
-        }
-
-
-        .intro {
-
-            text-align: center;
-
-            font-size: 16px;
-
-            line-height: 1.5;
-
-            margin-bottom: 24px;
-        }
-
-
-        .page-title {
-
-            text-align: center;
-
-            font-size: 24px;
-
-            font-weight: 750;
-
-            margin-bottom: 8px;
-        }
-
-
-        .khmer-title {
-
-            text-align: center;
-
-            font-size: 18px;
-
-            line-height: 1.6;
-
-            margin-bottom: 20px;
-        }
-
-
-        .course-button,
-        .level-button {
-
-            width: 100%;
-
-            border: none;
-
-            border-radius: 13px;
-
-            padding: 16px;
-
-            margin-top: 11px;
-
-            font-size: 16px;
-
-            font-weight: 650;
 
             text-align: left;
 
-            cursor: pointer;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
+            font-size: 15px;
+            line-height: 1.55;
         }
 
-
-        .course-button:active,
-        .level-button:active,
-        .primary-button:active,
-        .secondary-button:active {
-
-            transform: scale(0.98);
-        }
-
-
-        .course-card {
-
-            margin-top: 18px;
-
-            padding: 22px 18px;
-
-            border-radius: 16px;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            text-align: center;
-        }
-
-
-        .course-name {
-
-            font-size: 22px;
-
+        .payment-info strong {
             font-weight: 750;
-
-            line-height: 1.4;
-
-            margin-bottom: 16px;
         }
-
-
-        .price {
-
-            font-size: 28px;
-
-            font-weight: 800;
-
-            margin-bottom: 7px;
-        }
-
-
-        .old-price {
-
-            text-decoration: line-through;
-
-            opacity: 0.55;
-
-            font-size: 20px;
-
-            margin-right: 6px;
-        }
-
-
-        .new-price {
-
-            font-size: 28px;
-
-            font-weight: 800;
-        }
-
-
-        .discount {
-
-            font-size: 16px;
-
-            font-weight: 650;
-
-            margin-top: 10px;
-        }
-
 
         .primary-button {
-
             width: 100%;
-
             border: none;
-
             border-radius: 13px;
-
             padding: 16px;
+            margin-top: 14px;
 
-            margin-top: 18px;
-
-            font-size: 17px;
-
+            font-size: 16px;
             font-weight: 750;
 
             cursor: pointer;
 
             background: #1976d2;
-
             color: #ffffff;
         }
 
-
         .secondary-button {
-
             width: 100%;
-
             border: none;
-
             border-radius: 13px;
-
-            padding: 14px;
-
+            padding: 15px;
             margin-top: 11px;
 
             font-size: 16px;
-
-            font-weight: 650;
+            font-weight: 700;
 
             cursor: pointer;
 
@@ -299,36 +232,40 @@
                 );
         }
 
-
         .back-button {
-
             width: 100%;
-
             border: none;
-
             background: transparent;
 
             color: #1976d2;
 
-            font-size: 15px;
-
+            font-size: 16px;
             font-weight: 650;
 
             padding: 14px 5px;
-
             margin-top: 12px;
 
             cursor: pointer;
         }
 
+        .payment-title {
+            text-align: center;
+            font-size: 23px;
+            font-weight: 750;
+            margin-top: 5px;
+            margin-bottom: 7px;
+        }
 
-        .payment-box {
+        .payment-khmer {
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-            margin-top: 18px;
-
-            padding: 18px;
-
-            border-radius: 14px;
+        .selected-course {
+            padding: 16px;
+            border-radius: 13px;
 
             background:
                 var(
@@ -336,54 +273,32 @@
                     #f1f3f5
                 );
 
-            text-align: left;
-
-            line-height: 1.55;
+            margin-bottom: 18px;
+            line-height: 1.5;
         }
 
+        .selected-course-title {
+            font-size: 13px;
+            opacity: 0.65;
+            margin-bottom: 5px;
+        }
 
-        .payment-box strong {
-
+        .selected-course-name {
+            font-size: 18px;
             font-weight: 750;
         }
 
-
-        .form-group {
-
-            margin-top: 18px;
-
-            text-align: left;
-        }
-
-
-        .form-label {
-
+        .input-label {
             display: block;
-
-            font-size: 16px;
-
-            font-weight: 700;
-
-            margin-bottom: 8px;
-        }
-
-
-        .form-label-khmer {
-
-            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
 
             font-size: 15px;
-
-            margin-top: 3px;
-
-            margin-bottom: 8px;
+            font-weight: 700;
         }
 
-
         input {
-
             width: 100%;
-
             padding: 14px;
 
             border-radius: 11px;
@@ -407,33 +322,26 @@
                 );
 
             font-size: 17px;
-
             outline: none;
         }
 
-
         input:focus {
-
             border-color: #1976d2;
         }
 
-
-        .hint {
-
-            margin-top: 7px;
-
+        .date-example {
+            margin-top: 6px;
             font-size: 13px;
-
-            line-height: 1.45;
-
-            opacity: 0.7;
+            opacity: 0.65;
         }
 
+        .apv-input {
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
 
-        .important {
-
+        .instruction {
             margin-top: 18px;
-
             padding: 15px;
 
             border-radius: 12px;
@@ -446,48 +354,39 @@
                     0.08
                 );
 
-            line-height: 1.55;
-
-            font-size: 14px;
-
-            text-align: left;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
-
-        .error {
-
+        .error-box {
             margin-top: 15px;
-
-            padding: 13px;
+            padding: 14px;
 
             border-radius: 11px;
 
             background:
                 rgba(
-                    211,
-                    47,
-                    47,
+                    229,
+                    57,
+                    53,
                     0.10
                 );
 
             color:
-                #c62828;
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
 
-            font-size: 14px;
-
-            line-height: 1.5;
-
-            text-align: left;
+            font-size: 15px;
+            line-height: 1.55;
         }
 
-
-        .success {
-
-            margin-top: 18px;
-
+        .success-box {
+            margin-top: 15px;
             padding: 18px;
 
-            border-radius: 14px;
+            border-radius: 12px;
 
             background:
                 rgba(
@@ -497,169 +396,104 @@
                     0.10
                 );
 
-            text-align: center;
-
-            line-height: 1.55;
+            font-size: 15px;
+            line-height: 1.6;
         }
-
 
         .receipt {
+            margin-top: 18px;
+            padding: 20px 17px;
 
-            margin-top: 20px;
+            border: 1px solid #d5d5d5;
+            border-radius: 8px;
 
-            padding: 20px 18px;
-
-            border: 1px solid
-                rgba(
-                    25,
-                    118,
-                    210,
-                    0.30
-                );
-
-            border-radius: 10px;
-
-            background:
-                var(
-                    --tg-theme-bg-color,
-                    #ffffff
-                );
-
-            text-align: center;
-        }
-
-
-        .receipt-brand {
-
-            color: #1976d2;
-
-            font-size: 24px;
-
-            font-weight: 800;
-
-            margin-bottom: 4px;
-        }
-
-
-        .receipt-title {
-
-            font-size: 19px;
-
-            font-weight: 750;
-
-            margin-bottom: 2px;
-        }
-
-
-        .receipt-khmer {
-
-            font-size: 15px;
-
-            margin-bottom: 17px;
-        }
-
-
-        .receipt-line {
-
-            height: 1px;
-
-            background:
-                rgba(
-                    128,
-                    128,
-                    128,
-                    0.25
-                );
-
-            margin: 12px 0;
-        }
-
-
-        .receipt-row {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            gap: 12px;
+            background: #ffffff;
+            color: #222222;
 
             text-align: left;
+        }
 
-            margin-top: 9px;
+        .receipt-header {
+            text-align: center;
+            padding-bottom: 13px;
+            border-bottom: 1px solid #dddddd;
+            margin-bottom: 14px;
+        }
+
+        .receipt-brand {
+            color: #1976d2;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .receipt-title {
+            margin-top: 4px;
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .receipt-khmer-title {
+            margin-top: 3px;
+            font-size: 15px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 8px 0;
+
+            border-bottom: 1px solid #eeeeee;
 
             font-size: 14px;
         }
 
-
-        .receipt-row .label {
-
+        .receipt-label {
             font-weight: 700;
         }
 
-
-        .receipt-row .value {
-
+        .receipt-value {
             text-align: right;
-
             word-break: break-word;
         }
 
+        .receipt-status {
+            margin-top: 15px;
+            padding: 11px;
 
-        .contact-section {
+            border-radius: 6px;
 
-            margin-top: 18px;
-
-            padding-top: 14px;
-
-            border-top: 1px solid
-                rgba(
-                    128,
-                    128,
-                    128,
-                    0.25
-                );
+            background: #f2f2f2;
 
             text-align: center;
+
+            font-weight: 750;
+            font-size: 14px;
         }
 
+        .contact {
+            margin-top: 18px;
 
-        .contact-title {
-
-            font-weight: 700;
-
-            font-size: 15px;
-
-            margin-bottom: 7px;
-        }
-
-
-        .contact-khmer {
+            text-align: center;
 
             font-size: 14px;
-
-            margin-bottom: 9px;
+            line-height: 1.6;
         }
 
-
-        .contact-link {
-
+        .contact a {
             color: #1976d2;
-
-            font-size: 15px;
-
-            font-weight: 650;
-
             text-decoration: none;
-
-            word-break: break-all;
+            font-weight: 700;
         }
 
-
-        .hidden {
-
-            display: none;
+        .small-note {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.65;
+            line-height: 1.5;
         }
-
 
     </style>
 
@@ -667,7 +501,6 @@
 
 
 <body>
-
 
 <div class="container">
 
@@ -683,35 +516,20 @@
             class="welcome"
         ></div>
 
-
         <div class="brand">
             Vlearn Together
         </div>
 
-
         <div class="intro">
-
             Learn English online with our video courses.
-
-            <br>
-
-            សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត
-            ជាមួយវគ្គសិក្សាវីដេអូរបស់យើង។
-
         </div>
-
 
         <div class="page-title">
-
             Choose Your Course
-
         </div>
 
-
         <div class="khmer-title">
-
-            សូមជ្រើសរើសវគ្គសិក្សា
-
+            សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នក
         </div>
 
 
@@ -719,15 +537,11 @@
             class="course-button"
             onclick="openMajorCourse('general')"
         >
-
             General English Programme
-
             <br>
-
             <span>
                 កម្មវិធីភាសាអង់គ្លេសទូទៅ
             </span>
-
         </button>
 
 
@@ -735,15 +549,11 @@
             class="course-button"
             onclick="openMajorCourse('grammar')"
         >
-
             English Grammar Course
-
             <br>
-
             <span>
                 វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
             </span>
-
         </button>
 
 
@@ -751,30 +561,22 @@
             class="course-button"
             onclick="openMajorCourse('vocabulary')"
         >
-
             English Vocabulary Course
-
             <br>
-
             <span>
                 វគ្គវាក្យសព្ទភាសាអង់គ្លេស
             </span>
-
         </button>
 
 
         <button
-            id="paymentCompletedButton"
+            id="continuePaymentButton"
             class="secondary-button hidden"
-            onclick="openPaymentCompleted()"
+            onclick="openSavedPayment()"
         >
-
             Payment completed
-
             <br>
-
             ការទូទាត់បានបញ្ចប់
-
         </button>
 
     </section>
@@ -793,40 +595,32 @@
             Vlearn Together
         </div>
 
-
         <div
             id="majorTitle"
             class="page-title"
         ></div>
-
 
         <div
             id="majorKhmer"
             class="khmer-title"
         ></div>
 
-
         <div id="levelButtons"></div>
-
 
         <button
             class="back-button"
             onclick="goHome()"
         >
-
             ← Back to Courses
-
             <br>
-
-            ត្រលប់ទៅវគ្គសិក្សា
-
+            ត្រលប់ក្រោយ
         </button>
 
     </section>
 
 
     <!-- ================================================= -->
-    <!-- COURSE DETAILS -->
+    <!-- COURSE PAGE -->
     <!-- ================================================= -->
 
     <section
@@ -838,31 +632,25 @@
             Vlearn Together
         </div>
 
-
         <div
             id="courseCard"
-            class="course-card"
+            class="price-card"
         ></div>
-
 
         <button
             class="back-button"
             onclick="goLevels()"
         >
-
             ← Back to Courses
-
             <br>
-
             ត្រលប់ក្រោយ
-
         </button>
 
     </section>
 
 
     <!-- ================================================= -->
-    <!-- PAYMENT INFORMATION -->
+    <!-- PAYMENT COMPLETED PAGE -->
     <!-- ================================================= -->
 
     <section
@@ -874,127 +662,80 @@
             Vlearn Together
         </div>
 
-
-        <div class="page-title">
-
+        <div class="payment-title">
             Payment completed
-
         </div>
 
-
-        <div class="khmer-title">
-
+        <div class="payment-khmer">
             ការទូទាត់បានបញ្ចប់
-
         </div>
 
 
         <div
-            id="paymentCourseInfo"
-            class="payment-box"
+            id="selectedCourse"
+            class="selected-course"
         ></div>
 
 
-        <div class="important">
+        <div class="instruction">
 
-            Please enter the payment information
-            exactly as shown on your ABA payment receipt.
+            Please enter the payment date and APV exactly
+            as shown on your ABA payment receipt.
 
             <br><br>
 
-            សូមបញ្ចូលព័ត៌មានការទូទាត់
-            ឱ្យបានត្រឹមត្រូវតាមបង្កាន់ដៃ
-            ការទូទាត់ ABA របស់អ្នក។
+            សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់ និងលេខ APV
+            ឲ្យបានត្រឹមត្រូវតាមបង្កាន់ដៃទូទាត់ ABA របស់អ្នក។
 
         </div>
 
 
-        <!-- DATE -->
-
-        <div class="form-group">
-
-            <label
-                class="form-label"
-                for="paymentDate"
-            >
-
-                Payment date
-
-            </label>
+        <label
+            class="input-label"
+            for="paymentDate"
+        >
+            Payment Date
+            <br>
+            កាលបរិច្ឆេទទូទាត់
+        </label>
 
 
-            <div class="form-label-khmer">
-
-                កាលបរិច្ឆេទទូទាត់
-
-            </div>
-
-
-            <input
-                id="paymentDate"
-                type="date"
-            >
+        <input
+            id="paymentDate"
+            type="date"
+        >
 
 
-            <div class="hint">
-
-                Example: 15/08/2026
-
-                <br>
-
-                ឧទាហរណ៍៖ 15/08/2026
-
-            </div>
-
+        <div class="date-example">
+            Example: 15/08/2026
+            <br>
+            ឧទាហរណ៍៖ 15/08/2026
         </div>
 
 
-        <!-- APV -->
-
-        <div class="form-group">
-
-            <label
-                class="form-label"
-                for="paymentApv"
-            >
-
-                APV
-
-            </label>
+        <label
+            class="input-label"
+            for="paymentApv"
+        >
+            APV
+            <br>
+            លេខ APV
+        </label>
 
 
-            <div class="form-label-khmer">
-
-                លេខ APV
-
-            </div>
-
-
-            <input
-                id="paymentApv"
-                type="text"
-                inputmode="numeric"
-                maxlength="20"
-                placeholder="Enter APV"
-            >
-
-
-            <div class="hint">
-
-                Example: 445233
-
-                <br>
-
-                ឧទាហរណ៍៖ 445233
-
-            </div>
-
-        </div>
+        <input
+            id="paymentApv"
+            class="apv-input"
+            type="text"
+            inputmode="numeric"
+            maxlength="20"
+            placeholder="Enter APV"
+        >
 
 
         <div
-            id="formError"
-            class="error hidden"
+            id="paymentError"
+            class="error-box hidden"
         ></div>
 
 
@@ -1002,13 +743,9 @@
             class="primary-button"
             onclick="submitPaymentInformation()"
         >
-
-            Submit Payment Information
-
+            Confirm Payment
             <br>
-
-            បញ្ជូនព័ត៌មានការទូទាត់
-
+            បញ្ជាក់ការទូទាត់
         </button>
 
 
@@ -1016,20 +753,16 @@
             class="back-button"
             onclick="goHome()"
         >
-
             ← Back to Courses
-
             <br>
-
-            ត្រលប់ទៅវគ្គសិក្សា
-
+            ត្រលប់ក្រោយ
         </button>
 
     </section>
 
 
     <!-- ================================================= -->
-    <!-- RECEIPT -->
+    <!-- RECEIPT PAGE -->
     <!-- ================================================= -->
 
     <section
@@ -1042,23 +775,53 @@
         </div>
 
 
+        <div class="success-box">
+
+            Registration successful.
+
+            <br>
+
+            ការចុះឈ្មោះបានជោគជ័យ។
+
+        </div>
+
+
         <div
-            id="receiptContent"
+            id="receipt"
             class="receipt"
         ></div>
+
+
+        <div class="contact">
+
+            <a
+                href="https://t.me/Vlearn_together"
+                target="_blank"
+            >
+                https://t.me/Vlearn_together
+            </a>
+
+        </div>
+
+
+        <div class="small-note">
+
+            Please keep this receipt as your proof of registration.
+
+            <br>
+
+            សូមរក្សាទុកបង្កាន់ដៃនេះជាភស្តុតាងនៃការចុះឈ្មោះរបស់អ្នក។
+
+        </div>
 
 
         <button
             class="primary-button"
             onclick="goHome()"
         >
-
-            Choose Another Course
-
+            Back to Courses
             <br>
-
-            ជ្រើសរើសវគ្គសិក្សាផ្សេងទៀត
-
+            ត្រលប់ទៅវគ្គសិក្សា
         </button>
 
     </section>
@@ -1074,12 +837,9 @@
     // TELEGRAM
     // =====================================================
 
-    const tg =
-        window.Telegram.WebApp;
-
+    const tg = window.Telegram.WebApp;
 
     tg.ready();
-
     tg.expand();
 
 
@@ -1092,19 +852,29 @@
         tg.initDataUnsafe.user;
 
 
-    const telegramUserName =
-        user &&
-        user.first_name
-            ? user.first_name
-            : "Student";
+    const telegramUserElement =
+        document.getElementById(
+            "telegramUser"
+        );
 
 
-    document.getElementById(
-        "telegramUser"
-    ).textContent =
-        "Welcome, " +
-        telegramUserName +
-        "!";
+    if (user) {
+
+        telegramUserElement.textContent =
+            "Welcome, " +
+            (
+                user.first_name ||
+                "student"
+            ) +
+            "!";
+
+    }
+    else {
+
+        telegramUserElement.textContent =
+            "Welcome!";
+
+    }
 
 
     // =====================================================
@@ -1112,11 +882,6 @@
     // =====================================================
 
     const courses = {
-
-
-        // -------------------------------------------------
-        // GENERAL ENGLISH
-        // -------------------------------------------------
 
         general: {
 
@@ -1142,8 +907,12 @@
                         15,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAY1e499924g"
                 },
+
 
                 {
                     name:
@@ -1159,8 +928,12 @@
                         16,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAY12499938C"
                 },
+
 
                 {
                     name:
@@ -1176,8 +949,12 @@
                         19,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYW4499941w"
                 },
+
 
                 {
                     name:
@@ -1193,17 +970,16 @@
                         20,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYoS499945e"
                 }
 
             ]
 
         },
 
-
-        // -------------------------------------------------
-        // GRAMMAR
-        // -------------------------------------------------
 
         grammar: {
 
@@ -1229,8 +1005,12 @@
                         25.20,
 
                     discount:
-                        40
+                        40,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAY0V500157n"
                 },
+
 
                 {
                     name:
@@ -1246,8 +1026,12 @@
                         27,
 
                     discount:
-                        40
+                        40,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYqL500160G"
                 },
+
 
                 {
                     name:
@@ -1263,17 +1047,16 @@
                         30,
 
                     discount:
-                        40
+                        40,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYKr500161M"
                 }
 
             ]
 
         },
 
-
-        // -------------------------------------------------
-        // VOCABULARY
-        // -------------------------------------------------
 
         vocabulary: {
 
@@ -1299,8 +1082,12 @@
                         10,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYHH5001622"
                 },
+
 
                 {
                     name:
@@ -1316,8 +1103,12 @@
                         11,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYi3500163U"
                 },
+
 
                 {
                     name:
@@ -1333,8 +1124,12 @@
                         12,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAY1u500164h"
                 },
+
 
                 {
                     name:
@@ -1350,7 +1145,10 @@
                         13,
 
                     discount:
-                        50
+                        50,
+
+                    paymentLink:
+                        "https://link.payway.com.kh/ABAPAYrH500165p"
                 }
 
             ]
@@ -1364,19 +1162,105 @@
     // CURRENT COURSE
     // =====================================================
 
-    let currentMajor =
-        null;
+    let currentMajor = null;
 
-    let currentLevel =
-        null;
+    let currentLevel = null;
 
 
     // =====================================================
     // STORAGE KEY
     // =====================================================
 
-    const STORAGE_KEY =
-        "vlearn_payment_course";
+    const SAVED_COURSE_KEY =
+        "vlearn_pending_course";
+
+
+    // =====================================================
+    // SAVE COURSE
+    // =====================================================
+
+    function saveCourseForPayment() {
+
+        if (
+            !currentMajor ||
+            !currentLevel
+        ) {
+            return;
+        }
+
+
+        const savedCourse = {
+
+            major:
+                currentMajor,
+
+            name:
+                currentLevel.name,
+
+            botCourse:
+                currentLevel.botCourse,
+
+            price:
+                currentLevel.price,
+
+            oldPrice:
+                currentLevel.oldPrice,
+
+            discount:
+                currentLevel.discount,
+
+            paymentLink:
+                currentLevel.paymentLink
+
+        };
+
+
+        localStorage.setItem(
+
+            SAVED_COURSE_KEY,
+
+            JSON.stringify(
+                savedCourse
+            )
+
+        );
+
+    }
+
+
+    // =====================================================
+    // GET SAVED COURSE
+    // =====================================================
+
+    function getSavedCourse() {
+
+        const saved =
+            localStorage.getItem(
+                SAVED_COURSE_KEY
+            );
+
+
+        if (!saved) {
+
+            return null;
+
+        }
+
+
+        try {
+
+            return JSON.parse(
+                saved
+            );
+
+        }
+        catch (error) {
+
+            return null;
+
+        }
+
+    }
 
 
     // =====================================================
@@ -1404,6 +1288,66 @@
         document
             .getElementById("receiptPage")
             .classList.add("hidden");
+
+    }
+
+
+    // =====================================================
+    // HOME
+    // =====================================================
+
+    function goHome() {
+
+        hideAllPages();
+
+
+        document
+            .getElementById("homePage")
+            .classList.remove("hidden");
+
+
+        currentMajor =
+            null;
+
+        currentLevel =
+            null;
+
+
+        updatePaymentButton();
+
+    }
+
+
+    // =====================================================
+    // UPDATE PAYMENT BUTTON
+    // =====================================================
+
+    function updatePaymentButton() {
+
+        const saved =
+            getSavedCourse();
+
+
+        const button =
+            document.getElementById(
+                "continuePaymentButton"
+            );
+
+
+        if (saved) {
+
+            button.classList.remove(
+                "hidden"
+            );
+
+        }
+        else {
+
+            button.classList.add(
+                "hidden"
+            );
+
+        }
 
     }
 
@@ -1444,13 +1388,13 @@
             data.khmer;
 
 
-        const container =
+        const levelContainer =
             document.getElementById(
                 "levelButtons"
             );
 
 
-        container.innerHTML =
+        levelContainer.innerHTML =
             "";
 
 
@@ -1459,6 +1403,7 @@
                 level,
                 index
             ) => {
+
 
                 const button =
                     document.createElement(
@@ -1484,7 +1429,7 @@
                     };
 
 
-                container.appendChild(
+                levelContainer.appendChild(
                     button
                 );
 
@@ -1506,6 +1451,9 @@
             courses[
                 currentMajor
             ].levels[index];
+
+
+        saveCourseForPayment();
 
 
         hideAllPages();
@@ -1540,24 +1488,18 @@
         card.innerHTML = `
 
             <div class="course-name">
-
                 ${course.name}
-
             </div>
 
 
             <div class="price">
 
                 <span class="old-price">
-
                     $${course.oldPrice.toFixed(2)}
-
                 </span>
 
                 <span class="new-price">
-
                     $${course.price.toFixed(2)}
-
                 </span>
 
             </div>
@@ -1574,9 +1516,43 @@
             </div>
 
 
+            <div class="payment-info">
+
+                <strong>
+                    Payment
+                </strong>
+
+                <br><br>
+
+                Press <strong>Continue Registration</strong>
+                first.
+
+                <br>
+
+                ចុច <strong>បន្តការចុះឈ្មោះ</strong>
+                ជាមុនសិន។
+
+                <br><br>
+
+                After registration, return to
+                Vlearn Together and choose
+                <strong>Payment completed</strong>
+                after you have paid.
+
+                <br><br>
+
+                បន្ទាប់ពីចុះឈ្មោះរួច
+                សូមត្រឡប់មក Vlearn Together
+                ហើយជ្រើសរើស
+                <strong>ការទូទាត់បានបញ្ចប់</strong>
+                បន្ទាប់ពីអ្នកបានបង់ប្រាក់។
+
+            </div>
+
+
             <button
                 class="primary-button"
-                onclick="continueRegistration()"
+                onclick="registerCourse()"
             >
 
                 Continue Registration
@@ -1587,16 +1563,30 @@
 
             </button>
 
+
+            <button
+                class="secondary-button"
+                onclick="openPaymentPage()"
+            >
+
+                Payment completed
+
+                <br>
+
+                ការទូទាត់បានបញ្ចប់
+
+            </button>
+
         `;
 
     }
 
 
     // =====================================================
-    // CONTINUE REGISTRATION
+    // REGISTER COURSE
     // =====================================================
 
-    function continueRegistration() {
+    function registerCourse() {
 
         if (!currentLevel) {
 
@@ -1605,13 +1595,16 @@
         }
 
 
+        saveCourseForPayment();
+
+
         const registration = {
+
+            action:
+                "REGISTER",
 
             course:
                 currentLevel.botCourse,
-
-            course_name:
-                currentLevel.name,
 
             price:
                 currentLevel.price,
@@ -1622,54 +1615,20 @@
         };
 
 
-        localStorage.setItem(
-
-            STORAGE_KEY,
-
-            JSON.stringify(
-                registration
-            )
-
-        );
-
-
         try {
 
             tg.sendData(
-
-                JSON.stringify({
-
-                    action:
-                        "register",
-
-                    course:
-                        currentLevel.botCourse,
-
-                    course_name:
-                        currentLevel.name,
-
-                    price:
-                        currentLevel.price,
-
-                    discount:
-                        currentLevel.discount
-
-                })
-
+                JSON.stringify(
+                    registration
+                )
             );
 
         }
         catch (error) {
 
-            console.error(
-                error
-            );
-
-
-            showFormError(
-
-                "Registration could not be sent. Please open Vlearn Together again."
-
+            alert(
+                "Registration could not be sent. " +
+                "Please open Vlearn Together again."
             );
 
         }
@@ -1678,194 +1637,133 @@
 
 
     // =====================================================
-    // OPEN PAYMENT COMPLETED
+    // OPEN SAVED PAYMENT
     // =====================================================
 
-    function openPaymentCompleted() {
+    function openSavedPayment() {
 
         const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+            getSavedCourse();
 
 
         if (!saved) {
 
-            tg.showPopup({
-
-                title:
-                    "No registration found",
-
-                message:
-                    "Please choose a course first.",
-
-                buttons: [
-                    {
-                        type:
-                            "ok"
-                    }
-                ]
-
-            });
+            alert(
+                "Please choose a course first."
+            );
 
             return;
 
         }
 
 
-        try {
-
-            const registration =
-                JSON.parse(
-                    saved
-                );
+        currentMajor =
+            saved.major;
 
 
-            currentLevel = {
-
-                name:
-                    registration.course_name,
-
-                botCourse:
-                    registration.course,
-
-                price:
-                    Number(
-                        registration.price
-                    )
-
-            };
+        currentLevel =
+            saved;
 
 
-            hideAllPages();
+        openPaymentPage();
+
+    }
 
 
-            document
-                .getElementById(
-                    "paymentPage"
-                )
-                .classList.remove(
-                    "hidden"
-                );
+    // =====================================================
+    // OPEN PAYMENT PAGE
+    // =====================================================
+
+    function openPaymentPage() {
+
+        let course =
+            currentLevel;
 
 
-            document
-                .getElementById(
-                    "paymentCourseInfo"
-                )
-                .innerHTML = `
+        if (!course) {
 
-                    <strong>
-                        Course
-                    </strong>
-
-                    <br>
-
-                    ${registration.course_name}
-
-                    <br><br>
-
-                    <strong>
-                        Payment amount
-                    </strong>
-
-                    <br>
-
-                    $${Number(
-                        registration.price
-                    ).toFixed(2)}
-
-                `;
+            course =
+                getSavedCourse();
 
         }
-        catch (error) {
 
-            console.error(
-                error
+
+        if (!course) {
+
+            alert(
+                "Please choose your course first."
             );
 
+            goHome();
+
+            return;
+
         }
+
+
+        currentLevel =
+            course;
+
+
+        hideAllPages();
+
+
+        document
+            .getElementById("paymentPage")
+            .classList.remove("hidden");
+
+
+        document
+            .getElementById("selectedCourse")
+            .innerHTML = `
+
+                <div class="selected-course-title">
+                    Selected course
+                </div>
+
+                <div class="selected-course-name">
+                    ${course.name}
+                </div>
+
+                <br>
+
+                <strong>
+                    Price: $${Number(
+                        course.price
+                    ).toFixed(2)}
+                </strong>
+
+                <br>
+
+                តម្លៃ៖ $${Number(
+                    course.price
+                ).toFixed(2)}
+
+            `;
+
+
+        document
+            .getElementById("paymentError")
+            .classList.add("hidden");
 
     }
 
 
     // =====================================================
-    // PAYMENT DATE
-    // =====================================================
-
-    function getFormattedDate(
-        value
-    ) {
-
-        if (!value) {
-
-            return "";
-
-        }
-
-
-        const parts =
-            value.split("-");
-
-
-        if (
-            parts.length !== 3
-        ) {
-
-            return value;
-
-        }
-
-
-        return (
-            parts[2] +
-            "/" +
-            parts[1] +
-            "/" +
-            parts[0]
-        );
-
-    }
-
-
-    // =====================================================
-    // VALIDATE APV
-    // =====================================================
-
-    function cleanAPV(
-        value
-    ) {
-
-        return String(
-            value || ""
-        )
-        .replace(
-            /\D/g,
-            ""
-        )
-        .trim();
-
-    }
-
-
-    // =====================================================
-    // SUBMIT PAYMENT INFORMATION
+    // SUBMIT DATE + APV
     // =====================================================
 
     function submitPaymentInformation() {
 
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+        const course =
+            currentLevel ||
+            getSavedCourse();
 
 
-        if (!saved) {
+        if (!course) {
 
-            showFormError(
-
-                "No course registration was found. Please choose a course first."
-
+            showPaymentError(
+                "Please choose your course first."
             );
 
             return;
@@ -1873,57 +1771,32 @@
         }
 
 
-        let registration;
-
-
-        try {
-
-            registration =
-                JSON.parse(
-                    saved
-                );
-
-        }
-        catch (error) {
-
-            showFormError(
-
-                "Your registration information could not be read."
-
-            );
-
-            return;
-
-        }
-
-
-        const dateInput =
-            document.getElementById(
-                "paymentDate"
-            );
-
-
-        const apvInput =
-            document.getElementById(
-                "paymentApv"
-            );
-
-
-        const paymentDate =
-            dateInput.value;
+        const date =
+            document
+                .getElementById(
+                    "paymentDate"
+                )
+                .value;
 
 
         const apv =
-            cleanAPV(
-                apvInput.value
-            );
+            document
+                .getElementById(
+                    "paymentApv"
+                )
+                .value
+                .trim();
 
 
-        if (!paymentDate) {
+        if (!date) {
 
-            showFormError(
+            showPaymentError(
 
-                "Please enter the date of your payment.\nសូមបញ្ចូលកាលបរិច្ឆេទទូទាត់របស់អ្នក។"
+                "Please enter your payment date." +
+
+                "\n\n" +
+
+                "សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់របស់អ្នក។"
 
             );
 
@@ -1934,24 +1807,13 @@
 
         if (!apv) {
 
-            showFormError(
+            showPaymentError(
 
-                "Please enter your APV.\nសូមបញ្ចូលលេខ APV របស់អ្នក។"
+                "Please enter your APV." +
 
-            );
+                "\n\n" +
 
-            return;
-
-        }
-
-
-        if (
-            apv.length < 4
-        ) {
-
-            showFormError(
-
-                "Please check your APV and enter it correctly.\nសូមពិនិត្យលេខ APV របស់អ្នក។"
+                "សូមបញ្ចូលលេខ APV របស់អ្នក។"
 
             );
 
@@ -1960,30 +1822,36 @@
         }
 
 
-        const formattedDate =
-            getFormattedDate(
-                paymentDate
+        if (!/^\d+$/.test(apv)) {
+
+            showPaymentError(
+
+                "APV must contain numbers only." +
+
+                "\n\n" +
+
+                "លេខ APV ត្រូវតែមានតែលេខប៉ុណ្ណោះ។"
+
             );
+
+            return;
+
+        }
 
 
         const paymentData = {
 
             action:
-                "payment_completed",
+                "PAYMENT_COMPLETED",
 
             course:
-                registration.course,
-
-            course_name:
-                registration.course_name,
+                course.botCourse,
 
             price:
-                Number(
-                    registration.price
-                ),
+                Number(course.price),
 
             payment_date:
-                formattedDate,
+                date,
 
             apv:
                 apv
@@ -1991,21 +1859,21 @@
         };
 
 
+        /*
+            Save the information temporarily.
+
+            This allows the student to keep the
+            information if Telegram closes the
+            Mini App after tg.sendData().
+        */
+
         localStorage.setItem(
 
-            STORAGE_KEY,
+            "vlearn_last_payment",
 
-            JSON.stringify({
-
-                ...registration,
-
-                payment_date:
-                    formattedDate,
-
-                apv:
-                    apv
-
-            })
+            JSON.stringify(
+                paymentData
+            )
 
         );
 
@@ -2020,17 +1888,26 @@
 
             );
 
+
+            /*
+                The Telegram Mini App normally closes
+                after sendData().
+
+                The bot should verify Date + APV
+                against the payment information you
+                provide to the group.
+            */
+
         }
         catch (error) {
 
-            console.error(
-                error
-            );
+            showPaymentError(
 
+                "The payment information could not be sent." +
 
-            showFormError(
+                "\n\n" +
 
-                "The payment information could not be submitted. Please try again."
+                "មិនអាចផ្ញើព័ត៌មានការទូទាត់បានទេ។"
 
             );
 
@@ -2040,16 +1917,16 @@
 
 
     // =====================================================
-    // FORM ERROR
+    // PAYMENT ERROR
     // =====================================================
 
-    function showFormError(
+    function showPaymentError(
         message
     ) {
 
         const errorBox =
             document.getElementById(
-                "formError"
+                "paymentError"
             );
 
 
@@ -2069,61 +1946,55 @@
     // =====================================================
 
     function showReceipt(
-        data
+        payment
     ) {
+
+        const course =
+            currentLevel ||
+            getSavedCourse();
+
+
+        if (!course) {
+
+            return;
+
+        }
+
 
         hideAllPages();
 
 
         document
-            .getElementById(
-                "receiptPage"
-            )
-            .classList.remove(
-                "hidden"
+            .getElementById("receiptPage")
+            .classList.remove("hidden");
+
+
+        const date =
+            formatDate(
+                payment.payment_date
             );
 
 
         const receipt =
             document.getElementById(
-                "receiptContent"
+                "receipt"
             );
 
 
         receipt.innerHTML = `
 
-            <div class="receipt-brand">
+            <div class="receipt-header">
 
-                Vlearn Together
-
-            </div>
-
-
-            <div class="receipt-title">
-
-                Registration Receipt
-
-            </div>
-
-
-            <div class="receipt-khmer">
-
-                បង្កាន់ដៃចុះឈ្មោះ
-
-            </div>
-
-
-            <div class="receipt-line"></div>
-
-
-            <div class="receipt-row">
-
-                <div class="label">
-                    Student
+                <div class="receipt-brand">
+                    Vlearn Together
                 </div>
 
-                <div class="value">
-                    ${telegramUserName}
+                <div class="receipt-title">
+                    Registration Receipt
+                </div>
+
+                <div class="receipt-khmer-title">
+                    បង្កាន់ដៃចុះឈ្មោះ
                 </div>
 
             </div>
@@ -2131,12 +2002,12 @@
 
             <div class="receipt-row">
 
-                <div class="label">
+                <div class="receipt-label">
                     Course
                 </div>
 
-                <div class="value">
-                    ${data.course_name || data.course}
+                <div class="receipt-value">
+                    ${course.name}
                 </div>
 
             </div>
@@ -2144,13 +2015,26 @@
 
             <div class="receipt-row">
 
-                <div class="label">
+                <div class="receipt-label">
+                    វគ្គសិក្សា
+                </div>
+
+                <div class="receipt-value">
+                    ${course.name}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-row">
+
+                <div class="receipt-label">
                     Amount
                 </div>
 
-                <div class="value">
+                <div class="receipt-value">
                     $${Number(
-                        data.price
+                        course.price
                     ).toFixed(2)}
                 </div>
 
@@ -2159,12 +2043,12 @@
 
             <div class="receipt-row">
 
-                <div class="label">
-                    Payment date
+                <div class="receipt-label">
+                    Payment Date
                 </div>
 
-                <div class="value">
-                    ${data.payment_date}
+                <div class="receipt-value">
+                    ${date}
                 </div>
 
             </div>
@@ -2172,21 +2056,18 @@
 
             <div class="receipt-row">
 
-                <div class="label">
+                <div class="receipt-label">
                     APV
                 </div>
 
-                <div class="value">
-                    ${data.apv}
+                <div class="receipt-value">
+                    ${payment.apv}
                 </div>
 
             </div>
 
 
-            <div class="receipt-line"></div>
-
-
-            <div class="success">
+            <div class="receipt-status">
 
                 Registration successful
 
@@ -2196,72 +2077,50 @@
 
             </div>
 
-
-            <div class="contact-section">
-
-                <div class="contact-title">
-
-                    Contact Vlearn Together
-
-                </div>
-
-
-                <div class="contact-khmer">
-
-                    ទំនាក់ទំនង Vlearn Together
-
-                </div>
-
-
-                <a
-                    class="contact-link"
-                    href="https://t.me/Vlearn_together"
-                    target="_blank"
-                >
-
-                    https://t.me/Vlearn_together
-
-                </a>
-
-            </div>
-
         `;
 
     }
 
 
     // =====================================================
-    // HOME
+    // FORMAT DATE
     // =====================================================
 
-    function goHome() {
+    function formatDate(
+        dateString
+    ) {
 
-        currentMajor =
-            null;
+        if (!dateString) {
 
-        currentLevel =
-            null;
+            return "";
 
-
-        hideAllPages();
-
-
-        document
-            .getElementById(
-                "homePage"
-            )
-            .classList.remove(
-                "hidden"
-            );
+        }
 
 
-        updatePaymentButton();
+        const parts =
+            dateString.split("-");
+
+
+        if (parts.length !== 3) {
+
+            return dateString;
+
+        }
+
+
+        return (
+            parts[2] +
+            "/" +
+            parts[1] +
+            "/" +
+            parts[0]
+        );
 
     }
 
 
     // =====================================================
-    // LEVELS
+    // BACK TO LEVELS
     // =====================================================
 
     function goLevels() {
@@ -2279,100 +2138,73 @@
 
 
         document
-            .getElementById(
-                "levelPage"
-            )
-            .classList.remove(
-                "hidden"
-            );
-
-    }
+            .getElementById("levelPage")
+            .classList.remove("hidden");
 
 
-    // =====================================================
-    // PAYMENT BUTTON
-    // =====================================================
-
-    function updatePaymentButton() {
-
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+        const data =
+            courses[currentMajor];
 
 
-        const button =
+        document
+            .getElementById("majorTitle")
+            .textContent =
+            data.title;
+
+
+        document
+            .getElementById("majorKhmer")
+            .textContent =
+            data.khmer;
+
+
+        const levelContainer =
             document.getElementById(
-                "paymentCompletedButton"
+                "levelButtons"
             );
 
 
-        if (saved) {
-
-            button.classList.remove(
-                "hidden"
-            );
-
-        }
-        else {
-
-            button.classList.add(
-                "hidden"
-            );
-
-        }
-
-    }
+        levelContainer.innerHTML =
+            "";
 
 
-    // =====================================================
-    // LOAD SAVED DATA
-    // =====================================================
-
-    function loadSavedPayment() {
-
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+        data.levels.forEach(
+            (
+                level,
+                index
+            ) => {
 
 
-        if (!saved) {
-
-            return;
-
-        }
-
-
-        try {
-
-            const data =
-                JSON.parse(
-                    saved
-                );
+                const button =
+                    document.createElement(
+                        "button"
+                    );
 
 
-            if (
-                data.payment_date &&
-                data.apv
-            ) {
+                button.className =
+                    "level-button";
 
-                console.log(
-                    "Previous payment information found:",
-                    data
+
+                button.textContent =
+                    level.name;
+
+
+                button.onclick =
+                    function() {
+
+                        openCourse(
+                            index
+                        );
+
+                    };
+
+
+                levelContainer.appendChild(
+                    button
                 );
 
             }
-
-        }
-        catch (error) {
-
-            console.error(
-                "Could not load saved payment:",
-                error
-            );
-
-        }
+        );
 
     }
 
@@ -2381,13 +2213,10 @@
     // INITIALIZE
     // =====================================================
 
-    loadSavedPayment();
-
     updatePaymentButton();
 
 
 </script>
-
 
 </body>
 
