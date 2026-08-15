@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
@@ -14,7 +13,6 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
     <style>
 
         /* =====================================================
@@ -27,11 +25,23 @@
         }
 
         :root {
-            color-scheme: light dark;
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #eef2f7;
+            --success: #16a34a;
+            --success-dark: #15803d;
+            --success-bg: #ecfdf5;
+            --warning-bg: #fff7ed;
+            --warning-border: #fed7aa;
+            --blue-bg: #eff6ff;
         }
 
         body {
-
             margin: 0;
             padding: 0;
 
@@ -41,33 +51,39 @@
                 "Khmer OS",
                 sans-serif;
 
-            background:
-                var(--tg-theme-bg-color, #f5f7fb);
-
-            color:
-                var(--tg-theme-text-color, #111827);
+            background: var(--tg-theme-bg-color, var(--bg));
+            color: var(--tg-theme-text-color, var(--text));
 
             min-height: 100vh;
+        }
 
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 18px 16px 42px;
         }
 
 
         /* =====================================================
-           CONTAINER
+           PAGE
            ===================================================== */
 
-        .container {
-
+        .page {
             width: 100%;
-            max-width: 620px;
+        }
 
-            margin: 0 auto;
-
-            padding:
-                18px
-                16px
-                40px;
-
+        .hidden {
+            display: none !important;
         }
 
 
@@ -76,462 +92,195 @@
            ===================================================== */
 
         .header {
-
             text-align: center;
-
-            padding:
-                10px
-                0
-                24px;
-
+            padding: 12px 0 25px;
         }
 
-        .logo {
-
-            width: 76px;
-            height: 76px;
-
-            margin:
-                0 auto 12px;
-
-            border-radius: 22px;
-
-            background:
-                #2563eb;
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 27px;
-
-            font-weight: 800;
-
-            box-shadow:
-                0 8px 25px
-                rgba(37, 99, 235, 0.25);
-
-        }
-
-        h1 {
-
+        .school-name {
             margin: 0;
 
-            font-size: 27px;
-
-            line-height: 1.25;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #111827
-                );
-
-        }
-
-        .subtitle {
-
-            margin-top: 9px;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            font-size: 14px;
-
-            line-height: 1.65;
-
-        }
-
-
-        /* =====================================================
-           MAJOR COURSE SECTION
-           ===================================================== */
-
-        .major-section {
-
-            margin-top: 25px;
-
-            margin-bottom: 28px;
-
-        }
-
-        .major-title {
-
-            font-size: 21px;
-
+            font-size: 28px;
             font-weight: 800;
 
-            line-height: 1.35;
+            letter-spacing: -0.5px;
 
-            margin-bottom: 7px;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #111827
-                );
-
+            color: var(--tg-theme-text-color, var(--text));
         }
 
-        .major-title-khmer {
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            margin-bottom: 10px;
-
-        }
-
-        .major-description {
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #ffffff
-                );
-
-            border-radius: 15px;
-
-            padding: 14px 15px;
-
-            border:
-                1px solid
-                var(
-                    --tg-theme-section-separator-color,
-                    #e5e7eb
-                );
-
-            font-size: 13px;
-
-            line-height: 1.65;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #374151
-                );
-
-        }
-
-        .major-description .khmer {
-
+        .school-subtitle {
             margin-top: 8px;
 
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
+            color: var(--tg-theme-hint-color, var(--muted));
 
+            font-size: 14px;
+            line-height: 1.6;
         }
 
 
         /* =====================================================
-           COURSE CARD
+           SECTION
            ===================================================== */
 
-        .course-card {
+        .section-title {
+            margin: 10px 0 8px;
 
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #ffffff
-                );
+            font-size: 22px;
+            font-weight: 800;
+
+            color: var(--tg-theme-text-color, var(--text));
+        }
+
+        .section-description {
+            margin: 0 0 18px;
+
+            color: var(--tg-theme-hint-color, var(--muted));
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           MAJOR COURSE CARDS
+           ===================================================== */
+
+        .major-card {
+            background: var(
+                --tg-theme-secondary-bg-color,
+                var(--card)
+            );
+
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
 
             border-radius: 18px;
 
-            padding: 18px;
+            padding: 21px 19px;
 
             margin-bottom: 15px;
 
-            border:
-                1px solid
-                var(
-                    --tg-theme-section-separator-color,
-                    #e5e7eb
-                );
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.045);
+
+            transition:
+                transform 0.12s ease,
+                box-shadow 0.12s ease;
+        }
+
+        .major-card:active {
+            transform: scale(0.985);
 
             box-shadow:
-                0 5px 18px
-                rgba(0, 0, 0, 0.05);
-
+                0 3px 10px rgba(0, 0, 0, 0.06);
         }
 
+        .major-title {
+            margin: 0 0 9px;
 
-        .course-title {
-
-            font-size: 17px;
-
+            font-size: 18px;
             font-weight: 800;
 
-            line-height: 1.4;
-
-            margin-bottom: 5px;
-
+            line-height: 1.45;
         }
 
-        .course-level {
+        .major-description {
+            margin: 0 0 10px;
+
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
+
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .major-description-kh {
+            margin: 0 0 17px;
+
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COURSE LIST
+           ===================================================== */
+
+        .course-list-card {
+            background: var(
+                --tg-theme-secondary-bg-color,
+                var(--card)
+            );
+
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
+
+            border-radius: 17px;
+
+            padding: 18px;
+
+            margin-bottom: 13px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.045);
+        }
+
+        .course-list-title {
+            font-size: 17px;
+            font-weight: 800;
+
+            line-height: 1.45;
+
+            margin-bottom: 7px;
+        }
+
+        .course-list-subtitle {
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 13px;
+        }
+
+        .course-meta {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+        .video-count {
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
 
             font-size: 12px;
 
             font-weight: 600;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            margin-bottom: 12px;
-
         }
 
+        .course-price {
+            color: var(--primary);
 
-        /* =====================================================
-           COURSE DESCRIPTION
-           ===================================================== */
-
-        .description-label {
-
-            font-size: 12px;
+            font-size: 19px;
 
             font-weight: 800;
-
-            color:
-                #2563eb;
-
-            margin-bottom: 4px;
-
-        }
-
-        .course-description {
-
-            font-size: 13px;
-
-            line-height: 1.6;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #374151
-                );
-
-            margin-bottom: 8px;
-
-        }
-
-        .course-description-khmer {
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            margin-bottom: 13px;
-
-        }
-
-
-        /* =====================================================
-           ADVANTAGES
-           ===================================================== */
-
-        .advantages {
-
-            background:
-                var(
-                    --tg-theme-bg-color,
-                    #f8fafc
-                );
-
-            border-radius: 12px;
-
-            padding: 12px 13px;
-
-            margin-bottom: 14px;
-
-            border:
-                1px solid
-                var(
-                    --tg-theme-section-separator-color,
-                    #e5e7eb
-                );
-
-        }
-
-        .advantages-title {
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-            margin-bottom: 6px;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #111827
-                );
-
-        }
-
-        .advantages-text {
-
-            font-size: 12px;
-
-            line-height: 1.6;
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #374151
-                );
-
-        }
-
-        .advantages-khmer {
-
-            margin-top: 7px;
-
-            font-size: 12px;
-
-            line-height: 1.65;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-        }
-
-
-        /* =====================================================
-           VIDEO INFORMATION
-           ===================================================== */
-
-        .course-meta {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 10px;
-
-            margin-bottom: 14px;
-
-        }
-
-        .video-count {
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            padding:
-                6px
-                9px;
-
-            border-radius: 8px;
-
-            background:
-                rgba(37, 99, 235, 0.10);
-
-            color:
-                #2563eb;
-
-        }
-
-
-        /* =====================================================
-           PRICE
-           ===================================================== */
-
-        .price-row {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 10px;
-
-            margin-bottom: 14px;
-
-        }
-
-        .old-price {
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #9ca3af
-                );
-
-            text-decoration:
-                line-through;
-
-            font-size: 13px;
-
-        }
-
-        .price {
-
-            color:
-                #2563eb;
-
-            font-size: 23px;
-
-            font-weight: 800;
-
-            line-height: 1.2;
-
-        }
-
-        .discount {
-
-            display: inline-block;
-
-            padding:
-                5px
-                9px;
-
-            border-radius: 8px;
-
-            background:
-                #dcfce7;
-
-            color:
-                #166534;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            white-space: nowrap;
-
         }
 
 
@@ -539,213 +288,317 @@
            BUTTONS
            ===================================================== */
 
-        button {
-
+        .btn {
             width: 100%;
 
             border: none;
 
             border-radius: 12px;
 
-            padding:
-                13px
-                16px;
+            padding: 13px 16px;
 
             font-size: 14px;
 
-            font-weight: 800;
+            font-weight: 750;
 
-            cursor: pointer;
+            line-height: 1.4;
 
             transition:
                 transform 0.1s ease,
                 opacity 0.1s ease;
-
         }
 
-        button:active {
-
-            transform:
-                scale(0.98);
-
+        .btn:active {
+            transform: scale(0.98);
         }
 
-        button:disabled {
-
-            opacity: 0.65;
-
-            cursor: not-allowed;
-
+        .btn-primary {
+            background: var(--primary);
+            color: white;
         }
 
-        .primary-btn {
+        .btn-primary:active {
+            background: var(--primary-dark);
+        }
 
+        .btn-secondary {
             background:
-                #2563eb;
+                var(--tg-theme-secondary-bg-color, var(--secondary));
 
             color:
-                white;
+                var(--tg-theme-text-color, var(--text));
 
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
         }
 
-        .secondary-btn {
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #e5e7eb
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #111827
-                );
-
-            border:
-                1px solid
-                var(
-                    --tg-theme-section-separator-color,
-                    #d1d5db
-                );
-
+        .btn-success {
+            background: var(--success);
+            color: white;
         }
 
-        .payment-btn {
-
-            background:
-                #16a34a;
-
-            color:
-                white;
-
+        .btn-success:active {
+            background: var(--success-dark);
         }
 
-        .back-btn {
-
+        .back-button {
             margin-bottom: 16px;
-
         }
 
 
         /* =====================================================
-           HIDDEN
+           COURSE DETAIL
            ===================================================== */
 
-        .hidden {
+        .detail-card {
+            background: var(
+                --tg-theme-secondary-bg-color,
+                var(--card)
+            );
 
-            display:
-                none !important;
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
 
-        }
+            border-radius: 19px;
 
-
-        /* =====================================================
-           FORM CARD
-           ===================================================== */
-
-        .form-card {
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #ffffff
-                );
-
-            border-radius: 18px;
-
-            padding: 20px;
-
-            border:
-                1px solid
-                var(
-                    --tg-theme-section-separator-color,
-                    #e5e7eb
-                );
+            padding: 21px 19px;
 
             box-shadow:
-                0 5px 18px
-                rgba(0, 0, 0, 0.05);
-
+                0 5px 18px rgba(0, 0, 0, 0.045);
         }
 
-        .form-title {
+        .detail-title {
+            margin: 0 0 7px;
 
-            font-size: 21px;
+            font-size: 23px;
 
             font-weight: 800;
 
-            margin-bottom: 17px;
-
-            line-height: 1.35;
-
+            line-height: 1.4;
         }
 
-        .form-title-khmer {
+        .detail-level {
+            color: var(--primary);
 
-            display: block;
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .detail-price-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: var(--blue-bg);
+
+            border-radius: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        .old-price {
+            color: #9ca3af;
+
+            text-decoration: line-through;
+
+            font-size: 13px;
+        }
+
+        .current-price {
+            color: var(--primary);
+
+            font-size: 25px;
+
+            font-weight: 850;
+        }
+
+        .discount {
+            background: #dcfce7;
+
+            color: #166534;
+
+            padding: 6px 9px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .info-label {
+            margin: 20px 0 7px;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .detail-text {
+            margin: 0;
+
+            color: var(
+                --tg-theme-text-color,
+                var(--text)
+            );
 
             font-size: 13px;
 
-            font-weight: 600;
+            line-height: 1.75;
+        }
 
-            color:
+        .detail-text-kh {
+            margin: 8px 0 0;
+
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .advantages {
+            margin: 9px 0 0;
+
+            padding-left: 18px;
+        }
+
+        .advantages li {
+            margin-bottom: 8px;
+
+            font-size: 13px;
+
+            line-height: 1.65;
+        }
+
+        .video-box {
+            margin-top: 20px;
+
+            padding: 14px 15px;
+
+            background:
                 var(
-                    --tg-theme-hint-color,
-                    #6b7280
+                    --tg-theme-secondary-bg-color,
+                    var(--secondary)
                 );
+
+            border-radius: 12px;
+
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
+        }
+
+        .video-box strong {
+            font-size: 14px;
+        }
+
+        .video-box span {
+            display: block;
 
             margin-top: 4px;
 
+            color: var(
+                --tg-theme-hint-color,
+                var(--muted)
+            );
+
+            font-size: 12px;
+        }
+
+        .detail-action {
+            margin-top: 22px;
         }
 
 
         /* =====================================================
-           SELECTED COURSE
+           REGISTRATION
            ===================================================== */
 
-        .selected-course {
+        .registration-card {
+            background: var(
+                --tg-theme-secondary-bg-color,
+                var(--card)
+            );
 
-            padding: 14px;
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
 
-            background:
-                rgba(37, 99, 235, 0.09);
+            border-radius: 19px;
 
-            border-radius: 12px;
+            padding: 20px;
 
-            margin-bottom: 18px;
-
-            border:
-                1px solid
-                rgba(37, 99, 235, 0.14);
-
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.045);
         }
 
-        .selected-course-label {
+        .selected-course {
+            background: var(--blue-bg);
 
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
+            border-radius: 13px;
+
+            padding: 15px;
+
+            margin: 16px 0 19px;
+        }
+
+        .selected-label {
+            color: var(--muted);
 
             font-size: 11px;
 
-            margin-bottom: 4px;
-
+            margin-bottom: 5px;
         }
 
-        .selected-course-name {
-
-            color:
-                #2563eb;
+        .selected-name {
+            color: #1d4ed8;
 
             font-size: 15px;
 
             font-weight: 800;
 
-            line-height: 1.45;
+            line-height: 1.5;
+        }
 
+        .registration-price {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 17px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .registration-price-label {
+            font-size: 13px;
+
+            color: var(--muted);
+        }
+
+        .registration-price-value {
+            font-size: 23px;
+
+            font-weight: 850;
+
+            color: var(--primary);
         }
 
 
@@ -754,42 +607,31 @@
            ===================================================== */
 
         .payment-instruction {
+            background: var(--warning-bg);
 
-            background:
-                #fff7ed;
+            border: 1px solid var(--warning-border);
 
-            border:
-                1px solid
-                #fed7aa;
+            border-radius: 13px;
 
-            border-radius: 12px;
-
-            padding: 14px;
+            padding: 15px;
 
             margin-bottom: 18px;
 
             font-size: 13px;
 
-            line-height: 1.65;
-
-            color:
-                #7c2d12;
-
+            line-height: 1.7;
         }
 
-        .payment-instruction .khmer {
-
-            margin-top: 8px;
-
-            color:
-                #9a3412;
-
-        }
-
-        .step-title {
-
+        .payment-instruction-title {
             font-weight: 800;
 
+            margin-bottom: 8px;
+        }
+
+        .payment-instruction-kh {
+            margin-top: 9px;
+
+            color: #92400e;
         }
 
 
@@ -798,49 +640,23 @@
            ===================================================== */
 
         label {
-
             display: block;
 
-            margin-bottom: 7px;
+            margin: 0 0 7px;
 
             font-size: 14px;
 
-            font-weight: 800;
-
-        }
-
-        .label-khmer {
-
-            display: block;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            margin-top: 2px;
-
-            margin-bottom: 6px;
-
+            font-weight: 750;
         }
 
         input {
-
             width: 100%;
 
-            padding:
-                13px
-                14px;
+            padding: 13px 14px;
 
             border-radius: 11px;
 
-            border:
-                1px solid
+            border: 1px solid
                 var(
                     --tg-theme-section-separator-color,
                     #d1d5db
@@ -849,7 +665,7 @@
             background:
                 var(
                     --tg-theme-bg-color,
-                    #ffffff
+                    white
                 );
 
             color:
@@ -862,56 +678,28 @@
 
             outline: none;
 
-            margin-bottom: 8px;
-
+            margin-bottom: 7px;
         }
 
         input:focus {
-
-            border-color:
-                #2563eb;
+            border-color: var(--primary);
 
             box-shadow:
-                0 0 0 3px
-                rgba(37, 99, 235, 0.12);
-
+                0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
         .help-text {
-
             color:
                 var(
                     --tg-theme-hint-color,
-                    #6b7280
+                    var(--muted)
                 );
 
             font-size: 12px;
 
-            line-height: 1.55;
+            line-height: 1.6;
 
-            margin-bottom: 16px;
-
-        }
-
-
-        /* =====================================================
-           DATE ROW
-           ===================================================== */
-
-        .date-note {
-
-            font-size: 11px;
-
-            color:
-                var(
-                    --tg-theme-hint-color,
-                    #6b7280
-                );
-
-            margin-top: -3px;
-
-            margin-bottom: 15px;
-
+            margin-bottom: 17px;
         }
 
 
@@ -919,46 +707,78 @@
            STATUS
            ===================================================== */
 
+        .status-card {
+            background: var(
+                --tg-theme-secondary-bg-color,
+                var(--card)
+            );
+
+            border: 1px solid
+                var(--tg-theme-section-separator-color, var(--border));
+
+            border-radius: 19px;
+
+            padding: 22px 19px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.045);
+        }
+
         .status-box {
+            padding: 17px;
 
-            padding: 16px;
-
-            border-radius: 14px;
-
-            margin-bottom: 16px;
+            border-radius: 13px;
 
             font-size: 14px;
 
-            line-height: 1.65;
-
-        }
-
-        .status-success {
-
-            background:
-                #ecfdf5;
-
-            border:
-                1px solid
-                #a7f3d0;
-
-            color:
-                #065f46;
-
+            line-height: 1.7;
         }
 
         .status-waiting {
+            background: #fffbeb;
 
-            background:
-                #fffbeb;
+            border: 1px solid #fde68a;
 
-            border:
-                1px solid
-                #fde68a;
+            color: #92400e;
+        }
 
-            color:
-                #92400e;
+        .status-success {
+            background: var(--success-bg);
 
+            border: 1px solid #a7f3d0;
+
+            color: #065f46;
+        }
+
+
+        /* =====================================================
+           SPINNER
+           ===================================================== */
+
+        .spinner {
+            width: 17px;
+
+            height: 17px;
+
+            border: 3px solid rgba(255,255,255,0.4);
+
+            border-top-color: white;
+
+            border-radius: 50%;
+
+            display: inline-block;
+
+            vertical-align: middle;
+
+            animation: spin 0.8s linear infinite;
+
+            margin-right: 7px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
 
@@ -967,7 +787,6 @@
            ===================================================== */
 
         .footer {
-
             text-align: center;
 
             color:
@@ -978,126 +797,42 @@
 
             font-size: 11px;
 
-            margin-top: 30px;
-
             line-height: 1.7;
 
+            margin-top: 28px;
         }
 
 
         /* =====================================================
-           SPINNER
-           ===================================================== */
-
-        .spinner {
-
-            width: 18px;
-
-            height: 18px;
-
-            border:
-                3px solid
-                rgba(255,255,255,0.4);
-
-            border-top-color:
-                white;
-
-            border-radius: 50%;
-
-            display: inline-block;
-
-            vertical-align: middle;
-
-            animation:
-                spin 0.8s linear infinite;
-
-            margin-right: 7px;
-
-        }
-
-        @keyframes spin {
-
-            to {
-
-                transform:
-                    rotate(360deg);
-
-            }
-
-        }
-
-
-        /* =====================================================
-           DARK MODE
+           DARK MODE FALLBACK
            ===================================================== */
 
         @media (prefers-color-scheme: dark) {
 
-            .logo {
+            :root {
+                --bg: #0f172a;
+                --card: #172033;
+                --text: #f9fafb;
+                --muted: #aeb8c7;
+                --border: #334155;
+                --secondary: #273449;
+                --blue-bg: #172b4d;
+                --warning-bg: #3a2b18;
+                --warning-border: #78521f;
+            }
 
+            .major-card,
+            .course-list-card,
+            .detail-card,
+            .registration-card,
+            .status-card {
                 box-shadow:
-                    0 8px 25px
-                    rgba(0, 0, 0, 0.35);
-
+                    0 5px 18px rgba(0, 0, 0, 0.18);
             }
 
-            .course-card,
-            .form-card,
-            .major-description {
-
-                box-shadow:
-                    0 5px 18px
-                    rgba(0, 0, 0, 0.20);
-
+            .payment-instruction-kh {
+                color: #fbbf24;
             }
-
-            .advantages {
-
-                background:
-                    rgba(255,255,255,0.04);
-
-            }
-
-            .payment-instruction {
-
-                background:
-                    rgba(124,45,18,0.18);
-
-                color:
-                    #fed7aa;
-
-            }
-
-            .payment-instruction .khmer {
-
-                color:
-                    #fdba74;
-
-            }
-
-            .selected-course {
-
-                background:
-                    rgba(37,99,235,0.16);
-
-            }
-
-            input {
-
-                background:
-                    var(
-                        --tg-theme-secondary-bg-color,
-                        #1f2937
-                    );
-
-                color:
-                    var(
-                        --tg-theme-text-color,
-                        white
-                    );
-
-            }
-
         }
 
     </style>
@@ -1107,1234 +842,171 @@
 
 <body>
 
-
 <div class="container">
 
 
     <!-- =====================================================
-         HOME PAGE
+         PAGE 1
+         MAIN COURSES
          ===================================================== -->
 
-    <div id="homePage">
-
+    <div
+        id="homePage"
+        class="page"
+    >
 
         <div class="header">
 
-            <div class="logo">
-                VL
-            </div>
-
-            <h1>
+            <h1 class="school-name">
                 Vlearn Together
             </h1>
 
-            <div class="subtitle">
+            <div class="school-subtitle">
 
-                Learn English online through
-                structured and practical video courses.
+                Online English Learning
 
                 <br>
 
                 សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត
-                តាមរយៈវគ្គសិក្សាវីដេអូដែលមាន
-                រចនាសម្ព័ន្ធច្បាស់លាស់ និងអនុវត្តបានជាក់ស្តែង។
 
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             GENERAL ENGLISH
-             ================================================= -->
+        <div class="section-title">
+            Our Courses
+        </div>
 
-        <div class="major-section">
+        <div class="section-description">
+
+            Choose a programme to explore the courses
+            available at Vlearn Together.
+
+            <br>
+
+            ជ្រើសរើសកម្មវិធីសិក្សាមួយ
+            ដើម្បីមើលវគ្គសិក្សាដែលមាននៅ Vlearn Together។
+
+        </div>
+
+
+        <!-- GENERAL ENGLISH -->
+
+        <div
+            class="major-card"
+            onclick="openMajor('general')"
+        >
 
             <div class="major-title">
-                General English
-            </div>
-
-            <div class="major-title-khmer">
-                ភាសាអង់គ្លេសទូទៅ
+                General English Programme
             </div>
 
             <div class="major-description">
 
-                <strong>
-                    Build practical English skills for everyday communication.
-                </strong>
-
-                This programme develops speaking, listening, reading,
-                writing, grammar and vocabulary progressively from
-                beginner to intermediate level.
-
-                <div class="khmer">
-
-                    វគ្គនេះជួយអភិវឌ្ឍជំនាញភាសាអង់គ្លេស
-                    សម្រាប់ការប្រាស្រ័យទាក់ទងប្រចាំថ្ងៃ
-                    ដោយផ្តោតលើការនិយាយ ការស្តាប់ ការអាន
-                    ការសរសេរ វេយ្យាករណ៍ និងវាក្យសព្ទ
-                    តាមលំដាប់ពីកម្រិតដំបូងដល់មធ្យម។
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             GENERAL ENGLISH BEGINNER
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                General English | Beginner 1–2
-            </div>
-
-            <div class="course-level">
-                Foundational English
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                A structured introduction to English for learners
-                who are beginning their English journey.
-                The course builds essential grammar, vocabulary
-                and communication skills for everyday situations.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                វគ្គសិក្សាដែលរៀបចំឡើងសម្រាប់អ្នកចាប់ផ្តើមរៀន
-                ដោយផ្តល់មូលដ្ឋានសំខាន់ៗនៃវេយ្យាករណ៍
-                វាក្យសព្ទ និងជំនាញប្រាស្រ័យទាក់ទង
-                សម្រាប់ការប្រើប្រាស់ក្នុងជីវិតប្រចាំថ្ងៃ។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Build a strong foundation, understand basic
-                    sentence structures and communicate with greater
-                    confidence in simple everyday situations.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើតមូលដ្ឋានភាសាអង់គ្លេសឱ្យរឹងមាំ
-                    យល់ពីរចនាសម្ព័ន្ធប្រយោគមូលដ្ឋាន
-                    និងបង្កើនទំនុកចិត្តក្នុងការប្រាស្រ័យទាក់ទងប្រចាំថ្ងៃ។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    100 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $30.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $15.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('General English | Beginner 1–2')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             GENERAL ENGLISH ELEMENTARY
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                General English | Elementary 3–4
-            </div>
-
-            <div class="course-level">
-                Elementary English
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Develop your everyday English communication
-                through practical grammar, vocabulary,
-                listening, speaking and reading activities.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                អភិវឌ្ឍសមត្ថភាពប្រើប្រាស់ភាសាអង់គ្លេស
-                ក្នុងជីវិតប្រចាំថ្ងៃ តាមរយៈវេយ្យាករណ៍
-                វាក្យសព្ទ ការស្តាប់ ការនិយាយ និងការអាន
-                ដែលអាចអនុវត្តបានជាក់ស្តែង។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Improve everyday communication, increase
-                    vocabulary and become more comfortable
-                    using English in common situations.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើនសមត្ថភាពប្រាស្រ័យទាក់ទងប្រចាំថ្ងៃ
-                    ពង្រីកវាក្យសព្ទ និងធ្វើឱ្យការប្រើប្រាស់
-                    ភាសាអង់គ្លេសកាន់តែមានទំនុកចិត្ត។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    100+ videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $32.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $16.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('General English | Elementary 3–4')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             GENERAL ENGLISH PRE-INTERMEDIATE
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                General English | Pre-intermediate 5–6
-            </div>
-
-            <div class="course-level">
-                Pre-intermediate English
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Strengthen your English foundation and develop
-                greater confidence in speaking, listening,
+                Build practical English skills from
+                beginner to intermediate level through
+                structured lessons in grammar,
+                vocabulary, listening, speaking,
                 reading and everyday communication.
 
             </div>
 
-            <div class="course-description-khmer">
+            <div class="major-description-kh">
 
-                ពង្រឹងមូលដ្ឋានភាសាអង់គ្លេស និងអភិវឌ្ឍ
-                ទំនុកចិត្តកាន់តែខ្ពស់ក្នុងការនិយាយ
-                ការស្តាប់ ការអាន និងការប្រាស្រ័យទាក់ទងប្រចាំថ្ងៃ។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Express yourself more naturally, understand
-                    longer conversations and use a wider range
-                    of grammar and vocabulary.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយឱ្យអ្នកអាចបង្ហាញគំនិតបានធម្មជាតិជាងមុន
-                    យល់ការសន្ទនាដែលវែងជាងមុន
-                    និងប្រើវេយ្យាករណ៍ និងវាក្យសព្ទបានទូលំទូលាយ។
-
-                </div>
+                អភិវឌ្ឍជំនាញភាសាអង់គ្លេសដែលអាចប្រើប្រាស់បាន
+                ចាប់ពីកម្រិតដំបូងរហូតដល់កម្រិតមធ្យម
+                តាមរយៈមេរៀនដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់
+                រួមមានវេយ្យាករណ៍ វាក្យសព្ទ
+                ការស្តាប់ ការនិយាយ ការអាន
+                និងការទំនាក់ទំនងប្រចាំថ្ងៃ។
 
             </div>
 
-            <div class="course-meta">
+            <button class="btn btn-primary">
 
-                <span class="video-count">
-                    100+ videos
-                </span>
+                Explore General English
+                <br>
+                មើលវគ្គភាសាអង់គ្លេសទូទៅ
 
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $38.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $19.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('General English | Pre-intermediate 5–6')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
             </button>
 
         </div>
 
 
-        <!-- =================================================
-             GENERAL ENGLISH INTERMEDIATE
-             ================================================= -->
+        <!-- ENGLISH GRAMMAR -->
 
-        <div class="course-card">
-
-            <div class="course-title">
-                General English | Intermediate 7–8
-            </div>
-
-            <div class="course-level">
-                Intermediate English
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Develop stronger fluency and accuracy through
-                practical English for communication, discussion
-                and a wider range of real-life situations.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                អភិវឌ្ឍភាពស្ទាត់ជំនាញ និងភាពត្រឹមត្រូវក្នុងការប្រើភាសា
-                តាមរយៈការអនុវត្តភាសាអង់គ្លេសសម្រាប់ការប្រាស្រ័យទាក់ទង
-                ការពិភាក្សា និងស្ថានភាពជាក់ស្តែងជាច្រើន។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Communicate more fluently, express opinions clearly
-                    and use English more effectively in academic,
-                    professional and everyday contexts.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយឱ្យនិយាយបានស្ទាត់ជាងមុន
-                    បង្ហាញមតិបានច្បាស់លាស់
-                    និងប្រើភាសាអង់គ្លេសបានមានប្រសិទ្ធភាព
-                    ក្នុងការសិក្សា ការងារ និងជីវិតប្រចាំថ្ងៃ។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    132 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $40.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $20.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('General English | Intermediate 7–8')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             ENGLISH GRAMMAR
-             ================================================= -->
-
-        <div class="major-section">
+        <div
+            class="major-card"
+            onclick="openMajor('grammar')"
+        >
 
             <div class="major-title">
-                English Grammar
-            </div>
-
-            <div class="major-title-khmer">
-                វេយ្យាករណ៍ភាសាអង់គ្លេស
+                English Grammar Course
             </div>
 
             <div class="major-description">
 
-                <strong>
-                    Build accuracy and confidence through structured grammar learning.
-                </strong>
-
-                This programme focuses on understanding English
-                grammar clearly, practising important structures
-                and applying them correctly in communication and writing.
-
-                <div class="khmer">
-
-                    វគ្គនេះផ្តោតលើការយល់ដឹងអំពីវេយ្យាករណ៍ភាសាអង់គ្លេស
-                    ការអនុវត្តរចនាសម្ព័ន្ធសំខាន់ៗ
-                    និងការប្រើប្រាស់វេយ្យាករណ៍ឱ្យបានត្រឹមត្រូវ
-                    ក្នុងការនិយាយ និងការសរសេរ។
-
-                </div>
+                Develop a strong understanding of English
+                grammar structures and learn how to use
+                them accurately in speaking and writing.
 
             </div>
 
-        </div>
+            <div class="major-description-kh">
 
-
-        <!-- =================================================
-             GRAMMAR ELEMENTARY
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Grammar | Elementary
-            </div>
-
-            <div class="course-level">
-                Essential Grammar
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Learn essential English grammar structures
-                in a clear and progressive way, with practical
-                examples and exercises for everyday use.
+                បង្កើនការយល់ដឹងអំពីរចនាសម្ព័ន្ធវេយ្យាករណ៍
+                ភាសាអង់គ្លេស និងរៀនប្រើប្រាស់វេយ្យាករណ៍
+                បានត្រឹមត្រូវក្នុងការនិយាយ និងការសរសេរ។
 
             </div>
 
-            <div class="course-description-khmer">
+            <button class="btn btn-primary">
 
-                រៀនរចនាសម្ព័ន្ធវេយ្យាករណ៍សំខាន់ៗ
-                តាមលំដាប់ងាយយល់ ជាមួយឧទាហរណ៍
-                និងការអនុវត្តសម្រាប់ការប្រើប្រាស់ប្រចាំថ្ងៃ។
+                Explore English Grammar
+                <br>
+                មើលវគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
 
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Build accurate sentence structures,
-                    reduce common grammar mistakes and
-                    develop a stronger foundation for communication.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើតប្រយោគបានត្រឹមត្រូវ
-                    កាត់បន្ថយកំហុសវេយ្យាករណ៍ដែលជួបញឹកញាប់
-                    និងពង្រឹងមូលដ្ឋានសម្រាប់ការប្រាស្រ័យទាក់ទង។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    230 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $42.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $25.20
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    40% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Grammar | Elementary')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
             </button>
 
         </div>
 
 
-        <!-- =================================================
-             GRAMMAR INTERMEDIATE
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Grammar | Intermediate
-            </div>
-
-            <div class="course-level">
-                Intermediate Grammar
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Develop a deeper understanding of intermediate
-                grammar and learn how to use more complex
-                structures accurately and naturally.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                ពង្រឹងការយល់ដឹងអំពីវេយ្យាករណ៍កម្រិតមធ្យម
-                និងរៀនប្រើរចនាសម្ព័ន្ធប្រយោគដែលស្មុគស្មាញជាងមុន
-                ឱ្យបានត្រឹមត្រូវ និងធម្មជាតិ។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Improve grammatical accuracy, write clearer sentences
-                    and communicate ideas with greater precision.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើនភាពត្រឹមត្រូវនៃវេយ្យាករណ៍
-                    សរសេរប្រយោគបានច្បាស់លាស់
-                    និងបង្ហាញគំនិតបានមានភាពច្បាស់លាស់ជាងមុន។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    290 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $45.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $27.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    40% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Grammar | Intermediate')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             GRAMMAR ADVANCED
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Grammar | Advanced
-            </div>
-
-            <div class="course-level">
-                Advanced Grammar
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Master advanced grammatical structures and develop
-                greater control over complex English for formal,
-                academic and professional communication.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                ស្ទាត់ជំនាញរចនាសម្ព័ន្ធវេយ្យាករណ៍កម្រិតខ្ពស់
-                និងអភិវឌ្ឍសមត្ថភាពប្រើភាសាអង់គ្លេសស្មុគស្មាញ
-                សម្រាប់ការប្រាស្រ័យទាក់ទងផ្លូវការ ការសិក្សា
-                និងការងារវិជ្ជាជីវៈ។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Increase precision, improve sophisticated writing
-                    and communicate complex ideas more accurately.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើនភាពច្បាស់លាស់ និងភាពត្រឹមត្រូវ
-                    ក្នុងការសរសេរ និងការប្រាស្រ័យទាក់ទង
-                    ព្រមទាំងអាចបង្ហាញគំនិតស្មុគស្មាញបានកាន់តែល្អ។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    200 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $50.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $30.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    40% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Grammar | Advanced')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             ENGLISH VOCABULARY
-             ================================================= -->
-
-        <div class="major-section">
+        <!-- ENGLISH VOCABULARY -->
+
+        <div
+            class="major-card"
+            onclick="openMajor('vocabulary')"
+        >
 
             <div class="major-title">
-                English Vocabulary
-            </div>
-
-            <div class="major-title-khmer">
-                វាក្យសព្ទភាសាអង់គ្លេស
+                English Vocabulary Course
             </div>
 
             <div class="major-description">
 
-                <strong>
-                    Expand your vocabulary and communicate with greater confidence.
-                </strong>
-
-                This programme helps learners build useful vocabulary,
-                understand words in context and use a wider range
-                of English accurately in speaking and writing.
-
-                <div class="khmer">
-
-                    វគ្គនេះជួយពង្រីកវាក្យសព្ទ
-                    យល់ពីការប្រើពាក្យតាមបរិបទ
-                    និងអាចប្រើភាសាអង់គ្លេសបានទូលំទូលាយជាងមុន
-                    ទាំងក្នុងការនិយាយ និងការសរសេរ។
-
-                </div>
+                Expand your vocabulary step by step
+                and develop the ability to understand
+                and use a wider range of English words
+                naturally and confidently.
 
             </div>
 
-        </div>
+            <div class="major-description-kh">
 
-
-        <!-- =================================================
-             VOCABULARY ELEMENTARY
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Vocabulary | Elementary
-            </div>
-
-            <div class="course-level">
-                Essential Vocabulary
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Learn useful everyday vocabulary covering common
-                topics and situations, with practical examples
-                to support basic English communication.
+                ពង្រីកវាក្យសព្ទភាសាអង់គ្លេសជាបន្តបន្ទាប់
+                និងអភិវឌ្ឍសមត្ថភាពក្នុងការយល់ដឹង
+                និងប្រើប្រាស់ពាក្យភាសាអង់គ្លេសបានទូលំទូលាយ
+                ធម្មជាតិ និងមានទំនុកចិត្ត។
 
             </div>
 
-            <div class="course-description-khmer">
+            <button class="btn btn-primary">
 
-                រៀនវាក្យសព្ទដែលមានប្រយោជន៍សម្រាប់ជីវិតប្រចាំថ្ងៃ
-                គ្របដណ្តប់លើប្រធានបទ និងស្ថានភាពទូទៅ
-                ជាមួយឧទាហរណ៍សម្រាប់ជួយដល់ការប្រាស្រ័យទាក់ទង។
+                Explore English Vocabulary
+                <br>
+                មើលវគ្គវាក្យសព្ទភាសាអង់គ្លេស
 
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Build a strong everyday vocabulary,
-                    understand common words more easily
-                    and speak with greater confidence.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើតវាក្យសព្ទសម្រាប់ប្រើប្រាស់ប្រចាំថ្ងៃ
-                    យល់ពាក្យទូទៅបានងាយស្រួល
-                    និងបង្កើនទំនុកចិត្តក្នុងការនិយាយ។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    120 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $20.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $10.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Vocabulary | Elementary')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             VOCABULARY INTERMEDIATE
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Vocabulary | Intermediate
-            </div>
-
-            <div class="course-level">
-                Intermediate Vocabulary
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Expand your vocabulary across a wider range
-                of everyday and practical topics and learn
-                to express yourself more effectively.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                ពង្រីកវាក្យសព្ទលើប្រធានបទជាច្រើន
-                ដែលពាក់ព័ន្ធនឹងជីវិតប្រចាំថ្ងៃ
-                និងការអនុវត្ត ដើម្បីបង្ហាញគំនិត
-                និងការប្រាស្រ័យទាក់ទងបានមានប្រសិទ្ធភាព។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Improve word choice, understand more English
-                    in context and communicate ideas with greater variety.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយជ្រើសរើសពាក្យបានល្អជាងមុន
-                    យល់ភាសាអង់គ្លេសតាមបរិបទបានច្រើន
-                    និងបង្ហាញគំនិតបានទូលំទូលាយជាងមុន។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    200 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $22.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $11.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Vocabulary | Intermediate')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             VOCABULARY UPPER-INTERMEDIATE
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Vocabulary | Upper-intermediate
-            </div>
-
-            <div class="course-level">
-                Upper-intermediate Vocabulary
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Develop a broader and more sophisticated vocabulary
-                for discussions, communication and more demanding
-                English situations.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                អភិវឌ្ឍវាក្យសព្ទដែលទូលំទូលាយ និងស្មុគស្មាញជាងមុន
-                សម្រាប់ការពិភាក្សា ការប្រាស្រ័យទាក់ទង
-                និងស្ថានភាពដែលត្រូវការភាសាអង់គ្លេសកម្រិតខ្ពស់ជាងមុន។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Use more precise and varied vocabulary,
-                    understand advanced expressions and communicate
-                    ideas more naturally.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយប្រើពាក្យបានច្បាស់លាស់ និងចម្រុះ
-                    យល់ឃ្លា និងការប្រើពាក្យកម្រិតខ្ពស់
-                    និងបង្ហាញគំនិតបានធម្មជាតិជាងមុន។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    202 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $24.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $12.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Vocabulary | Upper-intermediate')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             VOCABULARY ADVANCED
-             ================================================= -->
-
-        <div class="course-card">
-
-            <div class="course-title">
-                English Vocabulary | Advanced
-            </div>
-
-            <div class="course-level">
-                Advanced Vocabulary
-            </div>
-
-            <div class="description-label">
-                Course Description
-            </div>
-
-            <div class="course-description">
-
-                Master advanced vocabulary and expressions
-                for precise, confident and sophisticated
-                English communication.
-
-            </div>
-
-            <div class="course-description-khmer">
-
-                ស្ទាត់ជំនាញវាក្យសព្ទ និងឃ្លាកម្រិតខ្ពស់
-                សម្រាប់ការប្រើភាសាអង់គ្លេសដែលមានភាពច្បាស់លាស់
-                ទំនុកចិត្ត និងមានលក្ខណៈវិជ្ជាជីវៈ។
-
-            </div>
-
-            <div class="advantages">
-
-                <div class="advantages-title">
-                    Advantages
-                </div>
-
-                <div class="advantages-text">
-
-                    Improve precision and sophistication,
-                    understand advanced language more effectively
-                    and express complex ideas with confidence.
-
-                </div>
-
-                <div class="advantages-khmer">
-
-                    ជួយបង្កើនភាពច្បាស់លាស់ និងកម្រិតភាសា
-                    យល់ភាសាកម្រិតខ្ពស់បានកាន់តែល្អ
-                    និងបង្ហាញគំនិតស្មុគស្មាញដោយមានទំនុកចិត្ត។
-
-                </div>
-
-            </div>
-
-            <div class="course-meta">
-
-                <span class="video-count">
-                    202 videos
-                </span>
-
-            </div>
-
-            <div class="price-row">
-
-                <div>
-
-                    <span class="old-price">
-                        $26.00
-                    </span>
-
-                    <br>
-
-                    <span class="price">
-                        $13.00
-                    </span>
-
-                </div>
-
-                <span class="discount">
-                    50% OFF
-                </span>
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="selectCourse('English Vocabulary | Advanced')"
-            >
-                Choose Course — ជ្រើសរើសវគ្គ
             </button>
 
         </div>
@@ -2348,9 +1020,50 @@
 
             Online English Learning
 
-            <br>
+        </div>
 
-            វគ្គសិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត
+    </div>
+
+
+    <!-- =====================================================
+         PAGE 2
+         MAJOR COURSE LIST
+         ===================================================== -->
+
+    <div
+        id="majorPage"
+        class="page hidden"
+    >
+
+        <button
+            class="btn btn-secondary back-button"
+            onclick="goHome()"
+        >
+
+            ← Back to Courses
+            <br>
+            ← ត្រឡប់ទៅវគ្គសិក្សា
+
+        </button>
+
+
+        <div class="section-title" id="majorPageTitle">
+        </div>
+
+        <div
+            class="section-description"
+            id="majorPageDescription"
+        >
+        </div>
+
+
+        <div id="courseList">
+        </div>
+
+
+        <div class="footer">
+
+            Vlearn Together
 
         </div>
 
@@ -2358,80 +1071,257 @@
 
 
     <!-- =====================================================
-         PAYMENT PAGE
+         PAGE 3
+         COURSE DETAILS
          ===================================================== -->
 
     <div
-        id="paymentPage"
-        class="hidden"
+        id="detailPage"
+        class="page hidden"
     >
 
-
         <button
-            class="secondary-btn back-btn"
-            onclick="goHome()"
+            class="btn btn-secondary back-button"
+            onclick="backToMajor()"
         >
-            ← Back to Courses — ត្រឡប់ទៅវគ្គសិក្សា
+
+            ← Back to Courses
+            <br>
+            ← ត្រឡប់ទៅវគ្គសិក្សា
+
         </button>
 
 
-        <div class="form-card">
+        <div class="detail-card">
 
+            <h2
+                id="detailTitle"
+                class="detail-title"
+            >
+            </h2>
 
-            <div class="form-title">
-
-                Complete Your Registration
-
-                <span class="form-title-khmer">
-                    បំពេញការចុះឈ្មោះរបស់អ្នក
-                </span>
-
+            <div
+                id="detailLevel"
+                class="detail-level"
+            >
             </div>
 
 
-            <!-- SELECTED COURSE -->
+            <div class="detail-price-row">
 
-            <div class="selected-course">
+                <div>
 
-                <div class="selected-course-label">
+                    <div
+                        id="detailOldPrice"
+                        class="old-price"
+                    >
+                    </div>
 
-                    Selected Course
-                    <br>
-
-                    វគ្គសិក្សាដែលបានជ្រើសរើស
+                    <div
+                        id="detailPrice"
+                        class="current-price"
+                    >
+                    </div>
 
                 </div>
 
                 <div
-                    id="selectedCourseName"
-                    class="selected-course-name"
+                    id="detailDiscount"
+                    class="discount"
                 >
                 </div>
 
             </div>
 
 
-            <!-- PAYMENT INSTRUCTIONS -->
+            <div class="info-label">
+                Course Description
+            </div>
+
+            <p
+                id="detailDescription"
+                class="detail-text"
+            >
+            </p>
+
+            <p
+                id="detailDescriptionKh"
+                class="detail-text-kh"
+            >
+            </p>
+
+
+            <div class="info-label">
+                What You Will Learn
+            </div>
+
+            <p
+                id="detailLearning"
+                class="detail-text"
+            >
+            </p>
+
+            <p
+                id="detailLearningKh"
+                class="detail-text-kh"
+            >
+            </p>
+
+
+            <div class="info-label">
+                Advantages of This Course
+            </div>
+
+            <ul
+                id="detailAdvantages"
+                class="advantages"
+            >
+            </ul>
+
+
+            <div class="info-label">
+                អត្ថប្រយោជន៍នៃវគ្គសិក្សានេះ
+            </div>
+
+            <ul
+                id="detailAdvantagesKh"
+                class="advantages"
+            >
+            </ul>
+
+
+            <div class="video-box">
+
+                <strong>
+                    Course Videos
+                </strong>
+
+                <span id="detailVideos">
+                </span>
+
+            </div>
+
+
+            <div class="detail-action">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="chooseSelectedCourse()"
+                >
+
+                    Choose Course
+                    <br>
+                    ជ្រើសរើសវគ្គសិក្សា
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            Vlearn Together
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAGE 4
+         COMPLETE REGISTRATION
+         ===================================================== -->
+
+    <div
+        id="registrationPage"
+        class="page hidden"
+    >
+
+        <button
+            class="btn btn-secondary back-button"
+            onclick="backToDetail()"
+        >
+
+            ← Back to Course
+            <br>
+            ← ត្រឡប់ទៅវគ្គសិក្សា
+
+        </button>
+
+
+        <div class="registration-card">
+
+            <div class="section-title">
+
+                Complete Your Registration
+
+            </div>
+
+            <div class="section-description">
+
+                បំពេញព័ត៌មានខាងក្រោម
+                ដើម្បីបញ្ចប់ការចុះឈ្មោះរបស់អ្នក។
+
+            </div>
+
+
+            <div class="selected-course">
+
+                <div class="selected-label">
+                    Selected Course
+                    <br>
+                    វគ្គសិក្សាដែលបានជ្រើសរើស
+                </div>
+
+                <div
+                    id="selectedCourseName"
+                    class="selected-name"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="registration-price">
+
+                <div class="registration-price-label">
+
+                    Course Fee
+                    <br>
+                    តម្លៃវគ្គសិក្សា
+
+                </div>
+
+                <div
+                    id="registrationPrice"
+                    class="registration-price-value"
+                >
+                </div>
+
+            </div>
+
 
             <div class="payment-instruction">
 
-                <div class="step-title">
-                    Step 1 — Make your payment
+                <div class="payment-instruction-title">
+
+                    Step 1 — Make Your Payment
+
                 </div>
 
-                <br>
+                Press the button below to make
+                your payment through KHQR.
 
-                Press the button below to pay
-                through ABA Pay.
-
-                <div class="khmer">
+                <div class="payment-instruction-kh">
 
                     ជំហានទី ១ — ធ្វើការទូទាត់ប្រាក់
 
                     <br>
 
                     សូមចុចប៊ូតុងខាងក្រោម
-                    ដើម្បីធ្វើការទូទាត់តាម ABA Pay។
+                    ដើម្បីធ្វើការទូទាត់តាម KHQR។
 
                 </div>
 
@@ -2439,23 +1329,25 @@
                 <br>
 
 
-                <div class="step-title">
-                    Step 2 — Return here
-                </div>
+                <div class="payment-instruction-title">
 
-                <br>
+                    Step 2 — Return to This Page
+
+                </div>
 
                 After completing your payment,
-                return to this page.
+                return to Vlearn Together
+                and continue below.
 
-                <div class="khmer">
+                <div class="payment-instruction-kh">
 
-                    ជំហានទី ២ — ត្រឡប់មកទីនេះវិញ
+                    ជំហានទី ២ — ត្រឡប់មកទំព័រនេះ
 
                     <br>
 
                     បន្ទាប់ពីទូទាត់ប្រាក់រួច
-                    សូមត្រឡប់មកទំព័រនេះវិញ។
+                    សូមត្រឡប់មក Vlearn Together
+                    ហើយបន្តបំពេញព័ត៌មានខាងក្រោម។
 
                 </div>
 
@@ -2463,38 +1355,39 @@
                 <br>
 
 
-                <div class="step-title">
-                    Step 3 — Enter your payment information
-                </div>
+                <div class="payment-instruction-title">
 
-                <br>
+                    Step 3 — Confirm Your Payment
+
+                </div>
 
                 Enter the payment date and APV
-                shown on your ABA receipt.
+                shown on your payment receipt.
 
-                <div class="khmer">
+                <div class="payment-instruction-kh">
 
-                    ជំហានទី ៣ — បញ្ចូលព័ត៌មានការទូទាត់
+                    ជំហានទី ៣ — បញ្ជាក់ការទូទាត់
 
                     <br>
 
                     សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់
-                    និងលេខ APV ដែលបង្ហាញលើបង្កាន់ដៃ ABA របស់អ្នក។
+                    និងលេខ APV ដែលបង្ហាញនៅលើ
+                    បង្កាន់ដៃទូទាត់របស់អ្នក។
 
                 </div>
 
             </div>
 
 
-            <!-- PAY BUTTON -->
-
             <button
                 id="payButton"
-                class="payment-btn"
+                class="btn btn-success"
                 onclick="openPayment()"
             >
 
-                Pay via ABA — ទូទាត់តាម ABA
+                Pay via KHQR
+                <br>
+                ទូទាត់តាម KHQR
 
             </button>
 
@@ -2503,18 +1396,13 @@
             <br>
 
 
-            <!-- PAYMENT DATE -->
-
             <label for="paymentDate">
 
                 Payment Date
-
-                <span class="label-khmer">
-                    កាលបរិច្ឆេទទូទាត់
-                </span>
+                <br>
+                កាលបរិច្ឆេទទូទាត់
 
             </label>
-
 
             <input
                 id="paymentDate"
@@ -2524,32 +1412,28 @@
                 maxlength="10"
             >
 
-
             <div class="help-text">
 
-                The date is automatically set to today.
-                You can change it if you made the payment on another date.
+                Today's date is entered automatically.
+                You can change it if you made the payment
+                on another date.
 
                 <br>
 
-                កាលបរិច្ឆេទនឹងបញ្ចូលដោយស្វ័យប្រវត្តិជាកាលបរិច្ឆេទថ្ងៃនេះ។
-                អ្នកអាចកែប្រែបាន ប្រសិនបើអ្នកបានទូទាត់នៅថ្ងៃផ្សេង។
+                កាលបរិច្ឆេទថ្ងៃនេះនឹងបញ្ចូលដោយស្វ័យប្រវត្តិ។
+                អ្នកអាចកែប្រែបាន ប្រសិនបើអ្នកបានទូទាត់
+                នៅថ្ងៃផ្សេង។
 
             </div>
 
 
-            <!-- APV -->
-
             <label for="apv">
 
                 APV
-
-                <span class="label-khmer">
-                    លេខ APV
-                </span>
+                <br>
+                លេខ APV
 
             </label>
-
 
             <input
                 id="apv"
@@ -2559,29 +1443,28 @@
                 maxlength="10"
             >
 
-
             <div class="help-text">
 
                 The APV is the number shown
-                on your ABA payment receipt.
+                on your payment receipt.
 
                 <br>
 
-                លេខ APV គឺជាលេខដែលបង្ហាញ
-                នៅលើបង្កាន់ដៃទូទាត់ ABA របស់អ្នក។
+                លេខ APV គឺជាលេខដែលបង្ហាញនៅលើ
+                បង្កាន់ដៃទូទាត់របស់អ្នក។
 
             </div>
 
 
-            <!-- CONFIRM -->
-
             <button
                 id="confirmButton"
-                class="primary-btn"
+                class="btn btn-primary"
                 onclick="confirmPayment()"
             >
 
-                Confirm Payment — បញ្ជាក់ការទូទាត់
+                Confirm Payment
+                <br>
+                បញ្ជាក់ការទូទាត់
 
             </button>
 
@@ -2591,11 +1474,13 @@
 
 
             <button
-                class="secondary-btn"
+                class="btn btn-secondary"
                 onclick="goHome()"
             >
 
-                Cancel — បោះបង់
+                Cancel
+                <br>
+                បោះបង់
 
             </button>
 
@@ -2604,15 +1489,13 @@
 
         <div class="footer">
 
-            Your payment information will be
-            sent securely to Vlearn Together
-            through Telegram.
+            Your payment information will be sent
+            securely to Vlearn Together through Telegram.
 
             <br>
 
-            ព័ត៌មានការទូទាត់របស់អ្នកនឹងត្រូវបាន
-            ផ្ញើទៅ Vlearn Together តាមរយៈ Telegram
-            ដោយសុវត្ថិភាព។
+            ព័ត៌មានការទូទាត់របស់អ្នកនឹងត្រូវបានផ្ញើ
+            ទៅ Vlearn Together តាមរយៈ Telegram។
 
         </div>
 
@@ -2625,10 +1508,10 @@
 
     <div
         id="statusPage"
-        class="hidden"
+        class="page hidden"
     >
 
-        <div class="form-card">
+        <div class="status-card">
 
             <div
                 id="statusBox"
@@ -2640,28 +1523,43 @@
                 </strong>
 
                 <br>
-
-                ព័ត៌មានការទូទាត់ត្រូវបានទទួល
-
-                <br><br>
-
-                Please wait while your payment
-                is verified.
-
                 <br>
 
-                សូមរង់ចាំ ខណៈពេលការទូទាត់របស់អ្នក
-                កំពុងត្រូវបានផ្ទៀងផ្ទាត់។
+                Your payment information has been
+                sent successfully.
+
+                <br>
+                <br>
+
+                ព័ត៌មានការទូទាត់របស់អ្នកត្រូវបានផ្ញើ
+                ដោយជោគជ័យ។
+
+                <br>
+                <br>
+
+                Please return to Telegram to see
+                the verification message.
+
+                <br>
+                <br>
+
+                សូមត្រឡប់ទៅ Telegram
+                ដើម្បីមើលសារផ្ទៀងផ្ទាត់ការទូទាត់។
 
             </div>
 
 
+            <br>
+
+
             <button
-                class="primary-btn"
+                class="btn btn-primary"
                 onclick="closeMiniApp()"
             >
 
-                Close — បិទ
+                Close
+                <br>
+                បិទ
 
             </button>
 
@@ -2669,206 +1567,793 @@
 
     </div>
 
-
 </div>
 
 
 <script>
 
+    /* ========================================================
+       TELEGRAM
+       ======================================================== */
 
-    // ========================================================
-    // TELEGRAM WEB APP
-    // ========================================================
-
-    const tg =
-        window.Telegram.WebApp;
-
+    const tg = window.Telegram.WebApp;
 
     tg.ready();
 
     tg.expand();
 
 
-    // ========================================================
-    // COURSE DATA
-    // ========================================================
+    /* ========================================================
+       COURSE DATABASE
+       ======================================================== */
 
     const courses = {
 
+        /* ====================================================
+           GENERAL ENGLISH
+           ==================================================== */
 
         "General English | Beginner 1–2": {
 
+            major: "general",
+
+            displayName: "Beginner | Level 1–2",
+
+            level:
+                "General English Programme",
+
+            videos: "100 videos",
+
             price: 15.00,
 
+            oldPrice: 30.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAY1e499924g"
+                "https://link.payway.com.kh/ABAPAY1e499924g",
+
+            description:
+                "This course builds a strong foundation in English for beginners. Students develop essential skills in speaking, listening, reading, writing, grammar and everyday communication through clear and structured video lessons.",
+
+            descriptionKh:
+                "វគ្គសិក្សានេះជួយកសាងមូលដ្ឋានភាសាអង់គ្លេសដ៏រឹងមាំសម្រាប់អ្នកចាប់ផ្តើម។ សិស្សនឹងអភិវឌ្ឍជំនាញសំខាន់ៗក្នុងការនិយាយ ការស្តាប់ ការអាន ការសរសេរ វេយ្យាករណ៍ និងការទំនាក់ទំនងប្រចាំថ្ងៃ តាមរយៈមេរៀនវីដេអូដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់។",
+
+            learning:
+                "Students will learn essential vocabulary and grammar, form basic sentences, understand common expressions and communicate in familiar everyday situations.",
+
+            learningKh:
+                "សិស្សនឹងរៀនវាក្យសព្ទ និងវេយ្យាករណ៍សំខាន់ៗ ការបង្កើតប្រយោគមូលដ្ឋាន ការយល់ដឹងអំពីឃ្លាដែលប្រើញឹកញាប់ និងការទំនាក់ទំនងក្នុងស្ថានភាពប្រចាំថ្ងៃ។",
+
+            advantages: [
+                "Builds a strong foundation for further English study.",
+                "Improves confidence in basic everyday communication.",
+                "Develops the four core skills together.",
+                "Provides a clear learning path for beginners."
+            ],
+
+            advantagesKh: [
+                "កសាងមូលដ្ឋានរឹងមាំសម្រាប់ការសិក្សាភាសាអង់គ្លេសបន្ត។",
+                "បង្កើនទំនុកចិត្តក្នុងការទំនាក់ទំនងប្រចាំថ្ងៃ។",
+                "អភិវឌ្ឍជំនាញសំខាន់ទាំងបួនជាមួយគ្នា។",
+                "ផ្តល់ផ្លូវសិក្សាច្បាស់លាស់សម្រាប់អ្នកចាប់ផ្តើម។"
+            ]
 
         },
 
 
         "General English | Elementary 3–4": {
 
+            major: "general",
+
+            displayName: "Elementary | Level 3–4",
+
+            level:
+                "General English Programme",
+
+            videos: "100+ videos",
+
             price: 16.00,
 
+            oldPrice: 32.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAY12499938C"
+                "https://link.payway.com.kh/ABAPAY12499938C",
+
+            description:
+                "This course develops practical English skills for everyday communication. Students strengthen their grammar, vocabulary, listening, speaking, reading and writing while becoming more comfortable using English independently.",
+
+            descriptionKh:
+                "វគ្គសិក្សានេះអភិវឌ្ឍជំនាញភាសាអង់គ្លេសដែលអាចប្រើប្រាស់បានសម្រាប់ការទំនាក់ទំនងប្រចាំថ្ងៃ។ សិស្សនឹងពង្រឹងវេយ្យាករណ៍ វាក្យសព្ទ ការស្តាប់ ការនិយាយ ការអាន និងការសរសេរ ព្រមទាំងមានទំនុកចិត្តកាន់តែច្រើនក្នុងការប្រើប្រាស់ភាសាអង់គ្លេសដោយខ្លួនឯង។",
+
+            learning:
+                "Students will improve their ability to describe people and situations, discuss everyday topics, understand common spoken English and write clearer sentences.",
+
+            learningKh:
+                "សិស្សនឹងបង្កើនសមត្ថភាពក្នុងការពិពណ៌នាអំពីមនុស្ស និងស្ថានភាព ពិភាក្សាអំពីប្រធានបទប្រចាំថ្ងៃ យល់ភាសាអង់គ្លេសដែលនិយាយជាទូទៅ និងសរសេរប្រយោគបានច្បាស់ជាងមុន។",
+
+            advantages: [
+                "Improves everyday communication skills.",
+                "Strengthens essential grammar and vocabulary.",
+                "Helps students become more independent English users.",
+                "Creates a strong bridge towards pre-intermediate English."
+            ],
+
+            advantagesKh: [
+                "បង្កើនជំនាញទំនាក់ទំនងប្រចាំថ្ងៃ។",
+                "ពង្រឹងវេយ្យាករណ៍ និងវាក្យសព្ទសំខាន់ៗ។",
+                "ជួយឱ្យសិស្សប្រើប្រាស់ភាសាអង់គ្លេសដោយខ្លួនឯងបានកាន់តែប្រសើរ។",
+                "បង្កើតមូលដ្ឋានល្អសម្រាប់ឈានទៅកម្រិត Pre-intermediate។"
+            ]
 
         },
 
 
         "General English | Pre-intermediate 5–6": {
 
+            major: "general",
+
+            displayName: "Pre-intermediate | Level 5–6",
+
+            level:
+                "General English Programme",
+
+            videos: "100+ videos",
+
             price: 19.00,
 
+            oldPrice: 38.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYW4499941w"
+                "https://link.payway.com.kh/ABAPAYW4499941w",
+
+            description:
+                "This course helps learners move from basic English towards more confident and natural communication. Students develop stronger grammar, vocabulary, listening and speaking skills for a wider range of everyday situations.",
+
+            descriptionKh:
+                "វគ្គសិក្សានេះជួយឱ្យសិស្សផ្លាស់ប្តូរពីការប្រើប្រាស់ភាសាអង់គ្លេសមូលដ្ឋាន ទៅរកការទំនាក់ទំនងដែលមានទំនុកចិត្ត និងធម្មជាតិកាន់តែច្រើន។ សិស្សនឹងអភិវឌ្ឍវេយ្យាករណ៍ វាក្យសព្ទ ការស្តាប់ និងការនិយាយឱ្យកាន់តែប្រសើរ សម្រាប់ស្ថានភាពផ្សេងៗក្នុងជីវិតប្រចាំថ្ងៃ។",
+
+            learning:
+                "Students will practise more complex sentence structures, express opinions, describe experiences and understand longer conversations and texts.",
+
+            learningKh:
+                "សិស្សនឹងអនុវត្តរចនាសម្ព័ន្ធប្រយោគដែលស្មុគស្មាញជាងមុន បញ្ចេញមតិ ពិពណ៌នាបទពិសោធន៍ និងយល់ការសន្ទនា និងអត្ថបទដែលវែងជាងមុន។",
+
+            advantages: [
+                "Builds confidence for longer conversations.",
+                "Expands grammar and vocabulary knowledge.",
+                "Improves understanding of natural English.",
+                "Prepares learners for intermediate-level study."
+            ],
+
+            advantagesKh: [
+                "បង្កើនទំនុកចិត្តសម្រាប់ការសន្ទនាដែលវែងជាងមុន។",
+                "ពង្រីកចំណេះដឹងផ្នែកវេយ្យាករណ៍ និងវាក្យសព្ទ។",
+                "បង្កើនសមត្ថភាពយល់ភាសាអង់គ្លេសដែលប្រើប្រាស់ជាធម្មជាតិ។",
+                "ត្រៀមសិស្សសម្រាប់ការសិក្សាកម្រិត Intermediate។"
+            ]
 
         },
 
 
         "General English | Intermediate 7–8": {
 
+            major: "general",
+
+            displayName: "Intermediate | Level 7–8",
+
+            level:
+                "General English Programme",
+
+            videos: "132 videos",
+
             price: 20.00,
 
+            oldPrice: 40.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYoS499945e"
+                "https://link.payway.com.kh/ABAPAYoS499945e",
+
+            description:
+                "This course develops stronger fluency, accuracy and communication skills for learners who already have a good foundation in English. Students work with more advanced language and a wider range of real-life communication.",
+
+            descriptionKh:
+                "វគ្គសិក្សានេះអភិវឌ្ឍភាពស្ទាត់ជំនាញ ភាពត្រឹមត្រូវ និងសមត្ថភាពទំនាក់ទំនងសម្រាប់សិស្សដែលមានមូលដ្ឋានភាសាអង់គ្លេសល្អរួចហើយ។ សិស្សនឹងសិក្សាភាសាដែលមានកម្រិតខ្ពស់ជាងមុន និងស្ថានភាពទំនាក់ទំនងក្នុងជីវិតពិតដែលមានភាពទូលំទូលាយ។",
+
+            learning:
+                "Students will develop fluency, express ideas more precisely, understand longer spoken and written English and use a wider range of vocabulary and grammar.",
+
+            learningKh:
+                "សិស្សនឹងអភិវឌ្ឍភាពស្ទាត់ជំនាញ បញ្ចេញគំនិតបានច្បាស់លាស់ យល់ភាសាអង់គ្លេសដែលនិយាយ និងសរសេរដែលវែងជាងមុន និងប្រើប្រាស់វាក្យសព្ទ និងវេយ្យាករណ៍បានទូលំទូលាយជាងមុន។",
+
+            advantages: [
+                "Improves overall English fluency.",
+                "Develops more accurate and natural communication.",
+                "Strengthens advanced grammar and vocabulary use.",
+                "Provides a strong foundation for higher-level English."
+            ],
+
+            advantagesKh: [
+                "បង្កើនភាពស្ទាត់ជំនាញភាសាអង់គ្លេសជារួម។",
+                "អភិវឌ្ឍការទំនាក់ទំនងឱ្យបានត្រឹមត្រូវ និងធម្មជាតិ។",
+                "ពង្រឹងការប្រើប្រាស់វេយ្យាករណ៍ និងវាក្យសព្ទកម្រិតខ្ពស់។",
+                "ផ្តល់មូលដ្ឋានរឹងមាំសម្រាប់ការសិក្សាភាសាអង់គ្លេសកម្រិតខ្ពស់។"
+            ]
 
         },
 
 
+        /* ====================================================
+           GRAMMAR
+           ==================================================== */
+
         "English Grammar | Elementary": {
+
+            major: "grammar",
+
+            displayName: "Elementary Grammar",
+
+            level:
+                "English Grammar Course",
+
+            videos: "230 videos",
 
             price: 25.20,
 
+            oldPrice: 42.00,
+
+            discount: "40% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAY0V500157n"
+                "https://link.payway.com.kh/ABAPAY0V500157n",
+
+            description:
+                "A structured grammar course covering essential English grammar for elementary learners. Students learn how grammar works and practise using common structures accurately.",
+
+            descriptionKh:
+                "វគ្គវេយ្យាករណ៍ដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់ សម្រាប់សិស្សកម្រិត Elementary។ សិស្សនឹងរៀនពីរបៀបដែលវេយ្យាករណ៍ដំណើរការ និងអនុវត្តរចនាសម្ព័ន្ធសំខាន់ៗឱ្យបានត្រឹមត្រូវ។",
+
+            learning:
+                "Students will study essential tenses, sentence structures, questions, negatives, articles, prepositions and other fundamental grammar points.",
+
+            learningKh:
+                "សិស្សនឹងសិក្សាអំពីកាលសំខាន់ៗ រចនាសម្ព័ន្ធប្រយោគ សំណួរ ប្រយោគបដិសេធ កិរិយាសព្ទជំនួយ Articles Prepositions និងចំណុចវេយ្យាករណ៍មូលដ្ឋានផ្សេងៗ។",
+
+            advantages: [
+                "Builds a strong grammatical foundation.",
+                "Helps reduce common grammar mistakes.",
+                "Improves sentence formation.",
+                "Supports clearer speaking and writing."
+            ],
+
+            advantagesKh: [
+                "កសាងមូលដ្ឋានវេយ្យាករណ៍រឹងមាំ។",
+                "ជួយកាត់បន្ថយកំហុសវេយ្យាករណ៍ដែលជួបញឹកញាប់។",
+                "បង្កើនសមត្ថភាពបង្កើតប្រយោគ។",
+                "ជួយឱ្យការនិយាយ និងការសរសេរមានភាពច្បាស់លាស់។"
+            ]
 
         },
 
 
         "English Grammar | Intermediate": {
 
+            major: "grammar",
+
+            displayName: "Intermediate Grammar",
+
+            level:
+                "English Grammar Course",
+
+            videos: "290 videos",
+
             price: 27.00,
 
+            oldPrice: 45.00,
+
+            discount: "40% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYqL500160G"
+                "https://link.payway.com.kh/ABAPAYqL500160G",
+
+            description:
+                "This course develops a deeper understanding of intermediate English grammar and helps learners use more complex structures accurately in communication and writing.",
+
+            descriptionKh:
+                "វគ្គសិក្សានេះជួយឱ្យសិស្សយល់ដឹងកាន់តែស៊ីជម្រៅអំពីវេយ្យាករណ៍ភាសាអង់គ្លេសកម្រិត Intermediate និងប្រើប្រាស់រចនាសម្ព័ន្ធដែលស្មុគស្មាញជាងមុនបានត្រឹមត្រូវក្នុងការទំនាក់ទំនង និងការសរសេរ។",
+
+            learning:
+                "Students will work with more complex tenses, clauses, conditionals, passive structures, reported speech and other important intermediate grammar patterns.",
+
+            learningKh:
+                "សិស្សនឹងសិក្សាកាលដែលស្មុគស្មាញជាងមុន Clauses Conditionals Passive Voice Reported Speech និងរចនាសម្ព័ន្ធវេយ្យាករណ៍សំខាន់ៗកម្រិត Intermediate។",
+
+            advantages: [
+                "Improves grammatical accuracy.",
+                "Helps learners produce more complex sentences.",
+                "Strengthens formal writing skills.",
+                "Supports more confident communication."
+            ],
+
+            advantagesKh: [
+                "បង្កើនភាពត្រឹមត្រូវក្នុងការប្រើវេយ្យាករណ៍។",
+                "ជួយឱ្យសិស្សបង្កើតប្រយោគដែលស្មុគស្មាញជាងមុន។",
+                "ពង្រឹងជំនាញសរសេរបែបផ្លូវការ។",
+                "ជួយបង្កើនទំនុកចិត្តក្នុងការទំនាក់ទំនង។"
+            ]
 
         },
 
 
         "English Grammar | Advanced": {
 
+            major: "grammar",
+
+            displayName: "Advanced Grammar",
+
+            level:
+                "English Grammar Course",
+
+            videos: "200 videos",
+
             price: 30.00,
 
+            oldPrice: 50.00,
+
+            discount: "40% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYKr500161M"
+                "https://link.payway.com.kh/ABAPAYKr500161M",
+
+            description:
+                "An advanced grammar programme designed to refine accuracy, flexibility and control of English structures. It is suitable for learners who want to use English at a more sophisticated level.",
+
+            descriptionKh:
+                "វគ្គវេយ្យាករណ៍កម្រិតខ្ពស់ដែលមានគោលបំណងពង្រឹងភាពត្រឹមត្រូវ ភាពបត់បែន និងការគ្រប់គ្រងរចនាសម្ព័ន្ធភាសាអង់គ្លេស។ សាកសមសម្រាប់អ្នកដែលចង់ប្រើប្រាស់ភាសាអង់គ្លេសក្នុងកម្រិតកាន់តែខ្ពស់ និងមានភាពជឿនលឿន។",
+
+            learning:
+                "Students will explore advanced structures, nuanced grammar choices, complex clauses, emphasis, formal structures and accurate language use.",
+
+            learningKh:
+                "សិស្សនឹងសិក្សារចនាសម្ព័ន្ធកម្រិតខ្ពស់ ការជ្រើសរើសវេយ្យាករណ៍ដែលមានភាពខុសគ្នាតាមបរិបទ Clauses ស្មុគស្មាញ ការសង្កត់ន័យ រចនាសម្ព័ន្ធផ្លូវការ និងការប្រើប្រាស់ភាសាដែលត្រឹមត្រូវ។",
+
+            advantages: [
+                "Refines advanced grammatical accuracy.",
+                "Improves precision in formal English.",
+                "Helps learners understand subtle grammar differences.",
+                "Supports advanced academic and professional communication."
+            ],
+
+            advantagesKh: [
+                "ពង្រឹងភាពត្រឹមត្រូវនៃវេយ្យាករណ៍កម្រិតខ្ពស់។",
+                "បង្កើនភាពច្បាស់លាស់ក្នុងការប្រើភាសាអង់គ្លេសបែបផ្លូវការ។",
+                "ជួយយល់ពីភាពខុសគ្នាលម្អិតនៃវេយ្យាករណ៍។",
+                "គាំទ្រការទំនាក់ទំនងក្នុងការសិក្សា និងការងារកម្រិតខ្ពស់។"
+            ]
 
         },
 
 
+        /* ====================================================
+           VOCABULARY
+           ==================================================== */
+
         "English Vocabulary | Elementary": {
+
+            major: "vocabulary",
+
+            displayName: "Elementary Vocabulary",
+
+            level:
+                "English Vocabulary Course",
+
+            videos: "120 videos",
 
             price: 10.00,
 
+            oldPrice: 20.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYHH5001622"
+                "https://link.payway.com.kh/ABAPAYHH5001622",
+
+            description:
+                "Build a practical vocabulary base for everyday English. Students learn useful words and expressions and develop the ability to understand and use them in common situations.",
+
+            descriptionKh:
+                "កសាងមូលដ្ឋានវាក្យសព្ទដែលអាចប្រើប្រាស់បានសម្រាប់ភាសាអង់គ្លេសប្រចាំថ្ងៃ។ សិស្សនឹងរៀនពាក្យ និងឃ្លាដែលមានប្រយោជន៍ និងអភិវឌ្ឍសមត្ថភាពក្នុងការយល់ និងប្រើប្រាស់វាក្នុងស្ថានភាពទូទៅ។",
+
+            learning:
+                "Students will learn everyday words related to people, places, activities, time, food, travel, work and other familiar topics.",
+
+            learningKh:
+                "សិស្សនឹងរៀនពាក្យប្រចាំថ្ងៃដែលទាក់ទងនឹងមនុស្ស ទីកន្លែង សកម្មភាព ពេលវេលា អាហារ ការធ្វើដំណើរ ការងារ និងប្រធានបទដែលស្គាល់ជាទូទៅ។",
+
+            advantages: [
+                "Expands useful everyday vocabulary.",
+                "Improves understanding of common English.",
+                "Makes basic communication easier.",
+                "Provides a foundation for higher vocabulary levels."
+            ],
+
+            advantagesKh: [
+                "ពង្រីកវាក្យសព្ទដែលមានប្រយោជន៍ក្នុងជីវិតប្រចាំថ្ងៃ។",
+                "បង្កើនការយល់ដឹងអំពីភាសាអង់គ្លេសទូទៅ។",
+                "ធ្វើឱ្យការទំនាក់ទំនងមូលដ្ឋានកាន់តែងាយស្រួល។",
+                "ផ្តល់មូលដ្ឋានសម្រាប់ការរៀនវាក្យសព្ទកម្រិតខ្ពស់។"
+            ]
 
         },
 
 
         "English Vocabulary | Intermediate": {
 
+            major: "vocabulary",
+
+            displayName: "Intermediate Vocabulary",
+
+            level:
+                "English Vocabulary Course",
+
+            videos: "200 videos",
+
             price: 11.00,
 
+            oldPrice: 22.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYi3500163U"
+                "https://link.payway.com.kh/ABAPAYi3500163U",
+
+            description:
+                "Expand your vocabulary beyond everyday basics and learn a wider range of words and expressions for confident communication in different situations.",
+
+            descriptionKh:
+                "ពង្រីកវាក្យសព្ទឱ្យលើសពីពាក្យមូលដ្ឋានប្រចាំថ្ងៃ និងរៀនពាក្យ និងឃ្លាដែលមានភាពទូលំទូលាយជាងមុន សម្រាប់ការទំនាក់ទំនងដែលមានទំនុកចិត្តក្នុងស្ថានភាពផ្សេងៗ។",
+
+            learning:
+                "Students will develop vocabulary for communication, work, education, social situations and a wider range of everyday topics.",
+
+            learningKh:
+                "សិស្សនឹងអភិវឌ្ឍវាក្យសព្ទសម្រាប់ការទំនាក់ទំនង ការងារ ការសិក្សា សង្គម និងប្រធានបទប្រចាំថ្ងៃដែលមានភាពទូលំទូលាយជាងមុន។",
+
+            advantages: [
+                "Allows students to express ideas more clearly.",
+                "Improves comprehension of spoken and written English.",
+                "Provides more choices when speaking and writing.",
+                "Builds confidence for intermediate communication."
+            ],
+
+            advantagesKh: [
+                "អនុញ្ញាតឱ្យសិស្សបញ្ចេញគំនិតបានច្បាស់ជាងមុន។",
+                "បង្កើនការយល់ភាសាអង់គ្លេសទាំងការនិយាយ និងការសរសេរ។",
+                "ផ្តល់ជម្រើសពាក្យកាន់តែច្រើនក្នុងការនិយាយ និងសរសេរ។",
+                "បង្កើនទំនុកចិត្តសម្រាប់ការទំនាក់ទំនងកម្រិត Intermediate។"
+            ]
 
         },
 
 
         "English Vocabulary | Upper-intermediate": {
 
+            major: "vocabulary",
+
+            displayName: "Upper-intermediate Vocabulary",
+
+            level:
+                "English Vocabulary Course",
+
+            videos: "202 videos",
+
             price: 12.00,
 
+            oldPrice: 24.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAY1u500164h"
+                "https://link.payway.com.kh/ABAPAY1u500164h",
+
+            description:
+                "Develop a wider and more sophisticated vocabulary for fluent communication. Students learn words and expressions that help them understand and express more complex ideas naturally.",
+
+            descriptionKh:
+                "អភិវឌ្ឍវាក្យសព្ទដែលមានភាពទូលំទូលាយ និងស្មុគស្មាញជាងមុន សម្រាប់ការទំនាក់ទំនងដែលមានភាពស្ទាត់ជំនាញ។ សិស្សនឹងរៀនពាក្យ និងឃ្លាដែលជួយឱ្យយល់ និងបញ្ចេញគំនិតដែលស្មុគស្មាញបានយ៉ាងធម្មជាតិ។",
+
+            learning:
+                "Students will study more precise vocabulary, collocations, expressions and language used in wider social, academic and professional contexts.",
+
+            learningKh:
+                "សិស្សនឹងសិក្សាវាក្យសព្ទដែលមានភាពច្បាស់លាស់ជាងមុន Collocations ឃ្លា និងភាសាដែលប្រើក្នុងបរិបទសង្គម ការសិក្សា និងការងារដែលទូលំទូលាយ។",
+
+            advantages: [
+                "Makes communication more natural and precise.",
+                "Improves reading and listening comprehension.",
+                "Develops stronger expression of complex ideas.",
+                "Prepares learners for advanced English."
+            ],
+
+            advantagesKh: [
+                "ធ្វើឱ្យការទំនាក់ទំនងមានភាពធម្មជាតិ និងច្បាស់លាស់ជាងមុន។",
+                "បង្កើនការយល់ដឹងក្នុងការអាន និងការស្តាប់។",
+                "អភិវឌ្ឍសមត្ថភាពបញ្ចេញគំនិតដែលស្មុគស្មាញ។",
+                "ត្រៀមសិស្សសម្រាប់ភាសាអង់គ្លេសកម្រិត Advanced។"
+            ]
 
         },
 
 
         "English Vocabulary | Advanced": {
 
+            major: "vocabulary",
+
+            displayName: "Advanced Vocabulary",
+
+            level:
+                "English Vocabulary Course",
+
+            videos: "202 videos",
+
             price: 13.00,
 
+            oldPrice: 26.00,
+
+            discount: "50% OFF",
+
             paymentLink:
-                "https://link.payway.com.kh/ABAPAYrH500165p"
+                "https://link.payway.com.kh/ABAPAYrH500165p",
+
+            description:
+                "Master a sophisticated range of English vocabulary for precise, confident and effective communication. This course is designed for learners who want greater control over advanced English.",
+
+            descriptionKh:
+                "ស្ទាត់ជំនាញវាក្យសព្ទភាសាអង់គ្លេសដែលមានភាពស្មុគស្មាញ និងទូលំទូលាយ សម្រាប់ការទំនាក់ទំនងដែលច្បាស់លាស់ មានទំនុកចិត្ត និងមានប្រសិទ្ធភាព។ វគ្គនេះសាកសមសម្រាប់អ្នកដែលចង់គ្រប់គ្រងការប្រើប្រាស់ភាសាអង់គ្លេសកម្រិតខ្ពស់បានកាន់តែប្រសើរ។",
+
+            learning:
+                "Students will develop advanced vocabulary, precise word choice, expressions, collocations and language suitable for sophisticated communication.",
+
+            learningKh:
+                "សិស្សនឹងអភិវឌ្ឍវាក្យសព្ទកម្រិតខ្ពស់ ការជ្រើសរើសពាក្យឱ្យបានត្រឹមត្រូវ ឃ្លា Collocations និងភាសាដែលសមស្របសម្រាប់ការទំនាក់ទំនងកម្រិតខ្ពស់។",
+
+            advantages: [
+                "Improves precision and sophistication in English.",
+                "Strengthens academic and professional vocabulary.",
+                "Helps learners communicate complex ideas effectively.",
+                "Provides greater confidence when using advanced English."
+            ],
+
+            advantagesKh: [
+                "បង្កើនភាពច្បាស់លាស់ និងភាពជឿនលឿនក្នុងការប្រើភាសាអង់គ្លេស។",
+                "ពង្រឹងវាក្យសព្ទសម្រាប់ការសិក្សា និងការងារ។",
+                "ជួយឱ្យសិស្សបញ្ចេញគំនិតស្មុគស្មាញបានយ៉ាងមានប្រសិទ្ធភាព។",
+                "បង្កើនទំនុកចិត្តក្នុងការប្រើភាសាអង់គ្លេសកម្រិតខ្ពស់។"
+            ]
 
         }
 
     };
 
 
-    // ========================================================
-    // CURRENT COURSE
-    // ========================================================
+    /* ========================================================
+       MAJOR COURSE INFORMATION
+       ======================================================== */
+
+    const majors = {
+
+        general: {
+
+            title:
+                "General English Programme",
+
+            description:
+                "Choose the level that best matches your current English ability and learning goals.",
+
+            kh:
+                "ជ្រើសរើសកម្រិតដែលសមស្របបំផុតជាមួយសមត្ថភាពភាសាអង់គ្លេស និងគោលដៅសិក្សារបស់អ្នក។"
+
+        },
+
+        grammar: {
+
+            title:
+                "English Grammar Course",
+
+            description:
+                "Choose the grammar level you want to study and strengthen your accuracy step by step.",
+
+            kh:
+                "ជ្រើសរើសកម្រិតវេយ្យាករណ៍ដែលអ្នកចង់សិក្សា និងពង្រឹងភាពត្រឹមត្រូវជាបន្តបន្ទាប់។"
+
+        },
+
+        vocabulary: {
+
+            title:
+                "English Vocabulary Course",
+
+            description:
+                "Choose your vocabulary level and expand your English word knowledge step by step.",
+
+            kh:
+                "ជ្រើសរើសកម្រិតវាក្យសព្ទរបស់អ្នក និងពង្រីកចំណេះដឹងពាក្យភាសាអង់គ្លេសជាបន្តបន្ទាប់។"
+
+        }
+
+    };
+
+
+    /* ========================================================
+       STATE
+       ======================================================== */
+
+    let selectedMajor = "";
 
     let selectedCourse = "";
 
 
-    // ========================================================
-    // GET TODAY'S DATE
-    //
-    // Format:
-    // DD/MM/YYYY
-    // ========================================================
+    /* ========================================================
+       PAGE CONTROL
+       ======================================================== */
 
-    function getTodayDate() {
+    function hideAllPages() {
 
-        const today =
-            new Date();
+        document
+            .getElementById("homePage")
+            .classList.add("hidden");
 
+        document
+            .getElementById("majorPage")
+            .classList.add("hidden");
 
-        const day =
-            String(
-                today.getDate()
-            ).padStart(
-                2,
-                "0"
-            );
+        document
+            .getElementById("detailPage")
+            .classList.add("hidden");
 
+        document
+            .getElementById("registrationPage")
+            .classList.add("hidden");
 
-        const month =
-            String(
-                today.getMonth() + 1
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        const year =
-            today.getFullYear();
-
-
-        return (
-            day +
-            "/" +
-            month +
-            "/" +
-            year
-        );
+        document
+            .getElementById("statusPage")
+            .classList.add("hidden");
 
     }
 
 
-    // ========================================================
-    // SELECT COURSE
-    // ========================================================
+    function showPage(id) {
 
-    function selectCourse(courseName) {
+        hideAllPages();
+
+        document
+            .getElementById(id)
+            .classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    }
 
 
-        if (!courses[courseName]) {
+    /* ========================================================
+       OPEN MAJOR COURSE
+       ======================================================== */
+
+    function openMajor(majorName) {
+
+        if (!majors[majorName]) {
+            return;
+        }
+
+        selectedMajor = majorName;
+
+        const major = majors[majorName];
+
+        document
+            .getElementById("majorPageTitle")
+            .textContent = major.title;
+
+        document
+            .getElementById("majorPageDescription")
+            .innerHTML =
+                major.description +
+                "<br><br>" +
+                major.kh;
+
+        const courseList =
+            document.getElementById("courseList");
+
+        courseList.innerHTML = "";
+
+        Object.keys(courses).forEach(function(courseName) {
+
+            const course = courses[courseName];
+
+            if (course.major !== majorName) {
+                return;
+            }
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "course-list-card";
+
+            card.innerHTML = `
+
+                <div class="course-list-title">
+                    ${course.displayName}
+                </div>
+
+                <div class="course-list-subtitle">
+                    ${course.description}
+                </div>
+
+                <div class="course-meta">
+
+                    <span class="video-count">
+                        ${course.videos}
+                    </span>
+
+                    <span class="course-price">
+                        $${course.price.toFixed(2)}
+                    </span>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="openCourseDetails('${escapeForAttribute(courseName)}')"
+                >
+
+                    View Course Details
+                    <br>
+                    មើលព័ត៌មានវគ្គសិក្សា
+
+                </button>
+
+            `;
+
+            courseList.appendChild(card);
+
+        });
+
+        showPage("majorPage");
+
+        tg.BackButton.show();
+
+    }
+
+
+    /* ========================================================
+       ESCAPE COURSE NAME
+       ======================================================== */
+
+    function escapeForAttribute(text) {
+
+        return text
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+
+    }
+
+
+    /* ========================================================
+       OPEN COURSE DETAILS
+       ======================================================== */
+
+    function openCourseDetails(courseName) {
+
+        const course =
+            courses[courseName];
+
+        if (!course) {
 
             alert(
                 "Course information could not be found."
@@ -2878,82 +2363,220 @@
 
         }
 
-
-        selectedCourse =
-            courseName;
+        selectedCourse = courseName;
 
 
-        document.getElementById(
-            "selectedCourseName"
-        ).textContent =
-            courseName;
+        document
+            .getElementById("detailTitle")
+            .textContent = course.displayName;
 
 
-        // ----------------------------------------------------
-        // AUTOMATICALLY SET TODAY'S DATE
-        // ----------------------------------------------------
-
-        document.getElementById(
-            "paymentDate"
-        ).value =
-            getTodayDate();
+        document
+            .getElementById("detailLevel")
+            .textContent = course.level;
 
 
-        // Clear APV every time a new course is selected
+        document
+            .getElementById("detailOldPrice")
+            .textContent =
+                "$" + course.oldPrice.toFixed(2);
 
-        document.getElementById(
-            "apv"
-        ).value = "";
+
+        document
+            .getElementById("detailPrice")
+            .textContent =
+                "$" + course.price.toFixed(2);
 
 
-        document.getElementById(
-            "homePage"
-        ).classList.add(
-            "hidden"
+        document
+            .getElementById("detailDiscount")
+            .textContent =
+                course.discount;
+
+
+        document
+            .getElementById("detailDescription")
+            .textContent =
+                course.description;
+
+
+        document
+            .getElementById("detailDescriptionKh")
+            .textContent =
+                course.descriptionKh;
+
+
+        document
+            .getElementById("detailLearning")
+            .textContent =
+                course.learning;
+
+
+        document
+            .getElementById("detailLearningKh")
+            .textContent =
+                course.learningKh;
+
+
+        const advantages =
+            document.getElementById(
+                "detailAdvantages"
+            );
+
+        advantages.innerHTML = "";
+
+        course.advantages.forEach(
+            function(item) {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent = item;
+
+                advantages.appendChild(li);
+
+            }
         );
 
 
-        document.getElementById(
-            "statusPage"
-        ).classList.add(
-            "hidden"
+        const advantagesKh =
+            document.getElementById(
+                "detailAdvantagesKh"
+            );
+
+        advantagesKh.innerHTML = "";
+
+        course.advantagesKh.forEach(
+            function(item) {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent = item;
+
+                advantagesKh.appendChild(li);
+
+            }
         );
 
 
-        document.getElementById(
-            "paymentPage"
-        ).classList.remove(
-            "hidden"
-        );
+        document
+            .getElementById("detailVideos")
+            .textContent =
+                course.videos +
+                " available in this course.";
 
 
-        window.scrollTo(
-            0,
-            0
-        );
-
+        showPage("detailPage");
 
         tg.BackButton.show();
-
-
-        tg.BackButton.onClick(
-            goHome
-        );
 
     }
 
 
-    // ========================================================
-    // OPEN PAYMENT
-    // ========================================================
+    /* ========================================================
+       CHOOSE COURSE
+       ======================================================== */
 
-    function openPayment() {
-
+    function chooseSelectedCourse() {
 
         if (!selectedCourse) {
 
             alert(
-                "Please select a course first.\n\nសូមជ្រើសរើសវគ្គសិក្សាជាមុនសិន។"
+                "Please select a course first."
+            );
+
+            return;
+
+        }
+
+
+        const course =
+            courses[selectedCourse];
+
+
+        document
+            .getElementById("selectedCourseName")
+            .textContent =
+                course.displayName;
+
+
+        document
+            .getElementById("registrationPrice")
+            .textContent =
+                "$" + course.price.toFixed(2);
+
+
+        setTodayDate();
+
+
+        document
+            .getElementById("apv")
+            .value = "";
+
+
+        const confirmButton =
+            document.getElementById(
+                "confirmButton"
+            );
+
+        confirmButton.disabled = false;
+
+        confirmButton.innerHTML =
+            "Confirm Payment<br>បញ្ជាក់ការទូទាត់";
+
+
+        showPage("registrationPage");
+
+        tg.BackButton.show();
+
+    }
+
+
+    /* ========================================================
+       TODAY'S DATE
+       ======================================================== */
+
+    function setTodayDate() {
+
+        const now = new Date();
+
+        const day =
+            String(
+                now.getDate()
+            ).padStart(2, "0");
+
+        const month =
+            String(
+                now.getMonth() + 1
+            ).padStart(2, "0");
+
+        const year =
+            now.getFullYear();
+
+
+        document
+            .getElementById("paymentDate")
+            .value =
+                day +
+                "/" +
+                month +
+                "/" +
+                year;
+
+    }
+
+
+    /* ========================================================
+       OPEN PAYMENT
+       ======================================================== */
+
+    function openPayment() {
+
+        if (!selectedCourse) {
+
+            alert(
+                "Please select a course first."
             );
 
             return;
@@ -2971,7 +2594,7 @@
         ) {
 
             alert(
-                "Payment link is not available.\n\nមិនមានតំណភ្ជាប់សម្រាប់ទូទាត់ទេ។"
+                "Payment link is not available."
             );
 
             return;
@@ -2979,90 +2602,46 @@
         }
 
 
-        /*
-         * Telegram Mini Apps can restrict
-         * some external-window behaviour.
-         *
-         * location.href is more reliable
-         * than window.open inside Telegram.
-         */
-
-        try {
-
-            tg.openLink(
-                course.paymentLink
-            );
-
-        }
-
-        catch (error) {
-
-            window.location.href =
-                course.paymentLink;
-
-        }
+        window.open(
+            course.paymentLink,
+            "_blank"
+        );
 
     }
 
 
-    // ========================================================
-    // VALIDATE DATE
-    // ========================================================
+    /* ========================================================
+       DATE VALIDATION
+       ======================================================== */
 
     function validateDate(dateText) {
-
 
         const pattern =
             /^(\d{2})\/(\d{2})\/(\d{4})$/;
 
 
         const match =
-            dateText.match(
-                pattern
-            );
+            dateText.match(pattern);
 
 
         if (!match) {
-
             return false;
-
         }
 
 
         const day =
-            parseInt(
-                match[1],
-                10
-            );
-
+            parseInt(match[1], 10);
 
         const month =
-            parseInt(
-                match[2],
-                10
-            );
-
+            parseInt(match[2], 10);
 
         const year =
-            parseInt(
-                match[3],
-                10
-            );
+            parseInt(match[3], 10);
 
 
         if (
             month < 1 ||
             month > 12
-        ) {
-
-            return false;
-
-        }
-
-
-        if (
-            day < 1 ||
-            day > 31
         ) {
 
             return false;
@@ -3079,49 +2658,35 @@
 
 
         return (
-
-            date.getFullYear()
-            === year
-
-            &&
-
-            date.getMonth()
-            === month - 1
-
-            &&
-
-            date.getDate()
-            === day
-
+            date.getFullYear() === year &&
+            date.getMonth() === month - 1 &&
+            date.getDate() === day
         );
 
     }
 
 
-    // ========================================================
-    // VALIDATE APV
-    // ========================================================
+    /* ========================================================
+       APV VALIDATION
+       ======================================================== */
 
     function validateAPV(apv) {
 
-        return /^\d{4,10}$/.test(
-            apv
-        );
+        return /^\d{4,10}$/.test(apv);
 
     }
 
 
-    // ========================================================
-    // CONFIRM PAYMENT
-    // ========================================================
+    /* ========================================================
+       CONFIRM PAYMENT
+       ======================================================== */
 
     function confirmPayment() {
-
 
         if (!selectedCourse) {
 
             alert(
-                "Please select a course first.\n\nសូមជ្រើសរើសវគ្គសិក្សាជាមុនសិន។"
+                "Please select a course first."
             );
 
             return;
@@ -3130,36 +2695,32 @@
 
 
         const paymentDate =
-            document.getElementById(
-                "paymentDate"
-            ).value.trim();
+            document
+                .getElementById("paymentDate")
+                .value
+                .trim();
 
 
         const apv =
-            document.getElementById(
-                "apv"
-            ).value.trim();
+            document
+                .getElementById("apv")
+                .value
+                .trim();
 
 
-        // ----------------------------------------------------
-        // VALIDATE DATE
-        // ----------------------------------------------------
+        /* ----------------------------------------------------
+           DATE
+           ---------------------------------------------------- */
 
-        if (
-            !validateDate(
-                paymentDate
-            )
-        ) {
+        if (!validateDate(paymentDate)) {
 
             alert(
 
                 "Please enter a valid payment date.\n\n" +
 
-                "សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់ឱ្យបានត្រឹមត្រូវ។\n\n" +
+                "សូមបញ្ចូលកាលបរិច្ឆេទត្រឹមត្រូវ។\n\n" +
 
-                "Example / ឧទាហរណ៍:\n" +
-
-                "15/08/2026"
+                "Example: 15/08/2026"
 
             );
 
@@ -3168,25 +2729,19 @@
         }
 
 
-        // ----------------------------------------------------
-        // VALIDATE APV
-        // ----------------------------------------------------
+        /* ----------------------------------------------------
+           APV
+           ---------------------------------------------------- */
 
-        if (
-            !validateAPV(
-                apv
-            )
-        ) {
+        if (!validateAPV(apv)) {
 
             alert(
 
                 "Please enter a valid APV.\n\n" +
 
-                "សូមបញ្ចូលលេខ APV ឱ្យបានត្រឹមត្រូវ។\n\n" +
+                "សូមបញ្ចូលលេខ APV ត្រឹមត្រូវ។\n\n" +
 
-                "The APV should contain 4–10 digits.\n" +
-
-                "លេខ APV ត្រូវមានចំនួន 4–10 ខ្ទង់។"
+                "The APV should contain 4–10 digits."
 
             );
 
@@ -3195,9 +2750,9 @@
         }
 
 
-        // ----------------------------------------------------
-        // DISABLE BUTTON
-        // ----------------------------------------------------
+        /* ----------------------------------------------------
+           BUTTON
+           ---------------------------------------------------- */
 
         const button =
             document.getElementById(
@@ -3205,20 +2760,17 @@
             );
 
 
-        button.disabled =
-            true;
+        button.disabled = true;
 
 
         button.innerHTML =
-
             '<span class="spinner"></span>' +
+            'Sending...';
 
-            'Sending... / កំពុងផ្ញើ...';
 
-
-        // ----------------------------------------------------
-        // DATA SENT TO BOT.PY
-        // ----------------------------------------------------
+        /* ----------------------------------------------------
+           DATA FOR BOT.PY
+           ---------------------------------------------------- */
 
         const data = {
 
@@ -3238,114 +2790,72 @@
 
 
         console.log(
-            "Sending data to Telegram:",
+            "Sending payment information:",
             data
         );
 
 
-        // ----------------------------------------------------
-        // SEND DATA
-        // ----------------------------------------------------
+        /* ----------------------------------------------------
+           SEND TO TELEGRAM BOT
+           ---------------------------------------------------- */
 
         try {
 
-
-            if (
-                typeof tg.sendData
-                !== "function"
-            ) {
-
-                throw new Error(
-                    "Telegram sendData is not available."
-                );
-
-            }
-
-
             tg.sendData(
-                JSON.stringify(
-                    data
-                )
+                JSON.stringify(data)
             );
 
 
-            /*
-             * Telegram normally closes
-             * the Mini App after sendData().
-             *
-             * The following is a fallback
-             * in case the Mini App remains open.
-             */
-
             setTimeout(
-
                 function() {
 
+                    showPage("statusPage");
 
-                    document.getElementById(
-                        "paymentPage"
-                    ).classList.add(
-                        "hidden"
-                    );
-
-
-                    document.getElementById(
-                        "statusPage"
-                    ).classList.remove(
-                        "hidden"
-                    );
-
-
-                    document.getElementById(
-                        "statusBox"
-                    ).innerHTML =
+                    document
+                        .getElementById("statusBox")
+                        .innerHTML =
 
                         "<strong>" +
-
                         "Payment information sent successfully." +
-
                         "</strong>" +
-
-                        "<br>" +
-
-                        "ព័ត៌មានការទូទាត់ត្រូវបានផ្ញើដោយជោគជ័យ។" +
 
                         "<br><br>" +
 
-                        "Please return to Telegram " +
+                        "Your payment information has been sent " +
+                        "to Vlearn Together for verification." +
 
-                        "to see the verification message." +
+                        "<br><br>" +
 
-                        "<br>" +
+                        "ព័ត៌មានការទូទាត់របស់អ្នកត្រូវបានផ្ញើ " +
+                        "ទៅ Vlearn Together ដើម្បីផ្ទៀងផ្ទាត់។" +
 
-                        "សូមត្រឡប់ទៅ Telegram " +
+                        "<br><br>" +
 
-                        "ដើម្បីមើលសារផ្ទៀងផ្ទាត់។";
+                        "Please return to Telegram to see " +
+                        "your verification message." +
 
+                        "<br><br>" +
+
+                        "សូមត្រឡប់ទៅ Telegram ដើម្បីមើល " +
+                        "សារផ្ទៀងផ្ទាត់ការទូទាត់របស់អ្នក។";
 
                 },
-
                 700
-
             );
 
 
-        }
-
-        catch (error) {
-
+        } catch (error) {
 
             console.error(
                 error
             );
 
 
-            button.disabled =
-                false;
+            button.disabled = false;
 
 
             button.innerHTML =
-                "Confirm Payment — បញ្ជាក់ការទូទាត់";
+                "Confirm Payment<br>បញ្ជាក់ការទូទាត់";
 
 
             alert(
@@ -3354,9 +2864,8 @@
 
                 "ព័ត៌មានមិនអាចផ្ញើបានទេ។\n\n" +
 
-                "Please close and reopen Vlearn Together and try again.\n" +
-
-                "សូមបិទ និងបើក Vlearn Together ម្តងទៀត ហើយព្យាយាមម្ដងទៀត។"
+                "Please close and reopen Vlearn Together " +
+                "and try again."
 
             );
 
@@ -3365,64 +2874,79 @@
     }
 
 
-    // ========================================================
-    // GO HOME
-    // ========================================================
+    /* ========================================================
+       BACK TO MAJOR
+       ======================================================== */
 
-    function goHome() {
+    function backToMajor() {
 
+        if (selectedMajor) {
 
-        selectedCourse =
-            "";
+            openMajor(
+                selectedMajor
+            );
 
+        } else {
 
-        document.getElementById(
-            "paymentDate"
-        ).value =
-            "";
+            goHome();
 
-
-        document.getElementById(
-            "apv"
-        ).value =
-            "";
-
-
-        document.getElementById(
-            "paymentPage"
-        ).classList.add(
-            "hidden"
-        );
-
-
-        document.getElementById(
-            "statusPage"
-        ).classList.add(
-            "hidden"
-        );
-
-
-        document.getElementById(
-            "homePage"
-        ).classList.remove(
-            "hidden"
-        );
-
-
-        tg.BackButton.hide();
-
-
-        window.scrollTo(
-            0,
-            0
-        );
+        }
 
     }
 
 
-    // ========================================================
-    // CLOSE MINI APP
-    // ========================================================
+    /* ========================================================
+       BACK TO DETAIL
+       ======================================================== */
+
+    function backToDetail() {
+
+        if (selectedCourse) {
+
+            openCourseDetails(
+                selectedCourse
+            );
+
+        } else {
+
+            goHome();
+
+        }
+
+    }
+
+
+    /* ========================================================
+       GO HOME
+       ======================================================== */
+
+    function goHome() {
+
+        selectedMajor = "";
+
+        selectedCourse = "";
+
+
+        document
+            .getElementById("paymentDate")
+            .value = "";
+
+
+        document
+            .getElementById("apv")
+            .value = "";
+
+
+        showPage("homePage");
+
+        tg.BackButton.hide();
+
+    }
+
+
+    /* ========================================================
+       CLOSE MINI APP
+       ======================================================== */
 
     function closeMiniApp() {
 
@@ -3431,32 +2955,22 @@
     }
 
 
-    // ========================================================
-    // FORMAT DATE INPUT
-    // ========================================================
+    /* ========================================================
+       DATE INPUT FORMAT
+       ======================================================== */
 
     document
-        .getElementById(
-            "paymentDate"
-        )
+        .getElementById("paymentDate")
         .addEventListener(
-
             "input",
-
             function(event) {
-
 
                 let value =
                     event.target.value
-                        .replace(
-                            /\D/g,
-                            ""
-                        );
+                        .replace(/\D/g, "");
 
 
-                if (
-                    value.length > 8
-                ) {
+                if (value.length > 8) {
 
                     value =
                         value.substring(
@@ -3467,61 +2981,23 @@
                 }
 
 
-                if (
-                    value.length >= 5
-                ) {
+                if (value.length >= 5) {
 
                     value =
-
-                        value.substring(
-                            0,
-                            2
-                        )
-
-                        +
-
-                        "/"
-
-                        +
-
-                        value.substring(
-                            2,
-                            4
-                        )
-
-                        +
-
-                        "/"
-
-                        +
-
-                        value.substring(
-                            4
-                        );
+                        value.substring(0, 2) +
+                        "/" +
+                        value.substring(2, 4) +
+                        "/" +
+                        value.substring(4);
 
                 }
 
-
-                else if (
-                    value.length >= 3
-                ) {
+                else if (value.length >= 3) {
 
                     value =
-
-                        value.substring(
-                            0,
-                            2
-                        )
-
-                        +
-
-                        "/"
-
-                        +
-
-                        value.substring(
-                            2
-                        );
+                        value.substring(0, 2) +
+                        "/" +
+                        value.substring(2);
 
                 }
 
@@ -3530,54 +3006,108 @@
                     value;
 
             }
-
         );
 
 
-    // ========================================================
-    // APV ONLY NUMBERS
-    // ========================================================
+    /* ========================================================
+       APV ONLY NUMBERS
+       ======================================================== */
 
     document
-        .getElementById(
-            "apv"
-        )
+        .getElementById("apv")
         .addEventListener(
-
             "input",
-
             function(event) {
 
-
                 event.target.value =
-
                     event.target.value
+                        .replace(/\D/g, "")
+                        .substring(0, 10);
 
-                        .replace(
-                            /\D/g,
-                            ""
-                        )
+            }
+        );
 
-                        .substring(
-                            0,
-                            10
-                        );
+
+    /* ========================================================
+       TELEGRAM BACK BUTTON
+       ======================================================== */
+
+    tg.BackButton.onClick(
+        function() {
+
+            const home =
+                document
+                    .getElementById("homePage")
+                    .classList
+                    .contains("hidden");
+
+            const major =
+                document
+                    .getElementById("majorPage")
+                    .classList
+                    .contains("hidden");
+
+            const detail =
+                document
+                    .getElementById("detailPage")
+                    .classList
+                    .contains("hidden");
+
+            const registration =
+                document
+                    .getElementById("registrationPage")
+                    .classList
+                    .contains("hidden");
+
+
+            if (!home) {
+
+                tg.BackButton.hide();
+
+                return;
 
             }
 
-        );
+
+            if (!major) {
+
+                goHome();
+
+                return;
+
+            }
 
 
-    // ========================================================
-    // TELEGRAM MAIN BUTTON
-    // ========================================================
+            if (!detail) {
+
+                backToMajor();
+
+                return;
+
+            }
+
+
+            if (!registration) {
+
+                backToDetail();
+
+                return;
+
+            }
+
+        }
+    );
+
+
+    /* ========================================================
+       INITIAL STATE
+       ======================================================== */
 
     tg.MainButton.hide();
 
+    showPage("homePage");
 
 </script>
 
-
 </body>
-
 </html>
