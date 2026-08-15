@@ -1,2548 +1,2261 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
-
-    <meta
-        name="theme-color"
-        content="#ffffff"
-    >
-
-    <title>Vlearn Together</title>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            background:
-                var(
-                    --tg-theme-bg-color,
-                    #ffffff
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
-
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 20px 18px 35px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .brand {
-            text-align: center;
-            font-size: 30px;
-            font-weight: 800;
-            color: #1976d2;
-            margin-bottom: 18px;
-        }
-
-        .welcome {
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
-
-        .intro {
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.55;
-            margin-bottom: 25px;
-        }
-
-        .page-title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 750;
-            margin-bottom: 8px;
-        }
-
-        .khmer-title {
-            text-align: center;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .course-button,
-        .level-button {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 16px;
-            margin-top: 11px;
-            font-size: 16px;
-            font-weight: 650;
-            text-align: left;
-            cursor: pointer;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
-        }
-
-        .course-button:active,
-        .level-button:active,
-        .primary-button:active,
-        .secondary-button:active,
-        .back-button:active {
-            transform: scale(0.98);
-        }
-
-        .price-card {
-            margin-top: 15px;
-            padding: 22px 18px;
-            border-radius: 17px;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            text-align: center;
-        }
-
-        .course-name {
-            font-size: 22px;
-            font-weight: 750;
-            line-height: 1.35;
-            margin-bottom: 16px;
-        }
-
-        .price {
-            font-size: 27px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .old-price {
-            text-decoration: line-through;
-            opacity: 0.55;
-            margin-right: 7px;
-            font-size: 20px;
-        }
-
-        .new-price {
-            font-size: 28px;
-            font-weight: 800;
-        }
-
-        .discount {
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .payment-info {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 12px;
-
-            background:
-                var(
-                    --tg-theme-bg-color,
-                    #ffffff
-                );
-
-            border: 1px solid
-                var(
-                    --tg-theme-hint-color,
-                    #999999
-                );
-
-            text-align: left;
-
-            font-size: 15px;
-            line-height: 1.55;
-        }
-
-        .payment-info strong {
-            font-weight: 750;
-        }
-
-        .primary-button {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 16px;
-            margin-top: 14px;
-
-            font-size: 16px;
-            font-weight: 750;
-
-            cursor: pointer;
-
-            background: #1976d2;
-            color: #ffffff;
-        }
-
-        .secondary-button {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 15px;
-            margin-top: 11px;
-
-            font-size: 16px;
-            font-weight: 700;
-
-            cursor: pointer;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
-        }
-
-        .back-button {
-            width: 100%;
-            border: none;
-            background: transparent;
-
-            color: #1976d2;
-
-            font-size: 16px;
-            font-weight: 650;
-
-            padding: 14px 5px;
-            margin-top: 12px;
-
-            cursor: pointer;
-        }
-
-        .payment-title {
-            text-align: center;
-            font-size: 23px;
-            font-weight: 750;
-            margin-top: 5px;
-            margin-bottom: 7px;
-        }
-
-        .payment-khmer {
-            text-align: center;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .selected-course {
-            padding: 16px;
-            border-radius: 13px;
-
-            background:
-                var(
-                    --tg-theme-secondary-bg-color,
-                    #f1f3f5
-                );
-
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-
-        .selected-course-title {
-            font-size: 13px;
-            opacity: 0.65;
-            margin-bottom: 5px;
-        }
-
-        .selected-course-name {
-            font-size: 18px;
-            font-weight: 750;
-        }
-
-        .input-label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 7px;
-
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-
-            border-radius: 11px;
-
-            border: 1px solid
-                var(
-                    --tg-theme-hint-color,
-                    #999999
-                );
-
-            background:
-                var(
-                    --tg-theme-bg-color,
-                    #ffffff
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
-
-            font-size: 17px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #1976d2;
-        }
-
-        .date-example {
-            margin-top: 6px;
-            font-size: 13px;
-            opacity: 0.65;
-        }
-
-        .apv-input {
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-
-        .instruction {
-            margin-top: 18px;
-            padding: 15px;
-
-            border-radius: 12px;
-
-            background:
-                rgba(
-                    25,
-                    118,
-                    210,
-                    0.08
-                );
-
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .error-box {
-            margin-top: 15px;
-            padding: 14px;
-
-            border-radius: 11px;
-
-            background:
-                rgba(
-                    229,
-                    57,
-                    53,
-                    0.10
-                );
-
-            color:
-                var(
-                    --tg-theme-text-color,
-                    #222222
-                );
-
-            font-size: 15px;
-            line-height: 1.55;
-
-            white-space: pre-line;
-        }
-
-        .success-box {
-            margin-top: 15px;
-            padding: 18px;
-
-            border-radius: 12px;
-
-            background:
-                rgba(
-                    46,
-                    125,
-                    50,
-                    0.10
-                );
-
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .receipt {
-            margin-top: 18px;
-            padding: 20px 17px;
-
-            border: 1px solid #d5d5d5;
-            border-radius: 8px;
-
-            background: #ffffff;
-            color: #222222;
-
-            text-align: left;
-        }
-
-        .receipt-header {
-            text-align: center;
-            padding-bottom: 13px;
-            border-bottom: 1px solid #dddddd;
-            margin-bottom: 14px;
-        }
-
-        .receipt-brand {
-            color: #1976d2;
-            font-size: 23px;
-            font-weight: 800;
-        }
-
-        .receipt-title {
-            margin-top: 4px;
-            font-size: 17px;
-            font-weight: 750;
-        }
-
-        .receipt-khmer-title {
-            margin-top: 3px;
-            font-size: 15px;
-        }
-
-        .receipt-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-
-            padding: 8px 0;
-
-            border-bottom: 1px solid #eeeeee;
-
-            font-size: 14px;
-        }
-
-        .receipt-label {
-            font-weight: 700;
-        }
-
-        .receipt-value {
-            text-align: right;
-            word-break: break-word;
-        }
-
-        .receipt-status {
-            margin-top: 15px;
-            padding: 11px;
-
-            border-radius: 6px;
-
-            background: #f2f2f2;
-
-            text-align: center;
-
-            font-weight: 750;
-            font-size: 14px;
-        }
-
-        .contact {
-            margin-top: 18px;
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .contact a {
-            color: #1976d2;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .small-note {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 13px;
-            opacity: 0.65;
-            line-height: 1.5;
-        }
-
-        .payment-link-note {
-            margin-top: 10px;
-            font-size: 13px;
-            opacity: 0.65;
-            text-align: center;
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-<div class="container">
-
-
-    <!-- ================================================= -->
-    <!-- HOME -->
-    <!-- ================================================= -->
-
-    <section id="homePage">
-
-        <div
-            id="telegramUser"
-            class="welcome"
-        ></div>
-
+import json
+import re
+import sqlite3
 
-        <div class="brand">
-            Vlearn Together
-        </div>
-
+from datetime import datetime
 
-        <div class="intro">
-            Learn English online with our video courses.
-        </div>
+from telegram import (
+    Update,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    WebAppInfo,
+)
 
-
-        <div class="page-title">
-            Choose Your Course
-        </div>
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+    MessageHandler,
+    filters,
+)
+
+
+# ============================================================
+# BOT TOKEN
+# ============================================================
+
+TOKEN = "8645313682:AAHW4sD6dU0t0g3lB444LhOVSeaImVHxt08"
+
+
+# ============================================================
+# MINI APP URL
+# ============================================================
+
+MINI_APP_URL = (
+    "https://vlearntogether.github.io/"
+    "vlearn-together-miniapp/"
+)
+
+
+# ============================================================
+# DATABASE
+# ============================================================
+
+DATABASE = "vlearn.db"
+
+
+# ============================================================
+# TELEGRAM CONTACT
+# ============================================================
+
+CONTACT_USERNAME = "Vlearn_together"
+
+CONTACT_PHONE = "077 448 388"
+
+
+# ============================================================
+# COURSES
+# ============================================================
+
+COURSES = {
+
+    # --------------------------------------------------------
+    # GENERAL ENGLISH
+    # --------------------------------------------------------
+
+    "General English | Beginner 1–2": {
+        "price": 15.00,
+        "old_price": 30.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAY1e499924g",
+    },
+
+    "General English | Elementary 3–4": {
+        "price": 16.00,
+        "old_price": 32.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAY12499938C",
+    },
+
+    "General English | Pre-intermediate 5–6": {
+        "price": 19.00,
+        "old_price": 38.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYW4499941w",
+    },
+
+    "General English | Intermediate 7–8": {
+        "price": 20.00,
+        "old_price": 40.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYoS499945e",
+    },
 
 
-        <div class="khmer-title">
-            សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នក
-        </div>
+    # --------------------------------------------------------
+    # ENGLISH GRAMMAR
+    # --------------------------------------------------------
 
+    "English Grammar | Elementary": {
+        "price": 25.20,
+        "old_price": 42.00,
+        "discount": 40,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAY0V500157n",
+    },
 
-        <button
-            class="course-button"
-            onclick="openMajorCourse('general')"
-        >
+    "English Grammar | Intermediate": {
+        "price": 27.00,
+        "old_price": 45.00,
+        "discount": 40,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYqL500160G",
+    },
 
-            General English Programme
+    "English Grammar | Advanced": {
+        "price": 30.00,
+        "old_price": 50.00,
+        "discount": 40,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYKr500161M",
+    },
 
-            <br>
 
-            <span>
-                កម្មវិធីភាសាអង់គ្លេសទូទៅ
-            </span>
+    # --------------------------------------------------------
+    # ENGLISH VOCABULARY
+    # --------------------------------------------------------
 
-        </button>
+    "English Vocabulary | Elementary": {
+        "price": 10.00,
+        "old_price": 20.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYHH5001622",
+    },
 
+    "English Vocabulary | Intermediate": {
+        "price": 11.00,
+        "old_price": 22.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYi3500163U",
+    },
 
-        <button
-            class="course-button"
-            onclick="openMajorCourse('grammar')"
-        >
+    "English Vocabulary | Upper-intermediate": {
+        "price": 12.00,
+        "old_price": 24.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAY1u500164h",
+    },
 
-            English Grammar Course
+    "English Vocabulary | Advanced": {
+        "price": 13.00,
+        "old_price": 26.00,
+        "discount": 50,
+        "payment_link":
+            "https://link.payway.com.kh/ABAPAYrH500165p",
+    },
+}
 
-            <br>
 
-            <span>
-                វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
-            </span>
+# ============================================================
+# DATABASE CREATION
+# ============================================================
 
-        </button>
+def create_database():
 
+    connection = sqlite3.connect(DATABASE)
 
-        <button
-            class="course-button"
-            onclick="openMajorCourse('vocabulary')"
-        >
+    cursor = connection.cursor()
 
-            English Vocabulary Course
+    # --------------------------------------------------------
+    # STUDENT REGISTRATIONS
+    # --------------------------------------------------------
 
-            <br>
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS payment_registrations (
 
-            <span>
-                វគ្គវាក្យសព្ទភាសាអង់គ្លេស
-            </span>
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-        </button>
+            telegram_id INTEGER NOT NULL,
 
+            telegram_name TEXT,
 
-        <button
-            id="continuePaymentButton"
-            class="secondary-button hidden"
-            onclick="openSavedPayment()"
-        >
+            username TEXT,
 
-            Payment completed
+            course TEXT NOT NULL,
 
-            <br>
+            price REAL NOT NULL,
 
-            ការទូទាត់បានបញ្ចប់
+            payment_date TEXT,
 
-        </button>
+            payment_day INTEGER,
 
-    </section>
+            payment_month INTEGER,
 
+            payment_year INTEGER,
 
-    <!-- ================================================= -->
-    <!-- LEVEL PAGE -->
-    <!-- ================================================= -->
+            student_apv TEXT,
 
-    <section
-        id="levelPage"
-        class="hidden"
-    >
+            status TEXT DEFAULT 'WAITING_PAYMENT',
 
-        <div class="brand">
-            Vlearn Together
-        </div>
+            transaction_id TEXT,
 
+            payer_name TEXT,
 
-        <div
-            id="majorTitle"
-            class="page-title"
-        ></div>
+            payer_account TEXT,
 
+            matched_at TIMESTAMP,
 
-        <div
-            id="majorKhmer"
-            class="khmer-title"
-        ></div>
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
+        )
+        """
+    )
 
-        <div id="levelButtons"></div>
 
+    # --------------------------------------------------------
+    # ABA PAYMENTS
+    # --------------------------------------------------------
 
-        <button
-            class="back-button"
-            onclick="goHome()"
-        >
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS aba_payments (
 
-            ← Back to Courses
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-            <br>
+            amount REAL NOT NULL,
 
-            ត្រលប់ក្រោយ
+            payment_date TEXT,
 
-        </button>
+            payment_day INTEGER,
 
-    </section>
+            payment_month INTEGER,
 
+            payment_year INTEGER,
 
-    <!-- ================================================= -->
-    <!-- COURSE PAGE -->
-    <!-- ================================================= -->
+            apv TEXT UNIQUE,
 
-    <section
-        id="coursePage"
-        class="hidden"
-    >
+            transaction_id TEXT,
 
-        <div class="brand">
-            Vlearn Together
-        </div>
+            payer_name TEXT,
 
+            payer_account TEXT,
 
-        <div
-            id="courseCard"
-            class="price-card"
-        ></div>
+            source TEXT,
 
+            matched_registration_id INTEGER,
 
-        <button
-            class="back-button"
-            onclick="goLevels()"
-        >
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-            ← Back to Courses
+        )
+        """
+    )
 
-            <br>
 
-            ត្រលប់ក្រោយ
+    connection.commit()
 
-        </button>
+    connection.close()
 
-    </section>
 
+# ============================================================
+# SAVE OR UPDATE REGISTRATION
+# ============================================================
 
-    <!-- ================================================= -->
-    <!-- PAYMENT COMPLETED PAGE -->
-    <!-- ================================================= -->
+def save_student_registration(
+    telegram_id,
+    telegram_name,
+    username,
+    course,
+    price,
+    payment_date,
+    payment_day,
+    payment_month,
+    payment_year,
+    student_apv,
+):
 
-    <section
-        id="paymentPage"
-        class="hidden"
-    >
+    connection = sqlite3.connect(DATABASE)
 
-        <div class="brand">
-            Vlearn Together
-        </div>
+    cursor = connection.cursor()
 
 
-        <div class="payment-title">
-            Payment completed
-        </div>
+    # --------------------------------------------------------
+    # Check whether this student already has a waiting
+    # registration for the same course.
+    # --------------------------------------------------------
 
+    cursor.execute(
+        """
+        SELECT id
 
-        <div class="payment-khmer">
-            ការទូទាត់បានបញ្ចប់
-        </div>
+        FROM payment_registrations
 
-
-        <div
-            id="selectedCourse"
-            class="selected-course"
-        ></div>
-
-
-        <div class="instruction">
-
-            Please enter the payment date and APV exactly
-            as shown on your ABA payment receipt.
-
-            <br><br>
-
-            សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់ និងលេខ APV
-            ឲ្យបានត្រឹមត្រូវតាមបង្កាន់ដៃទូទាត់ ABA របស់អ្នក។
-
-        </div>
-
-
-        <label
-            class="input-label"
-            for="paymentDate"
-        >
-
-            Payment Date
-
-            <br>
-
-            កាលបរិច្ឆេទទូទាត់
-
-        </label>
-
-
-        <input
-            id="paymentDate"
-            type="date"
-        >
-
-
-        <div class="date-example">
-
-            Example: 15/08/2026
-
-            <br>
-
-            ឧទាហរណ៍៖ 15/08/2026
-
-        </div>
-
-
-        <label
-            class="input-label"
-            for="paymentApv"
-        >
-
-            APV
-
-            <br>
-
-            លេខ APV
-
-        </label>
-
-
-        <input
-            id="paymentApv"
-            class="apv-input"
-            type="text"
-            inputmode="numeric"
-            maxlength="20"
-            placeholder="Enter APV"
-        >
-
-
-        <div
-            id="paymentError"
-            class="error-box hidden"
-        ></div>
-
-
-        <button
-            class="primary-button"
-            onclick="submitPaymentInformation()"
-        >
-
-            Confirm Payment
-
-            <br>
-
-            បញ្ជាក់ការទូទាត់
-
-        </button>
-
-
-        <button
-            class="back-button"
-            onclick="goHome()"
-        >
-
-            ← Back to Courses
-
-            <br>
-
-            ត្រលប់ក្រោយ
-
-        </button>
-
-    </section>
-
-
-    <!-- ================================================= -->
-    <!-- RECEIPT PAGE -->
-    <!-- ================================================= -->
-
-    <section
-        id="receiptPage"
-        class="hidden"
-    >
-
-        <div class="brand">
-            Vlearn Together
-        </div>
-
-
-        <div class="success-box">
-
-            Registration successful.
-
-            <br>
-
-            ការចុះឈ្មោះបានជោគជ័យ។
-
-        </div>
-
-
-        <div
-            id="receipt"
-            class="receipt"
-        ></div>
-
-
-        <div class="contact">
-
-            <a
-                href="https://t.me/Vlearn_together"
-                target="_blank"
-            >
-
-                https://t.me/Vlearn_together
-
-            </a>
-
-        </div>
-
-
-        <div class="small-note">
-
-            Please keep this receipt as your proof of registration.
-
-            <br>
-
-            សូមរក្សាទុកបង្កាន់ដៃនេះជាភស្តុតាងនៃការចុះឈ្មោះរបស់អ្នក។
-
-        </div>
-
-
-        <button
-            class="primary-button"
-            onclick="goHome()"
-        >
-
-            Back to Courses
-
-            <br>
-
-            ត្រលប់ទៅវគ្គសិក្សា
-
-        </button>
-
-    </section>
-
-
-</div>
-
-
-<script>
-
-
-    // =====================================================
-    // TELEGRAM
-    // =====================================================
-
-    const tg =
-        window.Telegram.WebApp;
-
-
-    tg.ready();
-
-    tg.expand();
-
-
-    // =====================================================
-    // TELEGRAM USER
-    // =====================================================
-
-    const user =
-        tg.initDataUnsafe &&
-        tg.initDataUnsafe.user;
-
-
-    const telegramUserElement =
-        document.getElementById(
-            "telegramUser"
-        );
-
-
-    if (user) {
-
-        telegramUserElement.textContent =
-            "Welcome, " +
-            (
-                user.first_name ||
-                "student"
-            ) +
-            "!";
-
-    }
-    else {
-
-        telegramUserElement.textContent =
-            "Welcome!";
-
-    }
-
-
-    // =====================================================
-    // COURSE DATA
-    // =====================================================
-
-    const courses = {
-
-
-        // =================================================
-        // GENERAL ENGLISH
-        // =================================================
-
-        general: {
-
-            title:
-                "General English Programme",
-
-            khmer:
-                "កម្មវិធីភាសាអង់គ្លេសទូទៅ",
-
-            levels: [
-
-                {
-                    name:
-                        "Beginner | Level 1–2",
-
-                    botCourse:
-                        "General English | Beginner 1–2",
-
-                    oldPrice:
-                        30,
-
-                    price:
-                        15,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAY1e499924g"
-                },
-
-
-                {
-                    name:
-                        "Elementary | Level 3–4",
-
-                    botCourse:
-                        "General English | Elementary 3–4",
-
-                    oldPrice:
-                        32,
-
-                    price:
-                        16,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAY12499938C"
-                },
-
-
-                {
-                    name:
-                        "Pre-intermediate | Level 5–6",
-
-                    botCourse:
-                        "General English | Pre-intermediate 5–6",
-
-                    oldPrice:
-                        38,
-
-                    price:
-                        19,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYW4499941w"
-                },
-
-
-                {
-                    name:
-                        "Intermediate | Level 7–8",
-
-                    botCourse:
-                        "General English | Intermediate 7–8",
-
-                    oldPrice:
-                        40,
-
-                    price:
-                        20,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYoS499945e"
-                }
-
-            ]
-
-        },
-
-
-        // =================================================
-        // ENGLISH GRAMMAR
-        // =================================================
-
-        grammar: {
-
-            title:
-                "English Grammar Course",
-
-            khmer:
-                "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស",
-
-            levels: [
-
-                {
-                    name:
-                        "Elementary",
-
-                    botCourse:
-                        "English Grammar | Elementary",
-
-                    oldPrice:
-                        42,
-
-                    price:
-                        25.20,
-
-                    discount:
-                        40,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAY0V500157n"
-                },
-
-
-                {
-                    name:
-                        "Intermediate",
-
-                    botCourse:
-                        "English Grammar | Intermediate",
-
-                    oldPrice:
-                        45,
-
-                    price:
-                        27,
-
-                    discount:
-                        40,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYqL500160G"
-                },
-
-
-                {
-                    name:
-                        "Advanced",
-
-                    botCourse:
-                        "English Grammar | Advanced",
-
-                    oldPrice:
-                        50,
-
-                    price:
-                        30,
-
-                    discount:
-                        40,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYKr500161M"
-                }
-
-            ]
-
-        },
-
-
-        // =================================================
-        // ENGLISH VOCABULARY
-        // =================================================
-
-        vocabulary: {
-
-            title:
-                "English Vocabulary Course",
-
-            khmer:
-                "វគ្គវាក្យសព្ទភាសាអង់គ្លេស",
-
-            levels: [
-
-                {
-                    name:
-                        "Elementary",
-
-                    botCourse:
-                        "English Vocabulary | Elementary",
-
-                    oldPrice:
-                        20,
-
-                    price:
-                        10,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYHH5001622"
-                },
-
-
-                {
-                    name:
-                        "Intermediate",
-
-                    botCourse:
-                        "English Vocabulary | Intermediate",
-
-                    oldPrice:
-                        22,
-
-                    price:
-                        11,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYi3500163U"
-                },
-
-
-                {
-                    name:
-                        "Upper-intermediate",
-
-                    botCourse:
-                        "English Vocabulary | Upper-intermediate",
-
-                    oldPrice:
-                        24,
-
-                    price:
-                        12,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAY1u500164h"
-                },
-
-
-                {
-                    name:
-                        "Advanced",
-
-                    botCourse:
-                        "English Vocabulary | Advanced",
-
-                    oldPrice:
-                        26,
-
-                    price:
-                        13,
-
-                    discount:
-                        50,
-
-                    paymentLink:
-                        "https://link.payway.com.kh/ABAPAYrH500165p"
-                }
-
-            ]
-
-        }
-
-    };
-
-
-    // =====================================================
-    // CURRENT COURSE
-    // =====================================================
-
-    let currentMajor =
-        null;
-
-
-    let currentLevel =
-        null;
-
-
-    // =====================================================
-    // STORAGE KEYS
-    // =====================================================
-
-    const SAVED_COURSE_KEY =
-        "vlearn_pending_course";
-
-
-    const LAST_PAYMENT_KEY =
-        "vlearn_last_payment";
-
-
-    // =====================================================
-    // SAVE COURSE
-    // =====================================================
-
-    function saveCourseForPayment() {
-
-        if (
-            !currentMajor ||
-            !currentLevel
-        ) {
-
-            return;
-
-        }
-
-
-        const savedCourse = {
-
-            major:
-                currentMajor,
-
-            name:
-                currentLevel.name,
-
-            botCourse:
-                currentLevel.botCourse,
-
-            price:
-                Number(
-                    currentLevel.price
-                ),
-
-            oldPrice:
-                Number(
-                    currentLevel.oldPrice
-                ),
-
-            discount:
-                Number(
-                    currentLevel.discount
-                ),
-
-            paymentLink:
-                currentLevel.paymentLink
-
-        };
-
-
-        localStorage.setItem(
-
-            SAVED_COURSE_KEY,
-
-            JSON.stringify(
-                savedCourse
+        WHERE
+            telegram_id = ?
+            AND course = ?
+            AND status IN (
+                'WAITING_PAYMENT',
+                'WAITING_MATCH'
             )
 
-        );
+        ORDER BY id DESC
 
-    }
+        LIMIT 1
+        """,
+        (
+            telegram_id,
+            course,
+        ),
+    )
 
 
-    // =====================================================
-    // GET SAVED COURSE
-    // =====================================================
+    existing = cursor.fetchone()
 
-    function getSavedCourse() {
 
-        const saved =
-            localStorage.getItem(
-                SAVED_COURSE_KEY
-            );
+    if existing:
 
+        registration_id = existing[0]
 
-        if (!saved) {
 
-            return null;
+        cursor.execute(
+            """
+            UPDATE payment_registrations
 
-        }
+            SET
+                telegram_name = ?,
+                username = ?,
+                price = ?,
+                payment_date = ?,
+                payment_day = ?,
+                payment_month = ?,
+                payment_year = ?,
+                student_apv = ?,
+                status = 'WAITING_MATCH'
 
-
-        try {
-
-            return JSON.parse(
-                saved
-            );
-
-        }
-        catch (error) {
-
-            console.log(
-                "Could not read saved course:",
-                error
-            );
-
-            return null;
-
-        }
-
-    }
-
-
-    // =====================================================
-    // HIDE ALL PAGES
-    // =====================================================
-
-    function hideAllPages() {
-
-        document
-            .getElementById("homePage")
-            .classList.add("hidden");
-
-
-        document
-            .getElementById("levelPage")
-            .classList.add("hidden");
-
-
-        document
-            .getElementById("coursePage")
-            .classList.add("hidden");
-
-
-        document
-            .getElementById("paymentPage")
-            .classList.add("hidden");
-
-
-        document
-            .getElementById("receiptPage")
-            .classList.add("hidden");
-
-    }
-
-
-    // =====================================================
-    // HOME
-    // =====================================================
-
-    function goHome() {
-
-        hideAllPages();
-
-
-        document
-            .getElementById("homePage")
-            .classList.remove("hidden");
-
-
-        currentMajor =
-            null;
-
-
-        currentLevel =
-            null;
-
-
-        updatePaymentButton();
-
-    }
-
-
-    // =====================================================
-    // UPDATE PAYMENT BUTTON
-    // =====================================================
-
-    function updatePaymentButton() {
-
-        const saved =
-            getSavedCourse();
-
-
-        const button =
-            document.getElementById(
-                "continuePaymentButton"
-            );
-
-
-        if (saved) {
-
-            button.classList.remove(
-                "hidden"
-            );
-
-        }
-        else {
-
-            button.classList.add(
-                "hidden"
-            );
-
-        }
-
-    }
-
-
-    // =====================================================
-    // OPEN MAJOR COURSE
-    // =====================================================
-
-    function openMajorCourse(
-        major
-    ) {
-
-        if (
-            !courses[major]
-        ) {
-
-            return;
-
-        }
-
-
-        currentMajor =
-            major;
-
-
-        const data =
-            courses[major];
-
-
-        hideAllPages();
-
-
-        document
-            .getElementById("levelPage")
-            .classList.remove("hidden");
-
-
-        document
-            .getElementById("majorTitle")
-            .textContent =
-            data.title;
-
-
-        document
-            .getElementById("majorKhmer")
-            .textContent =
-            data.khmer;
-
-
-        const levelContainer =
-            document.getElementById(
-                "levelButtons"
-            );
-
-
-        levelContainer.innerHTML =
-            "";
-
-
-        data.levels.forEach(
-
+            WHERE id = ?
+            """,
             (
-                level,
-                index
-            ) => {
-
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                button.className =
-                    "level-button";
-
-
-                button.textContent =
-                    level.name;
-
-
-                button.onclick =
-                    function() {
-
-                        openCourse(
-                            index
-                        );
-
-                    };
-
-
-                levelContainer.appendChild(
-                    button
-                );
-
-            }
-
-        );
-
-    }
-
-
-    // =====================================================
-    // OPEN COURSE
-    // =====================================================
-
-    function openCourse(
-        index
-    ) {
-
-        if (
-            !currentMajor ||
-            !courses[currentMajor]
-        ) {
-
-            return;
-
-        }
-
-
-        currentLevel =
-            courses[
-                currentMajor
-            ].levels[index];
-
-
-        if (!currentLevel) {
-
-            return;
-
-        }
-
-
-        saveCourseForPayment();
-
-
-        hideAllPages();
-
-
-        document
-            .getElementById("coursePage")
-            .classList.remove("hidden");
-
-
-        renderCourse();
-
-    }
-
-
-    // =====================================================
-    // RENDER COURSE
-    // =====================================================
-
-    function renderCourse() {
-
-        const course =
-            currentLevel;
-
-
-        if (!course) {
-
-            return;
-
-        }
-
-
-        const card =
-            document.getElementById(
-                "courseCard"
-            );
-
-
-        card.innerHTML = `
-
-            <div class="course-name">
-
-                ${course.name}
-
-            </div>
-
-
-            <div class="price">
-
-                <span class="old-price">
-
-                    $${Number(
-                        course.oldPrice
-                    ).toFixed(2)}
-
-                </span>
-
-
-                <span class="new-price">
-
-                    $${Number(
-                        course.price
-                    ).toFixed(2)}
-
-                </span>
-
-            </div>
-
-
-            <div class="discount">
-
-                Save ${course.discount}%
-
-                <br>
-
-                សន្សំបាន ${course.discount}%
-
-            </div>
-
-
-            <div class="payment-info">
-
-                <strong>
-                    Payment Instructions
-                </strong>
-
-                <br><br>
-
-                1. Press
-                <strong>
-                    Continue Registration
-                </strong>
-                below.
-
-                <br>
-
-                ១. ចុច
-                <strong>
-                    បន្តការចុះឈ្មោះ
-                </strong>
-                ខាងក្រោម។
-
-                <br><br>
-
-                2. You will be taken to the
-                ABA payment page for this course.
-
-                <br>
-
-                ២. អ្នកនឹងត្រូវបានបញ្ជូនទៅទំព័រ
-                ទូទាត់ប្រាក់ ABA សម្រាប់វគ្គនេះ។
-
-                <br><br>
-
-                3. Complete the payment.
-
-                <br>
-
-                ៣. សូមបញ្ចប់ការទូទាត់។
-
-                <br><br>
-
-                4. Return to Vlearn Together
-                and press
-                <strong>
-                    Payment completed
-                </strong>.
-
-                <br>
-
-                ៤. ត្រឡប់មក Vlearn Together
-                ហើយចុច
-                <strong>
-                    ការទូទាត់បានបញ្ចប់
-                </strong>។
-
-            </div>
-
-
-            <button
-                id="continueRegistrationButton"
-                class="primary-button"
-                onclick="registerCourse()"
-            >
-
-                Continue Registration
-
-                <br>
-
-                បន្តការចុះឈ្មោះ
-
-            </button>
-
-
-            <div class="payment-link-note">
-
-                ABA payment is required to continue.
-
-                <br>
-
-                ត្រូវធ្វើការទូទាត់ ABA ដើម្បីបន្ត។
-
-            </div>
-
-
-            <button
-                class="secondary-button"
-                onclick="openPaymentPage()"
-            >
-
-                Payment completed
-
-                <br>
-
-                ការទូទាត់បានបញ្ចប់
-
-            </button>
-
-        `;
-
-    }
-
-
-    // =====================================================
-    // CONTINUE REGISTRATION
-    // =====================================================
-    //
-    // IMPORTANT:
-    // This function now opens the ABA payment link.
-    // It does NOT use tg.sendData().
-    //
-    // The selected course is already saved in localStorage,
-    // so the student can return later and press
-    // "Payment completed".
-    //
-    // =====================================================
-
-    function registerCourse() {
-
-        if (!currentLevel) {
-
-            alert(
-                "Please choose a course first."
-            );
-
-            return;
-
-        }
-
-
-        // Save selected course before opening ABA.
-
-        saveCourseForPayment();
-
-
-        // Make sure the course has a payment link.
-
-        if (
-            !currentLevel.paymentLink
-        ) {
-
-            alert(
-
-                "Payment link is not available for this course." +
-
-                "\n\n" +
-
-                "ការទូទាត់សម្រាប់វគ្គនេះមិនទាន់មានតំណភ្ជាប់ទេ។"
-
-            );
-
-            return;
-
-        }
-
-
-        const paymentLink =
-            currentLevel.paymentLink;
-
-
-        console.log(
-            "Opening ABA payment link:",
-            paymentLink
-        );
-
-
-        try {
-
-            /*
-                Telegram's openLink() opens the payment
-                website outside the Mini App while keeping
-                the Mini App available.
-            */
-
-            tg.openLink(
-                paymentLink
-            );
-
-        }
-        catch (error) {
-
-            console.log(
-                "tg.openLink() error:",
-                error
-            );
-
-
-            /*
-                Fallback for browsers/testing.
-            */
-
-            window.open(
-                paymentLink,
-                "_blank"
-            );
-
-        }
-
-    }
-
-
-    // =====================================================
-    // OPEN SAVED PAYMENT
-    // =====================================================
-
-    function openSavedPayment() {
-
-        const saved =
-            getSavedCourse();
-
-
-        if (!saved) {
-
-            alert(
-
-                "Please choose a course first." +
-
-                "\n\n" +
-
-                "សូមជ្រើសរើសវគ្គសិក្សាជាមុនសិន។"
-
-            );
-
-            return;
-
-        }
-
-
-        currentMajor =
-            saved.major;
-
-
-        currentLevel =
-            saved;
-
-
-        openPaymentPage();
-
-    }
-
-
-    // =====================================================
-    // OPEN PAYMENT PAGE
-    // =====================================================
-
-    function openPaymentPage() {
-
-        let course =
-            currentLevel;
-
-
-        if (!course) {
-
-            course =
-                getSavedCourse();
-
-        }
-
-
-        if (!course) {
-
-            alert(
-
-                "Please choose your course first." +
-
-                "\n\n" +
-
-                "សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នកជាមុនសិន។"
-
-            );
-
-
-            goHome();
-
-
-            return;
-
-        }
-
-
-        currentLevel =
-            course;
-
-
-        hideAllPages();
-
-
-        document
-            .getElementById("paymentPage")
-            .classList.remove("hidden");
-
-
-        document
-            .getElementById("selectedCourse")
-            .innerHTML = `
-
-                <div class="selected-course-title">
-
-                    Selected course
-
-                </div>
-
-
-                <div class="selected-course-name">
-
-                    ${course.name}
-
-                </div>
-
-
-                <br>
-
-
-                <strong>
-
-                    Price:
-                    $${Number(
-                        course.price
-                    ).toFixed(2)}
-
-                </strong>
-
-
-                <br>
-
-
-                តម្លៃ៖
-                $${Number(
-                    course.price
-                ).toFixed(2)}
-
-            `;
-
-
-        document
-            .getElementById("paymentError")
-            .classList.add("hidden");
-
-    }
-
-
-    // =====================================================
-    // SUBMIT DATE + APV
-    // =====================================================
-
-    function submitPaymentInformation() {
-
-        const course =
-            currentLevel ||
-            getSavedCourse();
-
-
-        if (!course) {
-
-            showPaymentError(
-
-                "Please choose your course first." +
-
-                "\n\n" +
-
-                "សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នកជាមុនសិន។"
-
-            );
-
-            return;
-
-        }
-
-
-        const date =
-            document
-                .getElementById(
-                    "paymentDate"
-                )
-                .value;
-
-
-        const apv =
-            document
-                .getElementById(
-                    "paymentApv"
-                )
-                .value
-                .trim();
-
-
-        if (!date) {
-
-            showPaymentError(
-
-                "Please enter your payment date." +
-
-                "\n\n" +
-
-                "សូមបញ្ចូលកាលបរិច្ឆេទទូទាត់របស់អ្នក។"
-
-            );
-
-            return;
-
-        }
-
-
-        if (!apv) {
-
-            showPaymentError(
-
-                "Please enter your APV." +
-
-                "\n\n" +
-
-                "សូមបញ្ចូលលេខ APV របស់អ្នក។"
-
-            );
-
-            return;
-
-        }
-
-
-        if (!/^\d+$/.test(apv)) {
-
-            showPaymentError(
-
-                "APV must contain numbers only." +
-
-                "\n\n" +
-
-                "លេខ APV ត្រូវតែមានតែលេខប៉ុណ្ណោះ។"
-
-            );
-
-            return;
-
-        }
-
-
-        const paymentData = {
-
-            action:
-                "PAYMENT_COMPLETED",
-
-            course:
-                course.botCourse,
-
-            price:
-                Number(
-                    course.price
-                ),
-
-            payment_date:
-                date,
-
-            apv:
-                apv
-
-        };
-
-
-        /*
-            Save locally before sending to Telegram.
-        */
-
-        localStorage.setItem(
-
-            LAST_PAYMENT_KEY,
-
-            JSON.stringify(
-                paymentData
+                telegram_name,
+                username,
+                price,
+                payment_date,
+                payment_day,
+                payment_month,
+                payment_year,
+                student_apv,
+                registration_id,
+            ),
+        )
+
+
+    else:
+
+        cursor.execute(
+            """
+            INSERT INTO payment_registrations
+            (
+                telegram_id,
+                telegram_name,
+                username,
+                course,
+                price,
+                payment_date,
+                payment_day,
+                payment_month,
+                payment_year,
+                student_apv,
+                status
             )
 
-        );
+            VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'WAITING_MATCH'
+            )
+            """,
+            (
+                telegram_id,
+                telegram_name,
+                username,
+                course,
+                price,
+                payment_date,
+                payment_day,
+                payment_month,
+                payment_year,
+                student_apv,
+            ),
+        )
 
 
-        console.log(
-            "Payment information:",
-            paymentData
-        );
+        registration_id = cursor.lastrowid
 
 
-        try {
+    connection.commit()
 
-            tg.sendData(
+    connection.close()
 
-                JSON.stringify(
-                    paymentData
-                )
 
-            );
+    return registration_id
 
 
-            /*
-                Telegram normally closes the Mini App
-                after sendData().
-            */
+# ============================================================
+# FIND MATCHING ABA PAYMENT
+# ============================================================
 
-        }
-        catch (error) {
+def find_matching_aba_payment(
+    amount,
+    payment_day,
+    payment_month,
+    payment_year,
+    apv,
+):
 
-            console.log(
-                "tg.sendData() error:",
-                error
-            );
+    connection = sqlite3.connect(DATABASE)
 
+    connection.row_factory = sqlite3.Row
 
-            showPaymentError(
+    cursor = connection.cursor()
 
-                "The payment information could not be sent." +
 
-                "\n\n" +
+    cursor.execute(
+        """
+        SELECT *
 
-                "មិនអាចផ្ញើព័ត៌មានការទូទាត់បានទេ។"
+        FROM aba_payments
 
-            );
+        WHERE
 
-        }
+            ABS(amount - ?) < 0.01
 
-    }
+            AND payment_day = ?
 
+            AND apv = ?
 
-    // =====================================================
-    // PAYMENT ERROR
-    // =====================================================
+            AND (
+                payment_month = ?
+                OR payment_month IS NULL
+            )
 
-    function showPaymentError(
-        message
-    ) {
+            AND (
+                payment_year = ?
+                OR payment_year IS NULL
+            )
 
-        const errorBox =
-            document.getElementById(
-                "paymentError"
-            );
+            AND matched_registration_id IS NULL
 
+        ORDER BY id ASC
 
-        errorBox.textContent =
-            message;
+        LIMIT 1
+        """,
+        (
+            amount,
+            payment_day,
+            apv,
+            payment_month,
+            payment_year,
+        ),
+    )
 
 
-        errorBox.classList.remove(
-            "hidden"
-        );
+    result = cursor.fetchone()
 
-    }
+    connection.close()
 
 
-    // =====================================================
-    // SHOW RECEIPT
-    // =====================================================
+    return result
 
-    function showReceipt(
-        payment
-    ) {
 
-        const course =
-            currentLevel ||
-            getSavedCourse();
+# ============================================================
+# FIND MATCHING REGISTRATION
+# ============================================================
 
+def find_matching_registration(
+    amount,
+    payment_day,
+    payment_month,
+    payment_year,
+    apv,
+):
 
-        if (!course) {
+    connection = sqlite3.connect(DATABASE)
 
-            return;
+    connection.row_factory = sqlite3.Row
 
-        }
+    cursor = connection.cursor()
 
 
-        hideAllPages();
+    cursor.execute(
+        """
+        SELECT *
 
+        FROM payment_registrations
+
+        WHERE
 
-        document
-            .getElementById("receiptPage")
-            .classList.remove("hidden");
+            ABS(price - ?) < 0.01
 
+            AND payment_day = ?
 
-        const date =
-            formatDate(
-                payment.payment_date
-            );
+            AND student_apv = ?
 
+            AND (
+                payment_month = ?
+                OR payment_month IS NULL
+            )
 
-        const receipt =
-            document.getElementById(
-                "receipt"
-            );
+            AND (
+                payment_year = ?
+                OR payment_year IS NULL
+            )
 
+            AND status = 'WAITING_MATCH'
 
-        receipt.innerHTML = `
+        ORDER BY id ASC
 
-            <div class="receipt-header">
+        LIMIT 1
+        """,
+        (
+            amount,
+            payment_day,
+            apv,
+            payment_month,
+            payment_year,
+        ),
+    )
 
-                <div class="receipt-brand">
 
-                    Vlearn Together
+    result = cursor.fetchone()
 
-                </div>
+    connection.close()
 
 
-                <div class="receipt-title">
+    return result
 
-                    Registration Receipt
 
-                </div>
+# ============================================================
+# SAVE ABA PAYMENT
+# ============================================================
 
+def save_aba_payment(
+    amount,
+    payment_date,
+    payment_day,
+    payment_month,
+    payment_year,
+    apv,
+    transaction_id,
+    payer_name,
+    payer_account,
+    source,
+):
 
-                <div class="receipt-khmer-title">
+    connection = sqlite3.connect(DATABASE)
 
-                    បង្កាន់ដៃចុះឈ្មោះ
+    cursor = connection.cursor()
 
-                </div>
 
-            </div>
+    try:
 
+        cursor.execute(
+            """
+            INSERT INTO aba_payments
+            (
+                amount,
+                payment_date,
+                payment_day,
+                payment_month,
+                payment_year,
+                apv,
+                transaction_id,
+                payer_name,
+                payer_account,
+                source
+            )
 
-            <div class="receipt-row">
+            VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            )
+            """,
+            (
+                amount,
+                payment_date,
+                payment_day,
+                payment_month,
+                payment_year,
+                apv,
+                transaction_id,
+                payer_name,
+                payer_account,
+                source,
+            ),
+        )
 
-                <div class="receipt-label">
 
-                    Course
+        payment_id = cursor.lastrowid
 
-                </div>
+        connection.commit()
 
+        connection.close()
 
-                <div class="receipt-value">
 
-                    ${course.name}
+        return payment_id
 
-                </div>
 
-            </div>
+    except sqlite3.IntegrityError:
 
+        connection.close()
 
-            <div class="receipt-row">
+        return None
 
-                <div class="receipt-label">
 
-                    វគ្គសិក្សា
+# ============================================================
+# MARK REGISTRATION AS PAID
+# ============================================================
 
-                </div>
+def mark_registration_paid(
+    registration_id,
+    payment_id,
+    transaction_id,
+    payer_name,
+    payer_account,
+):
 
+    connection = sqlite3.connect(DATABASE)
 
-                <div class="receipt-value">
+    cursor = connection.cursor()
 
-                    ${course.name}
 
-                </div>
+    cursor.execute(
+        """
+        UPDATE payment_registrations
 
-            </div>
+        SET
 
+            status = 'PAID',
 
-            <div class="receipt-row">
+            transaction_id = ?,
 
-                <div class="receipt-label">
+            payer_name = ?,
 
-                    Amount
+            payer_account = ?,
 
-                </div>
+            matched_at = CURRENT_TIMESTAMP
 
+        WHERE id = ?
+        """,
+        (
+            transaction_id,
+            payer_name,
+            payer_account,
+            registration_id,
+        ),
+    )
 
-                <div class="receipt-value">
 
-                    $${Number(
-                        course.price
-                    ).toFixed(2)}
+    cursor.execute(
+        """
+        UPDATE aba_payments
 
-                </div>
+        SET matched_registration_id = ?
 
-            </div>
+        WHERE id = ?
+        """,
+        (
+            registration_id,
+            payment_id,
+        ),
+    )
 
 
-            <div class="receipt-row">
+    connection.commit()
 
-                <div class="receipt-label">
+    connection.close()
 
-                    Payment Date
 
-                </div>
+# ============================================================
+# PARSE STUDENT DATE
+# ============================================================
 
+def parse_student_date(date_text):
 
-                <div class="receipt-value">
+    date_text = date_text.strip()
 
-                    ${date}
 
-                </div>
+    try:
 
-            </div>
-
-
-            <div class="receipt-row">
-
-                <div class="receipt-label">
-
-                    APV
-
-                </div>
-
-
-                <div class="receipt-value">
-
-                    ${payment.apv}
-
-                </div>
-
-            </div>
-
-
-            <div class="receipt-status">
-
-                Registration successful
-
-                <br>
-
-                ការចុះឈ្មោះបានជោគជ័យ
-
-            </div>
-
-        `;
-
-    }
-
-
-    // =====================================================
-    // FORMAT DATE
-    // =====================================================
-
-    function formatDate(
-        dateString
-    ) {
-
-        if (!dateString) {
-
-            return "";
-
-        }
-
-
-        const parts =
-            dateString.split("-");
-
-
-        if (
-            parts.length !== 3
-        ) {
-
-            return dateString;
-
-        }
+        parsed = datetime.strptime(
+            date_text,
+            "%d/%m/%Y",
+        )
 
 
         return (
+            parsed.day,
+            parsed.month,
+            parsed.year,
+            parsed.strftime("%d/%m/%Y"),
+        )
 
-            parts[2] +
-            "/" +
-            parts[1] +
-            "/" +
-            parts[0]
 
-        );
+    except ValueError:
 
+        return None
+
+
+# ============================================================
+# EXTRACT APV
+# ============================================================
+
+def extract_apv(message):
+
+    if not message:
+
+        return None
+
+
+    patterns = [
+
+        r"\bAPV\s*[:\-]?\s*(\d{4,10})\b",
+
+        r"\bAPV\s+(\d{4,10})\b",
+
+        r"លេខ\s*APV\s*[:\-]?\s*(\d{4,10})",
+
+    ]
+
+
+    for pattern in patterns:
+
+        match = re.search(
+            pattern,
+            message,
+            re.IGNORECASE,
+        )
+
+
+        if match:
+
+            return match.group(1)
+
+
+    return None
+
+
+# ============================================================
+# EXTRACT AMOUNT
+# ============================================================
+
+def extract_amount(message):
+
+    if not message:
+
+        return None
+
+
+    match = re.search(
+        r"\$(\d+(?:\.\d{1,2})?)",
+        message,
+    )
+
+
+    if match:
+
+        return float(
+            match.group(1)
+        )
+
+
+    match = re.search(
+        r"Amount\s*:\s*\$?\s*(\d+(?:\.\d{1,2})?)",
+        message,
+        re.IGNORECASE,
+    )
+
+
+    if match:
+
+        return float(
+            match.group(1)
+        )
+
+
+    return None
+
+
+# ============================================================
+# EXTRACT ENGLISH DATE
+# ============================================================
+
+def extract_english_date(message):
+
+    month_names = {
+
+        "jan": 1,
+        "january": 1,
+
+        "feb": 2,
+        "february": 2,
+
+        "mar": 3,
+        "march": 3,
+
+        "apr": 4,
+        "april": 4,
+
+        "may": 5,
+
+        "jun": 6,
+        "june": 6,
+
+        "jul": 7,
+        "july": 7,
+
+        "aug": 8,
+        "august": 8,
+
+        "sep": 9,
+        "sept": 9,
+        "september": 9,
+
+        "oct": 10,
+        "october": 10,
+
+        "nov": 11,
+        "november": 11,
+
+        "dec": 12,
+        "december": 12,
     }
 
 
-    // =====================================================
-    // BACK TO LEVELS
-    // =====================================================
+    pattern = (
 
-    function goLevels() {
+        r"\b("
 
-        if (!currentMajor) {
+        + "|".join(
+            month_names.keys()
+        )
 
-            goHome();
+        + r")\s+"
 
-            return;
+        r"(\d{1,2})"
 
-        }
-
-
-        hideAllPages();
+    )
 
 
-        document
-            .getElementById("levelPage")
-            .classList.remove("hidden");
+    match = re.search(
+        pattern,
+        message,
+        re.IGNORECASE,
+    )
 
 
-        const data =
-            courses[currentMajor];
+    if not match:
+
+        return None
 
 
-        document
-            .getElementById("majorTitle")
-            .textContent =
-            data.title;
+    month_text = (
+        match.group(1)
+        .lower()
+    )
 
 
-        document
-            .getElementById("majorKhmer")
-            .textContent =
-            data.khmer;
+    day = int(
+        match.group(2)
+    )
 
 
-        const levelContainer =
-            document.getElementById(
-                "levelButtons"
-            );
+    month = month_names[
+        month_text
+    ]
 
 
-        levelContainer.innerHTML =
-            "";
+    year = datetime.now().year
 
 
-        data.levels.forEach(
-
-            (
-                level,
-                index
-            ) => {
-
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
+    return (
+        day,
+        month,
+        year,
+        f"{day:02d}/{month:02d}/{year}",
+    )
 
 
-                button.className =
-                    "level-button";
+# ============================================================
+# EXTRACT KHMER DATE
+# ============================================================
+
+def extract_khmer_date(message):
+
+    match = re.search(
+
+        r"នៅថ្ងៃទី\s*(\d{1,2})"
+
+        r"(?:\s*ខែ[^0-9\s]+)?"
+
+        r"(?:\s*ឆ្នាំ\s*(\d{4}))?",
+
+        message,
+    )
 
 
-                button.textContent =
-                    level.name;
+    if not match:
+
+        return None
 
 
-                button.onclick =
-                    function() {
-
-                        openCourse(
-                            index
-                        );
-
-                    };
+    day = int(
+        match.group(1)
+    )
 
 
-                levelContainer.appendChild(
-                    button
-                );
+    year = (
 
-            }
+        int(match.group(2))
 
-        );
+        if match.group(2)
 
-    }
+        else datetime.now().year
 
-
-    // =====================================================
-    // INITIALIZE
-    // =====================================================
-
-    updatePaymentButton();
+    )
 
 
-</script>
+    month = datetime.now().month
 
-</body>
 
-</html>
+    return (
+        day,
+        month,
+        year,
+        f"{day:02d}/{month:02d}/{year}",
+    )
+
+
+# ============================================================
+# EXTRACT PAYMENT DATE
+# ============================================================
+
+def extract_payment_date(message):
+
+    patterns = [
+
+        r"\b(\d{1,2}/\d{1,2}/\d{4})\b",
+
+        r"\b(\d{1,2}-\d{1,2}-\d{4})\b",
+
+    ]
+
+
+    for pattern in patterns:
+
+        match = re.search(
+            pattern,
+            message,
+        )
+
+
+        if match:
+
+            date_text = (
+                match.group(1)
+                .replace("-", "/")
+            )
+
+
+            parsed = parse_student_date(
+                date_text
+            )
+
+
+            if parsed:
+
+                return parsed
+
+
+    english_date = extract_english_date(
+        message
+    )
+
+
+    if english_date:
+
+        return english_date
+
+
+    khmer_date = extract_khmer_date(
+        message
+    )
+
+
+    if khmer_date:
+
+        return khmer_date
+
+
+    return None
+
+
+# ============================================================
+# EXTRACT TRANSACTION ID
+# ============================================================
+
+def extract_transaction_id(message):
+
+    patterns = [
+
+        r"Trx\.\s*ID:\s*(\d+)",
+
+        r"Transaction\s*ID:\s*(\d+)",
+
+        r"លេខប្រតិបត្តិការ:\s*(\d+)",
+
+    ]
+
+
+    for pattern in patterns:
+
+        match = re.search(
+            pattern,
+            message,
+            re.IGNORECASE,
+        )
+
+
+        if match:
+
+            return match.group(1)
+
+
+    return None
+
+
+# ============================================================
+# EXTRACT PAYER
+# ============================================================
+
+def extract_payer(message):
+
+    patterns = [
+
+        r"paid by\s+(.*?)\s+\(\*(\d+)\)",
+
+        r"ត្រូវបានបង់ដោយ\s+(.*?)\s+\(\*(\d+)\)",
+
+    ]
+
+
+    for pattern in patterns:
+
+        match = re.search(
+            pattern,
+            message,
+            re.IGNORECASE,
+        )
+
+
+        if match:
+
+            return (
+                match.group(1).strip(),
+                "*" + match.group(2),
+            )
+
+
+    return (
+        "Unknown",
+        "",
+    )
+
+
+# ============================================================
+# SEND PAYMENT RECEIPT
+# ============================================================
+
+async def send_student_receipt(
+    context,
+    registration,
+    payment,
+):
+
+    receipt_text = (
+
+        "Vlearn Together\n\n"
+
+        "REGISTRATION SUCCESSFUL\n"
+        "ការចុះឈ្មោះបានជោគជ័យ\n\n"
+
+        f"Course:\n"
+        f"{registration['course']}\n\n"
+
+        f"Amount Paid:\n"
+        f"${payment['amount']:.2f}\n\n"
+
+        f"Payment Date:\n"
+        f"{payment['payment_date']}\n\n"
+
+        f"APV:\n"
+        f"{payment['apv']}\n\n"
+
+        f"Transaction ID:\n"
+        f"{payment['transaction_id'] or 'N/A'}\n\n"
+
+        "Payment Status:\n"
+        "PAID\n"
+        "បានបង់ប្រាក់រួចរាល់\n\n"
+
+        "Please keep this message as your "
+        "payment and registration record.\n\n"
+
+        "Contact Vlearn Together\n"
+        "077 448 388\n"
+
+        "https://t.me/Vlearn_together"
+
+    )
+
+
+    try:
+
+        await context.bot.send_message(
+
+            chat_id=registration["telegram_id"],
+
+            text=receipt_text,
+
+        )
+
+
+    except Exception as error:
+
+        print(
+            "Could not send receipt:",
+            error,
+        )
+
+
+# ============================================================
+# MATCH PAYMENT
+# ============================================================
+
+async def try_match_payment(
+    update,
+    context,
+    payment_id,
+):
+
+    connection = sqlite3.connect(
+        DATABASE
+    )
+
+    connection.row_factory = sqlite3.Row
+
+    cursor = connection.cursor()
+
+
+    cursor.execute(
+        """
+        SELECT *
+
+        FROM aba_payments
+
+        WHERE id = ?
+        """,
+        (payment_id,),
+    )
+
+
+    payment = cursor.fetchone()
+
+    connection.close()
+
+
+    if not payment:
+
+        return
+
+
+    registration = find_matching_registration(
+
+        amount=payment["amount"],
+
+        payment_day=payment["payment_day"],
+
+        payment_month=payment["payment_month"],
+
+        payment_year=payment["payment_year"],
+
+        apv=payment["apv"],
+
+    )
+
+
+    if not registration:
+
+        print(
+            "Payment saved, but no matching "
+            "student registration was found."
+        )
+
+        print(
+            "Amount:",
+            payment["amount"],
+        )
+
+        print(
+            "Date:",
+            payment["payment_date"],
+        )
+
+        print(
+            "APV:",
+            payment["apv"],
+        )
+
+        return
+
+
+    # --------------------------------------------------------
+    # MATCH FOUND
+    # --------------------------------------------------------
+
+    mark_registration_paid(
+
+        registration_id=registration["id"],
+
+        payment_id=payment["id"],
+
+        transaction_id=payment["transaction_id"],
+
+        payer_name=payment["payer_name"],
+
+        payer_account=payment["payer_account"],
+
+    )
+
+
+    print(
+        "\n======================================"
+    )
+
+    print(
+        "PAYMENT MATCHED"
+    )
+
+    print(
+        "Student:",
+        registration["telegram_name"],
+    )
+
+    print(
+        "Course:",
+        registration["course"],
+    )
+
+    print(
+        "Amount:",
+        payment["amount"],
+    )
+
+    print(
+        "Date:",
+        payment["payment_date"],
+    )
+
+    print(
+        "APV:",
+        payment["apv"],
+    )
+
+    print(
+        "Transaction:",
+        payment["transaction_id"],
+    )
+
+    print(
+        "======================================\n"
+    )
+
+
+    # --------------------------------------------------------
+    # GROUP / ADMIN NOTIFICATION
+    # --------------------------------------------------------
+
+    if update and update.message:
+
+        await update.message.reply_text(
+
+            "PAYMENT MATCHED\n\n"
+
+            f"Student:\n"
+            f"{registration['telegram_name']}\n\n"
+
+            f"Course:\n"
+            f"{registration['course']}\n\n"
+
+            f"Amount:\n"
+            f"${payment['amount']:.2f}\n\n"
+
+            f"Payment date:\n"
+            f"{payment['payment_date']}\n\n"
+
+            f"APV:\n"
+            f"{payment['apv']}\n\n"
+
+            f"Transaction ID:\n"
+            f"{payment['transaction_id'] or 'N/A'}\n\n"
+
+            "Payment status: PAID"
+
+        )
+
+
+    # --------------------------------------------------------
+    # STUDENT RECEIPT
+    # --------------------------------------------------------
+
+    await send_student_receipt(
+
+        context=context,
+
+        registration=registration,
+
+        payment=payment,
+
+    )
+
+
+# ============================================================
+# START COMMAND
+# ============================================================
+
+async def start(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    keyboard = [
+
+        [
+
+            InlineKeyboardButton(
+
+                "Open Vlearn Together",
+
+                web_app=WebAppInfo(
+                    url=MINI_APP_URL
+                ),
+
+            )
+
+        ]
+
+    ]
+
+
+    reply_markup = InlineKeyboardMarkup(
+        keyboard
+    )
+
+
+    await update.message.reply_text(
+
+        "Welcome to Vlearn Together!\n"
+        "សូមស្វាគមន៍មកកាន់ Vlearn Together!\n\n"
+
+        "Learn English online with our video courses.\n"
+        "សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត "
+        "ជាមួយវគ្គសិក្សាវីដេអូរបស់យើង។\n\n"
+
+        "General English Programme\n"
+        "កម្មវិធីភាសាអង់គ្លេសទូទៅ\n\n"
+
+        "English Grammar Course\n"
+        "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស\n\n"
+
+        "English Vocabulary Course\n"
+        "វគ្គវាក្យសព្ទភាសាអង់គ្លេស\n\n"
+
+        "Choose the button below to explore our courses.\n"
+        "សូមចុចប៊ូតុងខាងក្រោម "
+        "ដើម្បីមើលវគ្គសិក្សារបស់យើង។",
+
+        reply_markup=reply_markup,
+
+    )
+
+
+# ============================================================
+# MINI APP DATA HANDLER
+# ============================================================
+
+async def web_app_data_handler(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    if not update.effective_message:
+
+        return
+
+
+    web_app_data = (
+        update.effective_message.web_app_data
+    )
+
+
+    if not web_app_data:
+
+        return
+
+
+    print(
+        "\n========== MINI APP DATA =========="
+    )
+
+
+    print(
+        "Raw data:",
+        web_app_data.data,
+    )
+
+
+    try:
+
+        data = json.loads(
+            web_app_data.data
+        )
+
+
+    except json.JSONDecodeError:
+
+        print(
+            "Invalid Mini App JSON."
+        )
+
+
+        await update.effective_message.reply_text(
+
+            "The information could not be read.\n\n"
+
+            "ព័ត៌មានមិនអាចអានបានទេ។\n\n"
+
+            "Please open Vlearn Together again "
+            "and try again."
+
+        )
+
+
+        return
+
+
+    print(
+        "Mini App data:",
+        data,
+    )
+
+
+    # ========================================================
+    # ACTION
+    # ========================================================
+
+    action = str(
+        data.get(
+            "action",
+            ""
+        )
+    ).strip().lower()
+
+
+    # ========================================================
+    # USER
+    # ========================================================
+
+    user = update.effective_user
+
+
+    if not user:
+
+        return
+
+
+    telegram_id = user.id
+
+
+    telegram_name = " ".join(
+
+        part
+
+        for part in [
+
+            user.first_name,
+
+            user.last_name,
+
+        ]
+
+        if part
+
+    )
+
+
+    username = (
+        user.username or ""
+    )
+
+
+    # ========================================================
+    # PAYMENT COMPLETED
+    # ========================================================
+
+    if action == "payment_completed":
+
+        course = str(
+            data.get(
+                "course",
+                ""
+            )
+        ).strip()
+
+
+        payment_date_text = str(
+            data.get(
+                "payment_date",
+                ""
+            )
+        ).strip()
+
+
+        student_apv = str(
+            data.get(
+                "apv",
+                ""
+            )
+        ).strip()
+
+
+        print(
+            "Course:",
+            course,
+        )
+
+        print(
+            "Payment date:",
+            payment_date_text,
+        )
+
+        print(
+            "APV:",
+            student_apv,
+        )
+
+
+        # ----------------------------------------------------
+        # Validate course
+        # ----------------------------------------------------
+
+        if course not in COURSES:
+
+            await update.effective_message.reply_text(
+
+                "The selected course could not be found.\n\n"
+
+                "មិនអាចរកឃើញវគ្គសិក្សានេះទេ."
+
+            )
+
+            return
+
+
+        # ----------------------------------------------------
+        # Validate date
+        # ----------------------------------------------------
+
+        parsed_date = parse_student_date(
+            payment_date_text
+        )
+
+
+        if not parsed_date:
+
+            await update.effective_message.reply_text(
+
+                "Invalid payment date.\n\n"
+
+                "Please enter the date in this format:\n"
+
+                "DD/MM/YYYY\n\n"
+
+                "Example:\n"
+
+                "15/08/2026\n\n"
+
+                "កាលបរិច្ឆេទមិនត្រឹមត្រូវទេ។"
+
+            )
+
+            return
+
+
+        (
+            payment_day,
+            payment_month,
+            payment_year,
+            normalized_date,
+        ) = parsed_date
+
+
+        # ----------------------------------------------------
+        # Validate APV
+        # ----------------------------------------------------
+
+        if not re.fullmatch(
+            r"\d{4,10}",
+            student_apv,
+        ):
+
+            await update.effective_message.reply_text(
+
+                "Invalid APV.\n\n"
+
+                "Please enter the APV shown "
+                "on your ABA payment receipt.\n\n"
+
+                "APV មិនត្រឹមត្រូវទេ។"
+
+            )
+
+            return
+
+
+        # ----------------------------------------------------
+        # Get official price from BOT
+        # ----------------------------------------------------
+
+        price = COURSES[
+            course
+        ]["price"]
+
+
+        # ----------------------------------------------------
+        # Save registration
+        # ----------------------------------------------------
+
+        registration_id = save_student_registration(
+
+            telegram_id=telegram_id,
+
+            telegram_name=telegram_name,
+
+            username=username,
+
+            course=course,
+
+            price=price,
+
+            payment_date=normalized_date,
+
+            payment_day=payment_day,
+
+            payment_month=payment_month,
+
+            payment_year=payment_year,
+
+            student_apv=student_apv,
+
+        )
+
+
+        print(
+            "\n========== STUDENT PAYMENT DATA =========="
+        )
+
+        print(
+            "Registration ID:",
+            registration_id,
+        )
+
+        print(
+            "Student:",
+            telegram_name,
+        )
+
+        print(
+            "Telegram ID:",
+            telegram_id,
+        )
+
+        print(
+            "Course:",
+            course,
+        )
+
+        print(
+            "Amount:",
+            price,
+        )
+
+        print(
+            "Date:",
+            normalized_date,
+        )
+
+        print(
+            "APV:",
+            student_apv,
+        )
+
+        print(
+            "===========================================\n"
+        )
+
+
+        # ----------------------------------------------------
+        # Check whether ABA payment already exists
+        # ----------------------------------------------------
+
+        aba_payment = find_matching_aba_payment(
+
+            amount=price,
+
+            payment_day=payment_day,
+
+            payment_month=payment_month,
+
+            payment_year=payment_year,
+
+            apv=student_apv,
+
+        )
+
+
+        if aba_payment:
+
+            # ------------------------------------------------
+            # PAYMENT ALREADY FOUND
+            # ------------------------------------------------
+
+            mark_registration_paid(
+
+                registration_id=registration_id,
+
+                payment_id=aba_payment["id"],
+
+                transaction_id=aba_payment[
+                    "transaction_id"
+                ],
+
+                payer_name=aba_payment[
+                    "payer_name"
+                ],
+
+                payer_account=aba_payment[
+                    "payer_account"
+                ],
+
+            )
+
+
+            # ------------------------------------------------
+            # Send receipt
+            # ------------------------------------------------
+
+            connection = sqlite3.connect(
+                DATABASE
+            )
+
+            connection.row_factory = sqlite3.Row
+
+            cursor = connection.cursor()
+
+
+            cursor.execute(
+                """
+                SELECT *
+
+                FROM payment_registrations
+
+                WHERE id = ?
+                """,
+                (registration_id,),
+            )
+
+
+            registration = cursor.fetchone()
+
+            connection.close()
+
+
+            await send_student_receipt(
+
+                context=context,
+
+                registration=registration,
+
+                payment=aba_payment,
+
+            )
+
+
+            return
+
+
+        # ----------------------------------------------------
+        # PAYMENT NOT FOUND YET
+        # ----------------------------------------------------
+
+        await update.effective_message.reply_text(
+
+            "Payment information received.\n"
+            "ព័ត៌មានការទូទាត់ត្រូវបានទទួល។\n\n"
+
+            f"Course:\n"
+            f"{course}\n\n"
+
+            f"Payment Date:\n"
+            f"{normalized_date}\n\n"
+
+            f"APV:\n"
+            f"{student_apv}\n\n"
+
+            "Payment Status:\n"
+
+            "WAITING FOR VERIFICATION\n"
+
+            "កំពុងរង់ចាំការផ្ទៀងផ្ទាត់\n\n"
+
+            "Your payment information has been "
+            "successfully submitted.\n\n"
+
+            "ការទូទាត់របស់អ្នកនឹងត្រូវបាន "
+            "ផ្ទៀងផ្ទាត់នៅពេលព័ត៌មាន "
+            "ការទូទាត់ពី ABA ត្រូវបានទទួល។"
+
+        )
+
+
+        return
+
+
+    # ========================================================
+    # OLD START REGISTRATION ACTION
+    #
+    # Kept for compatibility if an older version of your
+    # Mini App still sends this action.
+    # ========================================================
+
+    if action == "start_registration":
+
+        course = str(
+            data.get(
+                "course",
+                ""
+            )
+        ).strip()
+
+
+        if course not in COURSES:
+
+            await update.effective_message.reply_text(
+
+                "The selected course could not be found."
+
+            )
+
+            return
+
+
+        course_data = COURSES[
+            course
+        ]
+
+
+        price = course_data[
+            "price"
+        ]
+
+
+        keyboard = [
+
+            [
+
+                InlineKeyboardButton(
+
+                    f"Pay ${price:.2f} via ABA",
+
+                    url=course_data[
+                        "payment_link"
+                    ],
+
+                )
+
+            ]
+
+        ]
+
+
+        reply_markup = InlineKeyboardMarkup(
+            keyboard
+        )
+
+
+        await update.effective_message.reply_text(
+
+            "Registration received.\n\n"
+
+            f"Course:\n"
+            f"{course}\n\n"
+
+            f"Amount:\n"
+            f"${price:.2f}\n\n"
+
+            "Please complete your payment "
+            "using the button below.\n\n"
+
+            "After completing the payment, "
+            "return to Vlearn Together and "
+            "enter your payment date and APV.",
+
+            reply_markup=reply_markup,
+
+        )
+
+
+        return
+
+
+    # ========================================================
+    # UNKNOWN ACTION
+    # ========================================================
+
+    print(
+        "Unknown Mini App action:",
+        action,
+    )
+
+
+# ============================================================
+# ABA PAYMENT MESSAGE
+# ============================================================
+
+async def group_message(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    if not update.message:
+
+        return
+
+
+    if not update.message.text:
+
+        return
+
+
+    message = update.message.text.strip()
+
+
+    print(
+        "\n========== GROUP MESSAGE =========="
+    )
+
+    print(
+        message
+    )
+
+
+    # ========================================================
+    # EXTRACT INFORMATION
+    # ========================================================
+
+    manual_apv = extract_apv(
+        message
+    )
+
+
+    manual_amount = extract_amount(
+        message
+    )
+
+
+    manual_date = extract_payment_date(
+        message
+    )
+
+
+    transaction_id = extract_transaction_id(
+        message
+    )
+
+
+    # ========================================================
+    # CHECK ABA MESSAGE
+    # ========================================================
+
+    looks_like_aba = (
+
+        "paid by" in message.lower()
+
+        or
+
+        "ត្រូវបានបង់ដោយ" in message
+
+        or
+
+        "APV" in message.upper()
+
+        or
+
+        "ABA" in message.upper()
+
+    )
+
+
+    if not looks_like_aba:
+
+        return
+
+
+    if not manual_apv:
+
+        print(
+            "No APV detected."
+        )
+
+        return
+
+
+    if not manual_amount:
+
+        print(
+            "No amount detected."
+        )
+
+        return
+
+
+    if not manual_date:
+
+        print(
+            "No payment date detected."
+        )
+
+        return
+
+
+    (
+        payment_day,
+        payment_month,
+        payment_year,
+        payment_date,
+    ) = manual_date
+
+
+    payer_name, payer_account = extract_payer(
+        message
+    )
+
+
+    # ========================================================
+    # SAVE ABA PAYMENT
+    # ========================================================
+
+    payment_id = save_aba_payment(
+
+        amount=manual_amount,
+
+        payment_date=payment_date,
+
+        payment_day=payment_day,
+
+        payment_month=payment_month,
+
+        payment_year=payment_year,
+
+        apv=manual_apv,
+
+        transaction_id=transaction_id,
+
+        payer_name=payer_name,
+
+        payer_account=payer_account,
+
+        source="telegram_group",
+
+    )
+
+
+    # ========================================================
+    # DUPLICATE APV
+    # ========================================================
+
+    if payment_id is None:
+
+        print(
+            "APV already exists:",
+            manual_apv,
+        )
+
+        return
+
+
+    print(
+        "ABA PAYMENT SAVED"
+    )
+
+    print(
+        "Amount:",
+        manual_amount,
+    )
+
+    print(
+        "Date:",
+        payment_date,
+    )
+
+    print(
+        "APV:",
+        manual_apv,
+    )
+
+
+    # ========================================================
+    # TRY MATCH
+    # ========================================================
+
+    await try_match_payment(
+
+        update=update,
+
+        context=context,
+
+        payment_id=payment_id,
+
+    )
+
+
+# ============================================================
+# MAIN
+# ============================================================
+
+def main():
+
+    # --------------------------------------------------------
+    # Create database
+    # --------------------------------------------------------
+
+    create_database()
+
+
+    # --------------------------------------------------------
+    # Build application
+    # --------------------------------------------------------
+
+    application = (
+
+        Application
+
+        .builder()
+
+        .token(TOKEN)
+
+        .build()
+
+    )
+
+
+    # --------------------------------------------------------
+    # /start
+    # --------------------------------------------------------
+
+    application.add_handler(
+
+        CommandHandler(
+            "start",
+            start,
+        )
+
+    )
+
+
+    # --------------------------------------------------------
+    # Telegram Mini App
+    # --------------------------------------------------------
+
+    application.add_handler(
+
+        MessageHandler(
+
+            filters.StatusUpdate.WEB_APP_DATA,
+
+            web_app_data_handler,
+
+        )
+
+    )
+
+
+    # --------------------------------------------------------
+    # ABA / payment messages
+    # --------------------------------------------------------
+
+    application.add_handler(
+
+        MessageHandler(
+
+            filters.TEXT & ~filters.COMMAND,
+
+            group_message,
+
+        )
+
+    )
+
+
+    # --------------------------------------------------------
+    # Start bot
+    # --------------------------------------------------------
+
+    print(
+        "======================================"
+    )
+
+    print(
+        "Vlearn Together Bot is running..."
+    )
+
+    print(
+        "Database:",
+        DATABASE,
+    )
+
+    print(
+        "Payment system: DATE + APV"
+    )
+
+    print(
+        "Mini App: ENABLED"
+    )
+
+    print(
+        "======================================"
+    )
+
+
+    application.run_polling()
+
+
+# ============================================================
+# START PROGRAM
+# ============================================================
+
+if __name__ == "__main__":
+
+    main()
