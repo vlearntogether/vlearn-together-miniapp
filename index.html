@@ -10,9 +10,15 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
     <title>Vlearn Together</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 
     <style>
 
@@ -20,255 +26,640 @@
             box-sizing: border-box;
         }
 
+
         body {
+
             margin: 0;
+
             padding: 0;
-            font-family: Arial, sans-serif;
 
-            background: var(
-                --tg-theme-bg-color,
-                #ffffff
-            );
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
 
-            color: var(
-                --tg-theme-text-color,
-                #222222
-            );
+            background:
+                var(
+                    --tg-theme-bg-color,
+                    #ffffff
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
+
+            min-height: 100vh;
         }
+
 
         .container {
+
             width: 100%;
+
             max-width: 520px;
-            margin: auto;
-            padding: 24px 18px 40px;
+
+            margin: 0 auto;
+
+            padding: 20px 18px 35px;
         }
 
-        .welcome {
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
 
         .brand {
+
             text-align: center;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
             color: #1976d2;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 12px;
+
+            margin-bottom: 10px;
         }
+
+
+        .welcome {
+
+            text-align: center;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            margin-bottom: 20px;
+        }
+
 
         .intro {
+
             text-align: center;
-            font-size: 17px;
+
+            font-size: 16px;
+
             line-height: 1.5;
-            margin-bottom: 28px;
+
+            margin-bottom: 24px;
         }
 
-        .title {
+
+        .page-title {
+
             text-align: center;
-            font-size: 25px;
-            font-weight: bold;
+
+            font-size: 24px;
+
+            font-weight: 750;
+
             margin-bottom: 8px;
         }
 
-        .khmer {
+
+        .khmer-title {
+
             text-align: center;
+
             font-size: 18px;
+
             line-height: 1.6;
+
             margin-bottom: 20px;
         }
+
 
         .course-button,
         .level-button {
+
             width: 100%;
+
             border: none;
-            border-radius: 14px;
 
-            padding: 17px 15px;
+            border-radius: 13px;
 
-            margin-top: 12px;
+            padding: 16px;
 
-            font-size: 17px;
-            font-weight: bold;
+            margin-top: 11px;
+
+            font-size: 16px;
+
+            font-weight: 650;
 
             text-align: left;
 
-            background: var(
-                --tg-theme-secondary-bg-color,
-                #f1f3f5
-            );
-
-            color: var(
-                --tg-theme-text-color,
-                #222222
-            );
-
             cursor: pointer;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
         }
+
 
         .course-button:active,
         .level-button:active,
-        .register-button:active,
-        .copy-button:active {
+        .primary-button:active,
+        .secondary-button:active {
+
             transform: scale(0.98);
         }
 
-        .details {
-            margin-top: 20px;
+
+        .course-card {
+
+            margin-top: 18px;
 
             padding: 22px 18px;
 
-            border-radius: 18px;
+            border-radius: 16px;
 
-            background: var(
-                --tg-theme-secondary-bg-color,
-                #f1f3f5
-            );
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
 
             text-align: center;
         }
 
+
         .course-name {
-            font-size: 23px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .price {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .old-price {
-            text-decoration: line-through;
-            opacity: 0.55;
-            font-size: 21px;
-            margin-right: 8px;
-        }
-
-        .new-price {
-            font-size: 29px;
-            font-weight: bold;
-        }
-
-        .discount {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .remark-title {
-            margin-top: 25px;
-            font-size: 17px;
-            font-weight: bold;
-            line-height: 1.6;
-        }
-
-        .remark {
-            margin-top: 10px;
-
-            padding: 15px;
-
-            border-radius: 12px;
-
-            background: var(
-                --tg-theme-bg-color,
-                #ffffff
-            );
-
-            border: 1px solid #cccccc;
 
             font-size: 22px;
-            font-weight: bold;
 
-            letter-spacing: 1px;
+            font-weight: 750;
+
+            line-height: 1.4;
+
+            margin-bottom: 16px;
         }
 
-        .copy-button {
-            width: 100%;
 
-            border: none;
+        .price {
 
-            border-radius: 12px;
+            font-size: 28px;
 
-            padding: 13px;
+            font-weight: 800;
 
-            margin-top: 10px;
+            margin-bottom: 7px;
+        }
+
+
+        .old-price {
+
+            text-decoration: line-through;
+
+            opacity: 0.55;
+
+            font-size: 20px;
+
+            margin-right: 6px;
+        }
+
+
+        .new-price {
+
+            font-size: 28px;
+
+            font-weight: 800;
+        }
+
+
+        .discount {
 
             font-size: 16px;
-            font-weight: bold;
 
-            background: #e9ecef;
+            font-weight: 650;
 
-            color: #222222;
-
-            cursor: pointer;
+            margin-top: 10px;
         }
 
-        .important {
-            margin-top: 20px;
 
-            padding: 15px;
+        .primary-button {
 
-            border-radius: 12px;
-
-            background: rgba(
-                255,
-                193,
-                7,
-                0.12
-            );
-
-            font-size: 15px;
-
-            line-height: 1.6;
-
-            text-align: left;
-        }
-
-        .register-button {
             width: 100%;
 
             border: none;
 
-            border-radius: 14px;
+            border-radius: 13px;
 
-            padding: 17px;
+            padding: 16px;
 
-            margin-top: 20px;
+            margin-top: 18px;
 
             font-size: 17px;
-            font-weight: bold;
+
+            font-weight: 750;
+
+            cursor: pointer;
 
             background: #1976d2;
 
-            color: white;
-
-            cursor: pointer;
+            color: #ffffff;
         }
 
+
+        .secondary-button {
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 13px;
+
+            padding: 14px;
+
+            margin-top: 11px;
+
+            font-size: 16px;
+
+            font-weight: 650;
+
+            cursor: pointer;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
+        }
+
+
         .back-button {
+
             width: 100%;
 
             border: none;
 
             background: transparent;
 
-            color: #e53935;
+            color: #1976d2;
 
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 15px;
 
-            padding: 16px 5px;
+            font-weight: 650;
 
-            margin-top: 14px;
+            padding: 14px 5px;
+
+            margin-top: 12px;
 
             cursor: pointer;
         }
 
-        .hidden {
-            display: none !important;
+
+        .payment-box {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            background:
+                var(
+                    --tg-theme-secondary-bg-color,
+                    #f1f3f5
+                );
+
+            text-align: left;
+
+            line-height: 1.55;
         }
+
+
+        .payment-box strong {
+
+            font-weight: 750;
+        }
+
+
+        .form-group {
+
+            margin-top: 18px;
+
+            text-align: left;
+        }
+
+
+        .form-label {
+
+            display: block;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        .form-label-khmer {
+
+            display: block;
+
+            font-size: 15px;
+
+            margin-top: 3px;
+
+            margin-bottom: 8px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 11px;
+
+            border: 1px solid
+                var(
+                    --tg-theme-hint-color,
+                    #999999
+                );
+
+            background:
+                var(
+                    --tg-theme-bg-color,
+                    #ffffff
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
+
+            font-size: 17px;
+
+            outline: none;
+        }
+
+
+        input:focus {
+
+            border-color: #1976d2;
+        }
+
+
+        .hint {
+
+            margin-top: 7px;
+
+            font-size: 13px;
+
+            line-height: 1.45;
+
+            opacity: 0.7;
+        }
+
+
+        .important {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(
+                    25,
+                    118,
+                    210,
+                    0.08
+                );
+
+            line-height: 1.55;
+
+            font-size: 14px;
+
+            text-align: left;
+        }
+
+
+        .error {
+
+            margin-top: 15px;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(
+                    211,
+                    47,
+                    47,
+                    0.10
+                );
+
+            color:
+                #c62828;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            text-align: left;
+        }
+
+
+        .success {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(
+                    46,
+                    125,
+                    50,
+                    0.10
+                );
+
+            text-align: center;
+
+            line-height: 1.55;
+        }
+
+
+        .receipt {
+
+            margin-top: 20px;
+
+            padding: 20px 18px;
+
+            border: 1px solid
+                rgba(
+                    25,
+                    118,
+                    210,
+                    0.30
+                );
+
+            border-radius: 10px;
+
+            background:
+                var(
+                    --tg-theme-bg-color,
+                    #ffffff
+                );
+
+            text-align: center;
+        }
+
+
+        .receipt-brand {
+
+            color: #1976d2;
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            margin-bottom: 4px;
+        }
+
+
+        .receipt-title {
+
+            font-size: 19px;
+
+            font-weight: 750;
+
+            margin-bottom: 2px;
+        }
+
+
+        .receipt-khmer {
+
+            font-size: 15px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .receipt-line {
+
+            height: 1px;
+
+            background:
+                rgba(
+                    128,
+                    128,
+                    128,
+                    0.25
+                );
+
+            margin: 12px 0;
+        }
+
+
+        .receipt-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            text-align: left;
+
+            margin-top: 9px;
+
+            font-size: 14px;
+        }
+
+
+        .receipt-row .label {
+
+            font-weight: 700;
+        }
+
+
+        .receipt-row .value {
+
+            text-align: right;
+
+            word-break: break-word;
+        }
+
+
+        .contact-section {
+
+            margin-top: 18px;
+
+            padding-top: 14px;
+
+            border-top: 1px solid
+                rgba(
+                    128,
+                    128,
+                    128,
+                    0.25
+                );
+
+            text-align: center;
+        }
+
+
+        .contact-title {
+
+            font-weight: 700;
+
+            font-size: 15px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .contact-khmer {
+
+            font-size: 14px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .contact-link {
+
+            color: #1976d2;
+
+            font-size: 15px;
+
+            font-weight: 650;
+
+            text-decoration: none;
+
+            word-break: break-all;
+        }
+
+
+        .hidden {
+
+            display: none;
+        }
+
 
     </style>
 
@@ -285,14 +676,12 @@
     <!-- HOME -->
     <!-- ================================================= -->
 
-    <div id="homePage">
+    <section id="homePage">
 
         <div
             id="telegramUser"
             class="welcome"
-        >
-            👋 Welcome!
-        </div>
+        ></div>
 
 
         <div class="brand">
@@ -304,64 +693,98 @@
 
             Learn English online with our video courses.
 
+            <br>
+
+            សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត
+            ជាមួយវគ្គសិក្សាវីដេអូរបស់យើង។
+
         </div>
 
 
-        <div class="title">
+        <div class="page-title">
+
             Choose Your Course
+
+        </div>
+
+
+        <div class="khmer-title">
+
+            សូមជ្រើសរើសវគ្គសិក្សា
+
         </div>
 
 
         <button
             class="course-button"
-            onclick="showMajor('general')"
+            onclick="openMajorCourse('general')"
         >
 
             General English Programme
 
             <br>
 
-            កម្មវិធីភាសាអង់គ្លេសទូទៅ
+            <span>
+                កម្មវិធីភាសាអង់គ្លេសទូទៅ
+            </span>
 
         </button>
 
 
         <button
             class="course-button"
-            onclick="showMajor('grammar')"
+            onclick="openMajorCourse('grammar')"
         >
 
             English Grammar Course
 
             <br>
 
-            វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
+            <span>
+                វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
+            </span>
 
         </button>
 
 
         <button
             class="course-button"
-            onclick="showMajor('vocabulary')"
+            onclick="openMajorCourse('vocabulary')"
         >
 
             English Vocabulary Course
 
             <br>
 
-            វគ្គវាក្យសព្ទភាសាអង់គ្លេស
+            <span>
+                វគ្គវាក្យសព្ទភាសាអង់គ្លេស
+            </span>
 
         </button>
 
-    </div>
 
+        <button
+            id="paymentCompletedButton"
+            class="secondary-button hidden"
+            onclick="openPaymentCompleted()"
+        >
+
+            Payment completed
+
+            <br>
+
+            ការទូទាត់បានបញ្ចប់
+
+        </button>
+
+    </section>
 
 
     <!-- ================================================= -->
     <!-- LEVEL PAGE -->
     <!-- ================================================= -->
 
-    <div
+    <section
         id="levelPage"
         class="hidden"
     >
@@ -372,43 +795,42 @@
 
 
         <div
-            id="levelTitle"
-            class="title"
+            id="majorTitle"
+            class="page-title"
         ></div>
 
 
         <div
-            id="levelKhmer"
-            class="khmer"
+            id="majorKhmer"
+            class="khmer-title"
         ></div>
 
 
-        <div id="levelList"></div>
+        <div id="levelButtons"></div>
 
 
         <button
             class="back-button"
-            onclick="showHome()"
+            onclick="goHome()"
         >
 
             ← Back to Courses
 
             <br>
 
-            ត្រលប់ក្រោយ
+            ត្រលប់ទៅវគ្គសិក្សា
 
         </button>
 
-    </div>
-
+    </section>
 
 
     <!-- ================================================= -->
     <!-- COURSE DETAILS -->
     <!-- ================================================= -->
 
-    <div
-        id="detailsPage"
+    <section
+        id="coursePage"
         class="hidden"
     >
 
@@ -418,14 +840,14 @@
 
 
         <div
-            id="courseDetails"
-            class="details"
+            id="courseCard"
+            class="course-card"
         ></div>
 
 
         <button
             class="back-button"
-            onclick="backToLevels()"
+            onclick="goLevels()"
         >
 
             ← Back to Courses
@@ -436,979 +858,1532 @@
 
         </button>
 
-    </div>
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- PAYMENT INFORMATION -->
+    <!-- ================================================= -->
+
+    <section
+        id="paymentPage"
+        class="hidden"
+    >
+
+        <div class="brand">
+            Vlearn Together
+        </div>
+
+
+        <div class="page-title">
+
+            Payment completed
+
+        </div>
+
+
+        <div class="khmer-title">
+
+            ការទូទាត់បានបញ្ចប់
+
+        </div>
+
+
+        <div
+            id="paymentCourseInfo"
+            class="payment-box"
+        ></div>
+
+
+        <div class="important">
+
+            Please enter the payment information
+            exactly as shown on your ABA payment receipt.
+
+            <br><br>
+
+            សូមបញ្ចូលព័ត៌មានការទូទាត់
+            ឱ្យបានត្រឹមត្រូវតាមបង្កាន់ដៃ
+            ការទូទាត់ ABA របស់អ្នក។
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="form-group">
+
+            <label
+                class="form-label"
+                for="paymentDate"
+            >
+
+                Payment date
+
+            </label>
+
+
+            <div class="form-label-khmer">
+
+                កាលបរិច្ឆេទទូទាត់
+
+            </div>
+
+
+            <input
+                id="paymentDate"
+                type="date"
+            >
+
+
+            <div class="hint">
+
+                Example: 15/08/2026
+
+                <br>
+
+                ឧទាហរណ៍៖ 15/08/2026
+
+            </div>
+
+        </div>
+
+
+        <!-- APV -->
+
+        <div class="form-group">
+
+            <label
+                class="form-label"
+                for="paymentApv"
+            >
+
+                APV
+
+            </label>
+
+
+            <div class="form-label-khmer">
+
+                លេខ APV
+
+            </div>
+
+
+            <input
+                id="paymentApv"
+                type="text"
+                inputmode="numeric"
+                maxlength="20"
+                placeholder="Enter APV"
+            >
+
+
+            <div class="hint">
+
+                Example: 445233
+
+                <br>
+
+                ឧទាហរណ៍៖ 445233
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="formError"
+            class="error hidden"
+        ></div>
+
+
+        <button
+            class="primary-button"
+            onclick="submitPaymentInformation()"
+        >
+
+            Submit Payment Information
+
+            <br>
+
+            បញ្ជូនព័ត៌មានការទូទាត់
+
+        </button>
+
+
+        <button
+            class="back-button"
+            onclick="goHome()"
+        >
+
+            ← Back to Courses
+
+            <br>
+
+            ត្រលប់ទៅវគ្គសិក្សា
+
+        </button>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- RECEIPT -->
+    <!-- ================================================= -->
+
+    <section
+        id="receiptPage"
+        class="hidden"
+    >
+
+        <div class="brand">
+            Vlearn Together
+        </div>
+
+
+        <div
+            id="receiptContent"
+            class="receipt"
+        ></div>
+
+
+        <button
+            class="primary-button"
+            onclick="goHome()"
+        >
+
+            Choose Another Course
+
+            <br>
+
+            ជ្រើសរើសវគ្គសិក្សាផ្សេងទៀត
+
+        </button>
+
+    </section>
 
 
 </div>
 
 
-
 <script>
 
 
-// =======================================================
-// TELEGRAM
-// =======================================================
+    // =====================================================
+    // TELEGRAM
+    // =====================================================
 
-const tg = window.Telegram.WebApp;
-
-tg.ready();
-
-tg.expand();
+    const tg =
+        window.Telegram.WebApp;
 
 
-// =======================================================
-// TELEGRAM USER
-// =======================================================
+    tg.ready();
 
-const telegramUser =
-    tg.initDataUnsafe &&
-    tg.initDataUnsafe.user;
+    tg.expand();
 
 
-if (telegramUser) {
+    // =====================================================
+    // TELEGRAM USER
+    // =====================================================
+
+    const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
+
+
+    const telegramUserName =
+        user &&
+        user.first_name
+            ? user.first_name
+            : "Student";
+
 
     document.getElementById(
         "telegramUser"
     ).textContent =
-        "👋 Welcome, " +
-        (
-            telegramUser.first_name ||
-            "student"
-        ) +
+        "Welcome, " +
+        telegramUserName +
         "!";
 
-}
 
+    // =====================================================
+    // COURSE DATA
+    // =====================================================
 
-// =======================================================
-// COURSE DATA
-// =======================================================
+    const courses = {
 
-const courseData = {
 
+        // -------------------------------------------------
+        // GENERAL ENGLISH
+        // -------------------------------------------------
 
-    general: {
+        general: {
 
-        title:
-            "General English Programme",
+            title:
+                "General English Programme",
 
-        khmer:
-            "កម្មវិធីភាសាអង់គ្លេសទូទៅ",
+            khmer:
+                "កម្មវិធីភាសាអង់គ្លេសទូទៅ",
 
-        courses: [
+            levels: [
 
-            {
-                level:
-                    "Beginner | Level 1–2",
+                {
+                    name:
+                        "Beginner | Level 1–2",
 
-                course:
-                    "General English | Beginner 1–2",
+                    botCourse:
+                        "General English | Beginner 1–2",
 
-                oldPrice:
-                    30,
+                    oldPrice:
+                        30,
 
-                price:
-                    15,
+                    price:
+                        15,
 
-                discount:
-                    50,
+                    discount:
+                        50
+                },
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAY1e499924g"
-            },
+                {
+                    name:
+                        "Elementary | Level 3–4",
 
+                    botCourse:
+                        "General English | Elementary 3–4",
 
-            {
-                level:
-                    "Elementary | Level 3–4",
+                    oldPrice:
+                        32,
 
-                course:
-                    "General English | Elementary 3–4",
+                    price:
+                        16,
 
-                oldPrice:
-                    32,
+                    discount:
+                        50
+                },
 
-                price:
-                    16,
+                {
+                    name:
+                        "Pre-intermediate | Level 5–6",
 
-                discount:
-                    50,
+                    botCourse:
+                        "General English | Pre-intermediate 5–6",
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAY12499938C"
-            },
+                    oldPrice:
+                        38,
 
+                    price:
+                        19,
 
-            {
-                level:
-                    "Pre-intermediate | Level 5–6",
+                    discount:
+                        50
+                },
 
-                course:
-                    "General English | Pre-intermediate 5–6",
+                {
+                    name:
+                        "Intermediate | Level 7–8",
 
-                oldPrice:
-                    38,
+                    botCourse:
+                        "General English | Intermediate 7–8",
 
-                price:
-                    19,
+                    oldPrice:
+                        40,
 
-                discount:
-                    50,
+                    price:
+                        20,
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYW4499941w"
-            },
+                    discount:
+                        50
+                }
 
+            ]
 
-            {
-                level:
-                    "Intermediate | Level 7–8",
+        },
 
-                course:
-                    "General English | Intermediate 7–8",
 
-                oldPrice:
-                    40,
+        // -------------------------------------------------
+        // GRAMMAR
+        // -------------------------------------------------
 
-                price:
-                    20,
+        grammar: {
 
-                discount:
-                    50,
+            title:
+                "English Grammar Course",
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYoS499945e"
-            }
+            khmer:
+                "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស",
 
-        ]
+            levels: [
 
-    },
+                {
+                    name:
+                        "Elementary",
 
+                    botCourse:
+                        "English Grammar | Elementary",
 
-    grammar: {
+                    oldPrice:
+                        42,
 
-        title:
-            "English Grammar Course",
+                    price:
+                        25.20,
 
-        khmer:
-            "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស",
+                    discount:
+                        40
+                },
 
-        courses: [
+                {
+                    name:
+                        "Intermediate",
 
-            {
-                level:
-                    "Elementary",
+                    botCourse:
+                        "English Grammar | Intermediate",
 
-                course:
-                    "English Grammar | Elementary",
+                    oldPrice:
+                        45,
 
-                oldPrice:
-                    42,
+                    price:
+                        27,
 
-                price:
-                    25.20,
+                    discount:
+                        40
+                },
 
-                discount:
-                    40,
+                {
+                    name:
+                        "Advanced",
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAY0V500157n"
-            },
+                    botCourse:
+                        "English Grammar | Advanced",
 
+                    oldPrice:
+                        50,
 
-            {
-                level:
-                    "Intermediate",
+                    price:
+                        30,
 
-                course:
-                    "English Grammar | Intermediate",
+                    discount:
+                        40
+                }
 
-                oldPrice:
-                    45,
+            ]
 
-                price:
-                    27,
+        },
 
-                discount:
-                    40,
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYqL500160G"
-            },
+        // -------------------------------------------------
+        // VOCABULARY
+        // -------------------------------------------------
 
+        vocabulary: {
 
-            {
-                level:
-                    "Advanced",
+            title:
+                "English Vocabulary Course",
 
-                course:
-                    "English Grammar | Advanced",
+            khmer:
+                "វគ្គវាក្យសព្ទភាសាអង់គ្លេស",
 
-                oldPrice:
-                    50,
+            levels: [
 
-                price:
-                    30,
+                {
+                    name:
+                        "Elementary",
 
-                discount:
-                    40,
+                    botCourse:
+                        "English Vocabulary | Elementary",
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYKr500161M"
-            }
+                    oldPrice:
+                        20,
 
-        ]
+                    price:
+                        10,
 
-    },
+                    discount:
+                        50
+                },
 
+                {
+                    name:
+                        "Intermediate",
 
-    vocabulary: {
+                    botCourse:
+                        "English Vocabulary | Intermediate",
 
-        title:
-            "English Vocabulary Course",
+                    oldPrice:
+                        22,
 
-        khmer:
-            "វគ្គវាក្យសព្ទភាសាអង់គ្លេស",
+                    price:
+                        11,
 
-        courses: [
+                    discount:
+                        50
+                },
 
-            {
-                level:
-                    "Elementary",
+                {
+                    name:
+                        "Upper-intermediate",
 
-                course:
-                    "English Vocabulary | Elementary",
+                    botCourse:
+                        "English Vocabulary | Upper-intermediate",
 
-                oldPrice:
-                    20,
+                    oldPrice:
+                        24,
 
-                price:
-                    10,
+                    price:
+                        12,
 
-                discount:
-                    50,
+                    discount:
+                        50
+                },
 
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYHH5001622"
-            },
+                {
+                    name:
+                        "Advanced",
 
+                    botCourse:
+                        "English Vocabulary | Advanced",
 
-            {
-                level:
-                    "Intermediate",
+                    oldPrice:
+                        26,
 
-                course:
-                    "English Vocabulary | Intermediate",
+                    price:
+                        13,
 
-                oldPrice:
-                    22,
+                    discount:
+                        50
+                }
 
-                price:
-                    11,
-
-                discount:
-                    50,
-
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYi3500163U"
-            },
-
-
-            {
-                level:
-                    "Upper-intermediate",
-
-                course:
-                    "English Vocabulary | Upper-intermediate",
-
-                oldPrice:
-                    24,
-
-                price:
-                    12,
-
-                discount:
-                    50,
-
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAY1u500164h"
-            },
-
-
-            {
-                level:
-                    "Advanced",
-
-                course:
-                    "English Vocabulary | Advanced",
-
-                oldPrice:
-                    26,
-
-                price:
-                    13,
-
-                discount:
-                    50,
-
-                paymentLink:
-                    "https://link.payway.com.kh/ABAPAYrH500165p"
-            }
-
-        ]
-
-    }
-
-};
-
-
-// =======================================================
-// CURRENT SELECTION
-// =======================================================
-
-let selectedMajor = null;
-
-let selectedCourse = null;
-
-
-// =======================================================
-// GENERATE REMARK
-// =======================================================
-
-function generateRemark() {
-
-    const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    let result = "";
-
-    for (
-        let i = 0;
-        i < 6;
-        i++
-    ) {
-
-        result +=
-            characters.charAt(
-                Math.floor(
-                    Math.random() *
-                    characters.length
-                )
-            );
-
-    }
-
-    return "VT-" + result;
-
-}
-
-
-// =======================================================
-// SHOW MAJOR COURSE
-// =======================================================
-
-function showMajor(
-    major
-) {
-
-    selectedMajor =
-        major;
-
-
-    const data =
-        courseData[major];
-
-
-    document.getElementById(
-        "homePage"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "detailsPage"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "levelPage"
-    ).classList.remove(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "levelTitle"
-    ).textContent =
-        data.title;
-
-
-    document.getElementById(
-        "levelKhmer"
-    ).textContent =
-        data.khmer;
-
-
-    const list =
-        document.getElementById(
-            "levelList"
-        );
-
-
-    list.innerHTML = "";
-
-
-    data.courses.forEach(
-        function(
-            course,
-            index
-        ) {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.className =
-                "level-button";
-
-
-            button.textContent =
-                course.level;
-
-
-            button.onclick =
-                function() {
-
-                    showCourse(
-                        index
-                    );
-
-                };
-
-
-            list.appendChild(
-                button
-            );
+            ]
 
         }
-    );
-
-}
-
-
-// =======================================================
-// SHOW COURSE DETAILS
-// =======================================================
-
-function showCourse(
-    index
-) {
-
-    selectedCourse =
-        courseData[
-            selectedMajor
-        ].courses[index];
-
-
-    selectedCourse.remark =
-        generateRemark();
-
-
-    document.getElementById(
-        "levelPage"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "detailsPage"
-    ).classList.remove(
-        "hidden"
-    );
-
-
-    renderCourse();
-
-}
-
-
-// =======================================================
-// RENDER COURSE
-// =======================================================
-
-function renderCourse() {
-
-    const course =
-        selectedCourse;
-
-
-    const details =
-        document.getElementById(
-            "courseDetails"
-        );
-
-
-    details.innerHTML = "";
-
-
-    const title =
-        document.createElement(
-            "div"
-        );
-
-    title.className =
-        "course-name";
-
-    title.textContent =
-        course.course;
-
-
-    details.appendChild(
-        title
-    );
-
-
-    const price =
-        document.createElement(
-            "div"
-        );
-
-    price.className =
-        "price";
-
-
-    price.innerHTML =
-        '<span class="old-price">$' +
-        course.oldPrice.toFixed(2) +
-        '</span>' +
-
-        '<span class="new-price">$' +
-        course.price.toFixed(2) +
-        '</span>';
-
-
-    details.appendChild(
-        price
-    );
-
-
-    const discount =
-        document.createElement(
-            "div"
-        );
-
-    discount.className =
-        "discount";
-
-
-    discount.innerHTML =
-        "Save " +
-        course.discount +
-        "%" +
-
-        "<br>" +
-
-        "សន្សំបាន " +
-        course.discount +
-        "%";
-
-
-    details.appendChild(
-        discount
-    );
-
-
-    const remarkTitle =
-        document.createElement(
-            "div"
-        );
-
-
-    remarkTitle.className =
-        "remark-title";
-
-
-    remarkTitle.innerHTML =
-        "Payment Remark" +
-
-        "<br>" +
-
-        "លេខសម្គាល់ការទូទាត់";
-
-
-    details.appendChild(
-        remarkTitle
-    );
-
-
-    const remark =
-        document.createElement(
-            "div"
-        );
-
-
-    remark.className =
-        "remark";
-
-
-    remark.textContent =
-        course.remark;
-
-
-    remark.id =
-        "remarkText";
-
-
-    details.appendChild(
-        remark
-    );
-
-
-    const copy =
-        document.createElement(
-            "button"
-        );
-
-
-    copy.className =
-        "copy-button";
-
-
-    copy.innerHTML =
-        "📋 Copy Remark" +
-
-        "<br>" +
-
-        "ចម្លងលេខសម្គាល់";
-
-
-    copy.onclick =
-        copyRemark;
-
-
-    details.appendChild(
-        copy
-    );
-
-
-    const important =
-        document.createElement(
-            "div"
-        );
-
-
-    important.className =
-        "important";
-
-
-    important.innerHTML =
-
-        "⚠️ <strong>Important:</strong>" +
-
-        "<br><br>" +
-
-        "Copy this exact Payment Remark " +
-        "and paste it into the " +
-        "<strong>Remark</strong> field " +
-        "when making your payment." +
-
-        "<br><br>" +
-
-        "សូមចម្លងលេខសម្គាល់ការទូទាត់នេះ " +
-        "ហើយបិទភ្ជាប់វាទៅក្នុងប្រអប់ " +
-        "<strong>Remark</strong> " +
-        "នៅពេលធ្វើការទូទាត់។";
-
-
-    details.appendChild(
-        important
-    );
-
-
-    // ==============================================
-    // THIS IS THE REGISTRATION BUTTON
-    // ==============================================
-
-    const register =
-        document.createElement(
-            "button"
-        );
-
-
-    register.className =
-        "register-button";
-
-
-    register.innerHTML =
-        "✅ Continue Registration" +
-
-        "<br>" +
-
-        "បន្តការចុះឈ្មោះ";
-
-
-    register.onclick =
-        registerCourse;
-
-
-    details.appendChild(
-        register
-    );
-
-}
-
-
-// =======================================================
-// COPY REMARK
-// =======================================================
-
-function copyRemark() {
-
-    if (
-        !selectedCourse
-    ) {
-        return;
-    }
-
-
-    const remark =
-        selectedCourse.remark;
-
-
-    if (
-        navigator.clipboard
-    ) {
-
-        navigator.clipboard
-            .writeText(
-                remark
-            )
-            .then(
-                function() {
-
-                    alert(
-                        "Payment Remark copied: " +
-                        remark
-                    );
-
-                }
-            )
-            .catch(
-                function() {
-
-                    alert(
-                        "Payment Remark: " +
-                        remark
-                    );
-
-                }
-            );
-
-    }
-    else {
-
-        alert(
-            "Payment Remark: " +
-            remark
-        );
-
-    }
-
-}
-
-
-// =======================================================
-// REGISTER COURSE
-// =======================================================
-
-function registerCourse() {
-
-    if (
-        !selectedCourse
-    ) {
-
-        alert(
-            "Please select a course first."
-        );
-
-        return;
-
-    }
-
-
-    const registration = {
-
-        remark:
-            selectedCourse.remark,
-
-        course:
-            selectedCourse.course,
-
-        price:
-            selectedCourse.price,
-
-        discount:
-            selectedCourse.discount,
-
-        paymentLink:
-            selectedCourse.paymentLink
 
     };
 
 
-    console.log(
-        "========== NEW REGISTRATION =========="
-    );
+    // =====================================================
+    // CURRENT COURSE
+    // =====================================================
+
+    let currentMajor =
+        null;
+
+    let currentLevel =
+        null;
 
 
-    console.log(
-        registration
-    );
+    // =====================================================
+    // STORAGE KEY
+    // =====================================================
+
+    const STORAGE_KEY =
+        "vlearn_payment_course";
 
 
-    console.log(
-        "Remark:",
-        registration.remark
-    );
+    // =====================================================
+    // SHOW / HIDE PAGES
+    // =====================================================
+
+    function hideAllPages() {
+
+        document
+            .getElementById("homePage")
+            .classList.add("hidden");
+
+        document
+            .getElementById("levelPage")
+            .classList.add("hidden");
+
+        document
+            .getElementById("coursePage")
+            .classList.add("hidden");
+
+        document
+            .getElementById("paymentPage")
+            .classList.add("hidden");
+
+        document
+            .getElementById("receiptPage")
+            .classList.add("hidden");
+
+    }
 
 
-    console.log(
-        "Course:",
-        registration.course
-    );
+    // =====================================================
+    // OPEN MAJOR
+    // =====================================================
+
+    function openMajorCourse(
+        major
+    ) {
+
+        currentMajor =
+            major;
 
 
-    console.log(
-        "Price:",
-        registration.price
-    );
+        const data =
+            courses[major];
 
 
-    console.log(
-        "Discount:",
-        registration.discount
-    );
+        hideAllPages();
 
 
-    console.log(
-        "Payment Link:",
-        registration.paymentLink
-    );
+        document
+            .getElementById("levelPage")
+            .classList.remove("hidden");
 
 
-    // ==============================================
-    // SEND DATA TO TELEGRAM BOT
-    // ==============================================
+        document
+            .getElementById("majorTitle")
+            .textContent =
+            data.title;
 
-    try {
 
-        tg.sendData(
+        document
+            .getElementById("majorKhmer")
+            .textContent =
+            data.khmer;
+
+
+        const container =
+            document.getElementById(
+                "levelButtons"
+            );
+
+
+        container.innerHTML =
+            "";
+
+
+        data.levels.forEach(
+            (
+                level,
+                index
+            ) => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "level-button";
+
+
+                button.textContent =
+                    level.name;
+
+
+                button.onclick =
+                    function() {
+
+                        openCourse(
+                            index
+                        );
+
+                    };
+
+
+                container.appendChild(
+                    button
+                );
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // OPEN COURSE
+    // =====================================================
+
+    function openCourse(
+        index
+    ) {
+
+        currentLevel =
+            courses[
+                currentMajor
+            ].levels[index];
+
+
+        hideAllPages();
+
+
+        document
+            .getElementById("coursePage")
+            .classList.remove("hidden");
+
+
+        renderCourse();
+
+    }
+
+
+    // =====================================================
+    // RENDER COURSE
+    // =====================================================
+
+    function renderCourse() {
+
+        const course =
+            currentLevel;
+
+
+        const card =
+            document.getElementById(
+                "courseCard"
+            );
+
+
+        card.innerHTML = `
+
+            <div class="course-name">
+
+                ${course.name}
+
+            </div>
+
+
+            <div class="price">
+
+                <span class="old-price">
+
+                    $${course.oldPrice.toFixed(2)}
+
+                </span>
+
+                <span class="new-price">
+
+                    $${course.price.toFixed(2)}
+
+                </span>
+
+            </div>
+
+
+            <div class="discount">
+
+                Save ${course.discount}%
+
+                <br>
+
+                សន្សំបាន ${course.discount}%
+
+            </div>
+
+
+            <button
+                class="primary-button"
+                onclick="continueRegistration()"
+            >
+
+                Continue Registration
+
+                <br>
+
+                បន្តការចុះឈ្មោះ
+
+            </button>
+
+        `;
+
+    }
+
+
+    // =====================================================
+    // CONTINUE REGISTRATION
+    // =====================================================
+
+    function continueRegistration() {
+
+        if (!currentLevel) {
+
+            return;
+
+        }
+
+
+        const registration = {
+
+            course:
+                currentLevel.botCourse,
+
+            course_name:
+                currentLevel.name,
+
+            price:
+                currentLevel.price,
+
+            discount:
+                currentLevel.discount
+
+        };
+
+
+        localStorage.setItem(
+
+            STORAGE_KEY,
+
             JSON.stringify(
                 registration
             )
+
         );
 
 
-        console.log(
-            "✅ Registration sent to bot."
-        );
+        try {
 
+            tg.sendData(
+
+                JSON.stringify({
+
+                    action:
+                        "register",
+
+                    course:
+                        currentLevel.botCourse,
+
+                    course_name:
+                        currentLevel.name,
+
+                    price:
+                        currentLevel.price,
+
+                    discount:
+                        currentLevel.discount
+
+                })
+
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            showFormError(
+
+                "Registration could not be sent. Please open Vlearn Together again."
+
+            );
+
+        }
 
     }
-    catch (
-        error
+
+
+    // =====================================================
+    // OPEN PAYMENT COMPLETED
+    // =====================================================
+
+    function openPaymentCompleted() {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!saved) {
+
+            tg.showPopup({
+
+                title:
+                    "No registration found",
+
+                message:
+                    "Please choose a course first.",
+
+                buttons: [
+                    {
+                        type:
+                            "ok"
+                    }
+                ]
+
+            });
+
+            return;
+
+        }
+
+
+        try {
+
+            const registration =
+                JSON.parse(
+                    saved
+                );
+
+
+            currentLevel = {
+
+                name:
+                    registration.course_name,
+
+                botCourse:
+                    registration.course,
+
+                price:
+                    Number(
+                        registration.price
+                    )
+
+            };
+
+
+            hideAllPages();
+
+
+            document
+                .getElementById(
+                    "paymentPage"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+
+
+            document
+                .getElementById(
+                    "paymentCourseInfo"
+                )
+                .innerHTML = `
+
+                    <strong>
+                        Course
+                    </strong>
+
+                    <br>
+
+                    ${registration.course_name}
+
+                    <br><br>
+
+                    <strong>
+                        Payment amount
+                    </strong>
+
+                    <br>
+
+                    $${Number(
+                        registration.price
+                    ).toFixed(2)}
+
+                `;
+
+        }
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // PAYMENT DATE
+    // =====================================================
+
+    function getFormattedDate(
+        value
     ) {
 
-        console.error(
-            "❌ Registration error:",
-            error
-        );
+        if (!value) {
+
+            return "";
+
+        }
 
 
-        alert(
-            "Registration could not be sent. " +
-            "Please open the Mini App again."
+        const parts =
+            value.split("-");
+
+
+        if (
+            parts.length !== 3
+        ) {
+
+            return value;
+
+        }
+
+
+        return (
+            parts[2] +
+            "/" +
+            parts[1] +
+            "/" +
+            parts[0]
         );
 
     }
 
-}
 
+    // =====================================================
+    // VALIDATE APV
+    // =====================================================
 
-// =======================================================
-// HOME
-// =======================================================
-
-function showHome() {
-
-    selectedMajor =
-        null;
-
-    selectedCourse =
-        null;
-
-
-    document.getElementById(
-        "levelPage"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "detailsPage"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "homePage"
-    ).classList.remove(
-        "hidden"
-    );
-
-}
-
-
-// =======================================================
-// BACK TO LEVELS
-// =======================================================
-
-function backToLevels() {
-
-    if (
-        !selectedMajor
+    function cleanAPV(
+        value
     ) {
 
-        showHome();
-
-        return;
+        return String(
+            value || ""
+        )
+        .replace(
+            /\D/g,
+            ""
+        )
+        .trim();
 
     }
 
 
-    document.getElementById(
-        "detailsPage"
-    ).classList.add(
-        "hidden"
-    );
+    // =====================================================
+    // SUBMIT PAYMENT INFORMATION
+    // =====================================================
+
+    function submitPaymentInformation() {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
 
 
-    document.getElementById(
-        "levelPage"
-    ).classList.remove(
-        "hidden"
-    );
+        if (!saved) {
 
-}
+            showFormError(
+
+                "No course registration was found. Please choose a course first."
+
+            );
+
+            return;
+
+        }
+
+
+        let registration;
+
+
+        try {
+
+            registration =
+                JSON.parse(
+                    saved
+                );
+
+        }
+        catch (error) {
+
+            showFormError(
+
+                "Your registration information could not be read."
+
+            );
+
+            return;
+
+        }
+
+
+        const dateInput =
+            document.getElementById(
+                "paymentDate"
+            );
+
+
+        const apvInput =
+            document.getElementById(
+                "paymentApv"
+            );
+
+
+        const paymentDate =
+            dateInput.value;
+
+
+        const apv =
+            cleanAPV(
+                apvInput.value
+            );
+
+
+        if (!paymentDate) {
+
+            showFormError(
+
+                "Please enter the date of your payment.\nសូមបញ្ចូលកាលបរិច្ឆេទទូទាត់របស់អ្នក។"
+
+            );
+
+            return;
+
+        }
+
+
+        if (!apv) {
+
+            showFormError(
+
+                "Please enter your APV.\nសូមបញ្ចូលលេខ APV របស់អ្នក។"
+
+            );
+
+            return;
+
+        }
+
+
+        if (
+            apv.length < 4
+        ) {
+
+            showFormError(
+
+                "Please check your APV and enter it correctly.\nសូមពិនិត្យលេខ APV របស់អ្នក។"
+
+            );
+
+            return;
+
+        }
+
+
+        const formattedDate =
+            getFormattedDate(
+                paymentDate
+            );
+
+
+        const paymentData = {
+
+            action:
+                "payment_completed",
+
+            course:
+                registration.course,
+
+            course_name:
+                registration.course_name,
+
+            price:
+                Number(
+                    registration.price
+                ),
+
+            payment_date:
+                formattedDate,
+
+            apv:
+                apv
+
+        };
+
+
+        localStorage.setItem(
+
+            STORAGE_KEY,
+
+            JSON.stringify({
+
+                ...registration,
+
+                payment_date:
+                    formattedDate,
+
+                apv:
+                    apv
+
+            })
+
+        );
+
+
+        try {
+
+            tg.sendData(
+
+                JSON.stringify(
+                    paymentData
+                )
+
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            showFormError(
+
+                "The payment information could not be submitted. Please try again."
+
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // FORM ERROR
+    // =====================================================
+
+    function showFormError(
+        message
+    ) {
+
+        const errorBox =
+            document.getElementById(
+                "formError"
+            );
+
+
+        errorBox.textContent =
+            message;
+
+
+        errorBox.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // =====================================================
+    // RECEIPT
+    // =====================================================
+
+    function showReceipt(
+        data
+    ) {
+
+        hideAllPages();
+
+
+        document
+            .getElementById(
+                "receiptPage"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+
+        const receipt =
+            document.getElementById(
+                "receiptContent"
+            );
+
+
+        receipt.innerHTML = `
+
+            <div class="receipt-brand">
+
+                Vlearn Together
+
+            </div>
+
+
+            <div class="receipt-title">
+
+                Registration Receipt
+
+            </div>
+
+
+            <div class="receipt-khmer">
+
+                បង្កាន់ដៃចុះឈ្មោះ
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="receipt-row">
+
+                <div class="label">
+                    Student
+                </div>
+
+                <div class="value">
+                    ${telegramUserName}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-row">
+
+                <div class="label">
+                    Course
+                </div>
+
+                <div class="value">
+                    ${data.course_name || data.course}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-row">
+
+                <div class="label">
+                    Amount
+                </div>
+
+                <div class="value">
+                    $${Number(
+                        data.price
+                    ).toFixed(2)}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-row">
+
+                <div class="label">
+                    Payment date
+                </div>
+
+                <div class="value">
+                    ${data.payment_date}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-row">
+
+                <div class="label">
+                    APV
+                </div>
+
+                <div class="value">
+                    ${data.apv}
+                </div>
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="success">
+
+                Registration successful
+
+                <br>
+
+                ការចុះឈ្មោះបានជោគជ័យ
+
+            </div>
+
+
+            <div class="contact-section">
+
+                <div class="contact-title">
+
+                    Contact Vlearn Together
+
+                </div>
+
+
+                <div class="contact-khmer">
+
+                    ទំនាក់ទំនង Vlearn Together
+
+                </div>
+
+
+                <a
+                    class="contact-link"
+                    href="https://t.me/Vlearn_together"
+                    target="_blank"
+                >
+
+                    https://t.me/Vlearn_together
+
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =====================================================
+    // HOME
+    // =====================================================
+
+    function goHome() {
+
+        currentMajor =
+            null;
+
+        currentLevel =
+            null;
+
+
+        hideAllPages();
+
+
+        document
+            .getElementById(
+                "homePage"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+
+        updatePaymentButton();
+
+    }
+
+
+    // =====================================================
+    // LEVELS
+    // =====================================================
+
+    function goLevels() {
+
+        if (!currentMajor) {
+
+            goHome();
+
+            return;
+
+        }
+
+
+        hideAllPages();
+
+
+        document
+            .getElementById(
+                "levelPage"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+    }
+
+
+    // =====================================================
+    // PAYMENT BUTTON
+    // =====================================================
+
+    function updatePaymentButton() {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        const button =
+            document.getElementById(
+                "paymentCompletedButton"
+            );
+
+
+        if (saved) {
+
+            button.classList.remove(
+                "hidden"
+            );
+
+        }
+        else {
+
+            button.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // LOAD SAVED DATA
+    // =====================================================
+
+    function loadSavedPayment() {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!saved) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const data =
+                JSON.parse(
+                    saved
+                );
+
+
+            if (
+                data.payment_date &&
+                data.apv
+            ) {
+
+                console.log(
+                    "Previous payment information found:",
+                    data
+                );
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "Could not load saved payment:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // INITIALIZE
+    // =====================================================
+
+    loadSavedPayment();
+
+    updatePaymentButton();
 
 
 </script>
