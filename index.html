@@ -27,6 +27,7 @@
         body {
             margin: 0;
             padding: 0;
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -34,8 +35,17 @@
                 Arial,
                 sans-serif;
 
-            background: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #222222);
+            background:
+                var(
+                    --tg-theme-bg-color,
+                    #ffffff
+                );
+
+            color:
+                var(
+                    --tg-theme-text-color,
+                    #222222
+                );
 
             min-height: 100vh;
         }
@@ -380,6 +390,8 @@
 
             font-size: 15px;
             line-height: 1.55;
+
+            white-space: pre-line;
         }
 
         .success-box {
@@ -474,9 +486,7 @@
 
         .contact {
             margin-top: 18px;
-
             text-align: center;
-
             font-size: 14px;
             line-height: 1.6;
         }
@@ -493,6 +503,13 @@
             font-size: 13px;
             opacity: 0.65;
             line-height: 1.5;
+        }
+
+        .payment-link-note {
+            margin-top: 10px;
+            font-size: 13px;
+            opacity: 0.65;
+            text-align: center;
         }
 
     </style>
@@ -516,17 +533,21 @@
             class="welcome"
         ></div>
 
+
         <div class="brand">
             Vlearn Together
         </div>
+
 
         <div class="intro">
             Learn English online with our video courses.
         </div>
 
+
         <div class="page-title">
             Choose Your Course
         </div>
+
 
         <div class="khmer-title">
             សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នក
@@ -537,11 +558,15 @@
             class="course-button"
             onclick="openMajorCourse('general')"
         >
+
             General English Programme
+
             <br>
+
             <span>
                 កម្មវិធីភាសាអង់គ្លេសទូទៅ
             </span>
+
         </button>
 
 
@@ -549,11 +574,15 @@
             class="course-button"
             onclick="openMajorCourse('grammar')"
         >
+
             English Grammar Course
+
             <br>
+
             <span>
                 វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
             </span>
+
         </button>
 
 
@@ -561,11 +590,15 @@
             class="course-button"
             onclick="openMajorCourse('vocabulary')"
         >
+
             English Vocabulary Course
+
             <br>
+
             <span>
                 វគ្គវាក្យសព្ទភាសាអង់គ្លេស
             </span>
+
         </button>
 
 
@@ -574,9 +607,13 @@
             class="secondary-button hidden"
             onclick="openSavedPayment()"
         >
+
             Payment completed
+
             <br>
+
             ការទូទាត់បានបញ្ចប់
+
         </button>
 
     </section>
@@ -595,25 +632,33 @@
             Vlearn Together
         </div>
 
+
         <div
             id="majorTitle"
             class="page-title"
         ></div>
+
 
         <div
             id="majorKhmer"
             class="khmer-title"
         ></div>
 
+
         <div id="levelButtons"></div>
+
 
         <button
             class="back-button"
             onclick="goHome()"
         >
+
             ← Back to Courses
+
             <br>
+
             ត្រលប់ក្រោយ
+
         </button>
 
     </section>
@@ -632,18 +677,24 @@
             Vlearn Together
         </div>
 
+
         <div
             id="courseCard"
             class="price-card"
         ></div>
 
+
         <button
             class="back-button"
             onclick="goLevels()"
         >
+
             ← Back to Courses
+
             <br>
+
             ត្រលប់ក្រោយ
+
         </button>
 
     </section>
@@ -662,9 +713,11 @@
             Vlearn Together
         </div>
 
+
         <div class="payment-title">
             Payment completed
         </div>
+
 
         <div class="payment-khmer">
             ការទូទាត់បានបញ្ចប់
@@ -694,9 +747,13 @@
             class="input-label"
             for="paymentDate"
         >
+
             Payment Date
+
             <br>
+
             កាលបរិច្ឆេទទូទាត់
+
         </label>
 
 
@@ -707,9 +764,13 @@
 
 
         <div class="date-example">
+
             Example: 15/08/2026
+
             <br>
+
             ឧទាហរណ៍៖ 15/08/2026
+
         </div>
 
 
@@ -717,9 +778,13 @@
             class="input-label"
             for="paymentApv"
         >
+
             APV
+
             <br>
+
             លេខ APV
+
         </label>
 
 
@@ -743,9 +808,13 @@
             class="primary-button"
             onclick="submitPaymentInformation()"
         >
+
             Confirm Payment
+
             <br>
+
             បញ្ជាក់ការទូទាត់
+
         </button>
 
 
@@ -753,9 +822,13 @@
             class="back-button"
             onclick="goHome()"
         >
+
             ← Back to Courses
+
             <br>
+
             ត្រលប់ក្រោយ
+
         </button>
 
     </section>
@@ -798,7 +871,9 @@
                 href="https://t.me/Vlearn_together"
                 target="_blank"
             >
+
                 https://t.me/Vlearn_together
+
             </a>
 
         </div>
@@ -819,9 +894,13 @@
             class="primary-button"
             onclick="goHome()"
         >
+
             Back to Courses
+
             <br>
+
             ត្រលប់ទៅវគ្គសិក្សា
+
         </button>
 
     </section>
@@ -837,9 +916,12 @@
     // TELEGRAM
     // =====================================================
 
-    const tg = window.Telegram.WebApp;
+    const tg =
+        window.Telegram.WebApp;
+
 
     tg.ready();
+
     tg.expand();
 
 
@@ -882,6 +964,11 @@
     // =====================================================
 
     const courses = {
+
+
+        // =================================================
+        // GENERAL ENGLISH
+        // =================================================
 
         general: {
 
@@ -981,6 +1068,10 @@
         },
 
 
+        // =================================================
+        // ENGLISH GRAMMAR
+        // =================================================
+
         grammar: {
 
             title:
@@ -1057,6 +1148,10 @@
 
         },
 
+
+        // =================================================
+        // ENGLISH VOCABULARY
+        // =================================================
 
         vocabulary: {
 
@@ -1162,17 +1257,24 @@
     // CURRENT COURSE
     // =====================================================
 
-    let currentMajor = null;
+    let currentMajor =
+        null;
 
-    let currentLevel = null;
+
+    let currentLevel =
+        null;
 
 
     // =====================================================
-    // STORAGE KEY
+    // STORAGE KEYS
     // =====================================================
 
     const SAVED_COURSE_KEY =
         "vlearn_pending_course";
+
+
+    const LAST_PAYMENT_KEY =
+        "vlearn_last_payment";
 
 
     // =====================================================
@@ -1185,7 +1287,9 @@
             !currentMajor ||
             !currentLevel
         ) {
+
             return;
+
         }
 
 
@@ -1201,13 +1305,19 @@
                 currentLevel.botCourse,
 
             price:
-                currentLevel.price,
+                Number(
+                    currentLevel.price
+                ),
 
             oldPrice:
-                currentLevel.oldPrice,
+                Number(
+                    currentLevel.oldPrice
+                ),
 
             discount:
-                currentLevel.discount,
+                Number(
+                    currentLevel.discount
+                ),
 
             paymentLink:
                 currentLevel.paymentLink
@@ -1256,6 +1366,11 @@
         }
         catch (error) {
 
+            console.log(
+                "Could not read saved course:",
+                error
+            );
+
             return null;
 
         }
@@ -1264,7 +1379,7 @@
 
 
     // =====================================================
-    // SHOW / HIDE PAGES
+    // HIDE ALL PAGES
     // =====================================================
 
     function hideAllPages() {
@@ -1273,17 +1388,21 @@
             .getElementById("homePage")
             .classList.add("hidden");
 
+
         document
             .getElementById("levelPage")
             .classList.add("hidden");
+
 
         document
             .getElementById("coursePage")
             .classList.add("hidden");
 
+
         document
             .getElementById("paymentPage")
             .classList.add("hidden");
+
 
         document
             .getElementById("receiptPage")
@@ -1308,6 +1427,7 @@
 
         currentMajor =
             null;
+
 
         currentLevel =
             null;
@@ -1353,12 +1473,21 @@
 
 
     // =====================================================
-    // OPEN MAJOR
+    // OPEN MAJOR COURSE
     // =====================================================
 
     function openMajorCourse(
         major
     ) {
+
+        if (
+            !courses[major]
+        ) {
+
+            return;
+
+        }
+
 
         currentMajor =
             major;
@@ -1399,6 +1528,7 @@
 
 
         data.levels.forEach(
+
             (
                 level,
                 index
@@ -1434,6 +1564,7 @@
                 );
 
             }
+
         );
 
     }
@@ -1447,10 +1578,27 @@
         index
     ) {
 
+        if (
+            !currentMajor ||
+            !courses[currentMajor]
+        ) {
+
+            return;
+
+        }
+
+
         currentLevel =
             courses[
                 currentMajor
             ].levels[index];
+
+
+        if (!currentLevel) {
+
+            return;
+
+        }
 
 
         saveCourseForPayment();
@@ -1479,6 +1627,13 @@
             currentLevel;
 
 
+        if (!course) {
+
+            return;
+
+        }
+
+
         const card =
             document.getElementById(
                 "courseCard"
@@ -1488,18 +1643,29 @@
         card.innerHTML = `
 
             <div class="course-name">
+
                 ${course.name}
+
             </div>
 
 
             <div class="price">
 
                 <span class="old-price">
-                    $${course.oldPrice.toFixed(2)}
+
+                    $${Number(
+                        course.oldPrice
+                    ).toFixed(2)}
+
                 </span>
 
+
                 <span class="new-price">
-                    $${course.price.toFixed(2)}
+
+                    $${Number(
+                        course.price
+                    ).toFixed(2)}
+
                 </span>
 
             </div>
@@ -1519,38 +1685,64 @@
             <div class="payment-info">
 
                 <strong>
-                    Payment
+                    Payment Instructions
                 </strong>
 
                 <br><br>
 
-                Press <strong>Continue Registration</strong>
-                first.
+                1. Press
+                <strong>
+                    Continue Registration
+                </strong>
+                below.
 
                 <br>
 
-                ចុច <strong>បន្តការចុះឈ្មោះ</strong>
-                ជាមុនសិន។
+                ១. ចុច
+                <strong>
+                    បន្តការចុះឈ្មោះ
+                </strong>
+                ខាងក្រោម។
 
                 <br><br>
 
-                After registration, return to
-                Vlearn Together and choose
-                <strong>Payment completed</strong>
-                after you have paid.
+                2. You will be taken to the
+                ABA payment page for this course.
+
+                <br>
+
+                ២. អ្នកនឹងត្រូវបានបញ្ជូនទៅទំព័រ
+                ទូទាត់ប្រាក់ ABA សម្រាប់វគ្គនេះ។
 
                 <br><br>
 
-                បន្ទាប់ពីចុះឈ្មោះរួច
-                សូមត្រឡប់មក Vlearn Together
-                ហើយជ្រើសរើស
-                <strong>ការទូទាត់បានបញ្ចប់</strong>
-                បន្ទាប់ពីអ្នកបានបង់ប្រាក់។
+                3. Complete the payment.
+
+                <br>
+
+                ៣. សូមបញ្ចប់ការទូទាត់។
+
+                <br><br>
+
+                4. Return to Vlearn Together
+                and press
+                <strong>
+                    Payment completed
+                </strong>.
+
+                <br>
+
+                ៤. ត្រឡប់មក Vlearn Together
+                ហើយចុច
+                <strong>
+                    ការទូទាត់បានបញ្ចប់
+                </strong>។
 
             </div>
 
 
             <button
+                id="continueRegistrationButton"
                 class="primary-button"
                 onclick="registerCourse()"
             >
@@ -1562,6 +1754,17 @@
                 បន្តការចុះឈ្មោះ
 
             </button>
+
+
+            <div class="payment-link-note">
+
+                ABA payment is required to continue.
+
+                <br>
+
+                ត្រូវធ្វើការទូទាត់ ABA ដើម្បីបន្ត។
+
+            </div>
 
 
             <button
@@ -1583,52 +1786,96 @@
 
 
     // =====================================================
-    // REGISTER COURSE
+    // CONTINUE REGISTRATION
+    // =====================================================
+    //
+    // IMPORTANT:
+    // This function now opens the ABA payment link.
+    // It does NOT use tg.sendData().
+    //
+    // The selected course is already saved in localStorage,
+    // so the student can return later and press
+    // "Payment completed".
+    //
     // =====================================================
 
     function registerCourse() {
 
         if (!currentLevel) {
 
+            alert(
+                "Please choose a course first."
+            );
+
             return;
 
         }
 
 
+        // Save selected course before opening ABA.
+
         saveCourseForPayment();
 
 
-        const registration = {
+        // Make sure the course has a payment link.
 
-            action:
-                "REGISTER",
+        if (
+            !currentLevel.paymentLink
+        ) {
 
-            course:
-                currentLevel.botCourse,
+            alert(
 
-            price:
-                currentLevel.price,
+                "Payment link is not available for this course." +
 
-            discount:
-                currentLevel.discount
+                "\n\n" +
 
-        };
+                "ការទូទាត់សម្រាប់វគ្គនេះមិនទាន់មានតំណភ្ជាប់ទេ។"
+
+            );
+
+            return;
+
+        }
+
+
+        const paymentLink =
+            currentLevel.paymentLink;
+
+
+        console.log(
+            "Opening ABA payment link:",
+            paymentLink
+        );
 
 
         try {
 
-            tg.sendData(
-                JSON.stringify(
-                    registration
-                )
+            /*
+                Telegram's openLink() opens the payment
+                website outside the Mini App while keeping
+                the Mini App available.
+            */
+
+            tg.openLink(
+                paymentLink
             );
 
         }
         catch (error) {
 
-            alert(
-                "Registration could not be sent. " +
-                "Please open Vlearn Together again."
+            console.log(
+                "tg.openLink() error:",
+                error
+            );
+
+
+            /*
+                Fallback for browsers/testing.
+            */
+
+            window.open(
+                paymentLink,
+                "_blank"
             );
 
         }
@@ -1649,7 +1896,13 @@
         if (!saved) {
 
             alert(
-                "Please choose a course first."
+
+                "Please choose a course first." +
+
+                "\n\n" +
+
+                "សូមជ្រើសរើសវគ្គសិក្សាជាមុនសិន។"
+
             );
 
             return;
@@ -1691,10 +1944,18 @@
         if (!course) {
 
             alert(
-                "Please choose your course first."
+
+                "Please choose your course first." +
+
+                "\n\n" +
+
+                "សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នកជាមុនសិន។"
+
             );
 
+
             goHome();
+
 
             return;
 
@@ -1718,24 +1979,37 @@
             .innerHTML = `
 
                 <div class="selected-course-title">
+
                     Selected course
+
                 </div>
+
 
                 <div class="selected-course-name">
+
                     ${course.name}
+
                 </div>
 
+
                 <br>
+
 
                 <strong>
-                    Price: $${Number(
+
+                    Price:
+                    $${Number(
                         course.price
                     ).toFixed(2)}
+
                 </strong>
+
 
                 <br>
 
-                តម្លៃ៖ $${Number(
+
+                តម្លៃ៖
+                $${Number(
                     course.price
                 ).toFixed(2)}
 
@@ -1763,7 +2037,13 @@
         if (!course) {
 
             showPaymentError(
-                "Please choose your course first."
+
+                "Please choose your course first." +
+
+                "\n\n" +
+
+                "សូមជ្រើសរើសវគ្គសិក្សារបស់អ្នកជាមុនសិន។"
+
             );
 
             return;
@@ -1848,7 +2128,9 @@
                 course.botCourse,
 
             price:
-                Number(course.price),
+                Number(
+                    course.price
+                ),
 
             payment_date:
                 date,
@@ -1860,21 +2142,23 @@
 
 
         /*
-            Save the information temporarily.
-
-            This allows the student to keep the
-            information if Telegram closes the
-            Mini App after tg.sendData().
+            Save locally before sending to Telegram.
         */
 
         localStorage.setItem(
 
-            "vlearn_last_payment",
+            LAST_PAYMENT_KEY,
 
             JSON.stringify(
                 paymentData
             )
 
+        );
+
+
+        console.log(
+            "Payment information:",
+            paymentData
         );
 
 
@@ -1890,16 +2174,18 @@
 
 
             /*
-                The Telegram Mini App normally closes
+                Telegram normally closes the Mini App
                 after sendData().
-
-                The bot should verify Date + APV
-                against the payment information you
-                provide to the group.
             */
 
         }
         catch (error) {
+
+            console.log(
+                "tg.sendData() error:",
+                error
+            );
+
 
             showPaymentError(
 
@@ -1942,7 +2228,7 @@
 
 
     // =====================================================
-    // RECEIPT
+    // SHOW RECEIPT
     // =====================================================
 
     function showReceipt(
@@ -1986,15 +2272,23 @@
             <div class="receipt-header">
 
                 <div class="receipt-brand">
+
                     Vlearn Together
+
                 </div>
+
 
                 <div class="receipt-title">
+
                     Registration Receipt
+
                 </div>
+
 
                 <div class="receipt-khmer-title">
+
                     បង្កាន់ដៃចុះឈ្មោះ
+
                 </div>
 
             </div>
@@ -2003,11 +2297,16 @@
             <div class="receipt-row">
 
                 <div class="receipt-label">
+
                     Course
+
                 </div>
 
+
                 <div class="receipt-value">
+
                     ${course.name}
+
                 </div>
 
             </div>
@@ -2016,11 +2315,16 @@
             <div class="receipt-row">
 
                 <div class="receipt-label">
+
                     វគ្គសិក្សា
+
                 </div>
 
+
                 <div class="receipt-value">
+
                     ${course.name}
+
                 </div>
 
             </div>
@@ -2029,13 +2333,18 @@
             <div class="receipt-row">
 
                 <div class="receipt-label">
+
                     Amount
+
                 </div>
 
+
                 <div class="receipt-value">
+
                     $${Number(
                         course.price
                     ).toFixed(2)}
+
                 </div>
 
             </div>
@@ -2044,11 +2353,16 @@
             <div class="receipt-row">
 
                 <div class="receipt-label">
+
                     Payment Date
+
                 </div>
 
+
                 <div class="receipt-value">
+
                     ${date}
+
                 </div>
 
             </div>
@@ -2057,11 +2371,16 @@
             <div class="receipt-row">
 
                 <div class="receipt-label">
+
                     APV
+
                 </div>
 
+
                 <div class="receipt-value">
+
                     ${payment.apv}
+
                 </div>
 
             </div>
@@ -2101,7 +2420,9 @@
             dateString.split("-");
 
 
-        if (parts.length !== 3) {
+        if (
+            parts.length !== 3
+        ) {
 
             return dateString;
 
@@ -2109,11 +2430,13 @@
 
 
         return (
+
             parts[2] +
             "/" +
             parts[1] +
             "/" +
             parts[0]
+
         );
 
     }
@@ -2169,6 +2492,7 @@
 
 
         data.levels.forEach(
+
             (
                 level,
                 index
@@ -2204,6 +2528,7 @@
                 );
 
             }
+
         );
 
     }
