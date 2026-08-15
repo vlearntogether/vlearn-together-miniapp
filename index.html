@@ -1,3323 +1,2954 @@
-import json
-import re
-import sqlite3
+<!DOCTYPE html>
+<html lang="en">
 
-from datetime import datetime
+<head>
 
-from telegram import (
-    Update,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    WebAppInfo,
-)
+<meta charset="UTF-8">
 
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    ContextTypes,
-    MessageHandler,
-    ChatJoinRequestHandler,
-    filters,
-)
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Vlearn Together</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --blue-light: #eff6ff;
+    --blue-border: #bfdbfe;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --card: #ffffff;
+    --bg: #f5f7fb;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        Arial,
+        "Noto Sans Khmer",
+        "Khmer OS",
+        sans-serif;
+
+    background:
+        var(--tg-theme-bg-color, var(--bg));
+
+    color:
+        var(--tg-theme-text-color, var(--text));
+}
+
+.container {
+    width: 100%;
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    padding:
+        20px 16px 40px;
+}
+
+.hidden {
+    display: none !important;
+}
 
 
-# ============================================================
-# BOT TOKEN
-# ============================================================
-#
-# IMPORTANT:
-# Replace the value below with your REAL Telegram Bot Token.
-#
-# Example:
-# TOKEN = "8645313682:AAHW4sD6dU0t0g3lB444LhOVSeaImVHxt08"
-#
-# Do NOT share your real bot token with anyone.
-# ============================================================
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-TOKEN = "1"
+.header {
+    text-align: center;
+
+    padding:
+        10px 0 24px;
+}
+
+.logo {
+    width: 76px;
+    height: 76px;
+
+    margin:
+        0 auto 14px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 28px
+        rgba(37, 99, 235, 0.25);
+}
+
+h1 {
+    margin: 0;
+
+    font-size: 27px;
+
+    color:
+        var(--tg-theme-text-color, var(--text));
+}
+
+.subtitle {
+    margin-top: 9px;
+
+    color:
+        var(--tg-theme-hint-color, var(--muted));
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
 
 
-# ============================================================
-# MINI APP URL
-# ============================================================
+/* =========================================================
+   SECTION
+   ========================================================= */
 
-MINI_APP_URL = (
-    "https://vlearntogether.github.io/"
-    "vlearn-together-miniapp/"
-)
+.section-title {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    margin:
+        20px 0 12px;
+}
+
+.section-subtitle {
+    margin:
+        -4px 0 14px;
+
+    color:
+        var(--tg-theme-hint-color, var(--muted));
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
 
 
-# ============================================================
-# DATABASE
-# ============================================================
+/* =========================================================
+   CARDS
+   ========================================================= */
 
-DATABASE = "vlearn.db"
+.card {
+    background:
+        var(
+            --tg-theme-secondary-bg-color,
+            var(--card)
+        );
+
+    border:
+        1px solid
+        var(
+            --tg-theme-section-separator-color,
+            var(--border)
+        );
+
+    border-radius: 18px;
+
+    padding: 19px;
+
+    margin-bottom: 14px;
+
+    box-shadow:
+        0 6px 20px
+        rgba(15, 23, 42, 0.05);
+}
+
+.major-card {
+    cursor: pointer;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+
+    border-left:
+        4px solid
+        var(--blue);
+}
+
+.major-card:active {
+    transform: scale(.985);
+
+    box-shadow:
+        0 4px 14px
+        rgba(37, 99, 235, .10);
+}
+
+.major-title {
+    font-size: 18px;
+
+    font-weight: 800;
+
+    color:
+        var(--tg-theme-text-color, var(--text));
+
+    line-height: 1.45;
+
+    margin-bottom: 7px;
+}
+
+.major-khmer {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color:
+        var(--blue);
+
+    line-height: 1.55;
+
+    margin-bottom: 10px;
+}
+
+.major-description {
+    color:
+        var(--tg-theme-hint-color, var(--muted));
+
+    font-size: 13px;
+
+    line-height: 1.65;
+
+    margin-bottom: 13px;
+}
+
+.major-arrow {
+    color:
+        var(--blue);
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
 
 
-# ============================================================
-# TELEGRAM CONTACT
-# ============================================================
+/* =========================================================
+   COURSE CARD
+   ========================================================= */
 
-CONTACT_USERNAME = "Vlearn_together"
-CONTACT_PHONE = "077 448 388"
+.course-title {
+    font-size: 17px;
+
+    font-weight: 800;
+
+    line-height: 1.45;
+
+    margin-bottom: 7px;
+}
+
+.course-khmer {
+    color:
+        var(--blue);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.55;
+
+    margin-bottom: 9px;
+}
+
+.course-description {
+    color:
+        var(--tg-theme-hint-color, var(--muted));
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 13px;
+}
+
+.video-count {
+    display: inline-block;
+
+    background:
+        var(--blue-light);
+
+    border:
+        1px solid
+        var(--blue-border);
+
+    color:
+        var(--blue-dark);
+
+    border-radius: 9px;
+
+    padding:
+        6px 9px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    margin-bottom: 14px;
+}
 
 
-# ============================================================
-# COURSES
-# ============================================================
+/* =========================================================
+   DETAIL PAGE
+   ========================================================= */
 
-COURSES = {
+.detail-card {
+    background:
+        var(
+            --tg-theme-secondary-bg-color,
+            var(--card)
+        );
 
-    # --------------------------------------------------------
-    # GENERAL ENGLISH
-    # --------------------------------------------------------
+    border-radius: 18px;
+
+    padding: 20px;
+
+    border:
+        1px solid
+        var(
+            --tg-theme-section-separator-color,
+            var(--border)
+        );
+
+    box-shadow:
+        0 6px 20px
+        rgba(15, 23, 42, .05);
+}
+
+.detail-title {
+    font-size: 23px;
+
+    font-weight: 800;
+
+    line-height: 1.4;
+
+    margin-bottom: 8px;
+}
+
+.detail-khmer {
+    color:
+        var(--blue);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    line-height: 1.6;
+
+    margin-bottom: 18px;
+}
+
+.detail-description {
+    color:
+        var(--tg-theme-hint-color, var(--muted));
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    margin-bottom: 17px;
+}
+
+.info-box {
+    background:
+        var(--blue-light);
+
+    border:
+        1px solid
+        var(--blue-border);
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 18px;
+}
+
+.info-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 7px 0;
+
+    font-size: 13px;
+}
+
+.info-label {
+    color:
+        var(--muted);
+}
+
+.info-value {
+    color:
+        var(--blue-dark);
+
+    font-weight: 800;
+
+    text-align: right;
+}
+
+.advantage-title {
+    font-size: 16px;
+
+    font-weight: 800;
+
+    margin:
+        17px 0 9px;
+}
+
+.advantage {
+    color:
+        var(--tg-theme-text-color, var(--text));
+
+    font-size: 13px;
+
+    line-height: 1.65;
+
+    margin-bottom: 8px;
+
+    padding-left: 3px;
+}
+
+
+/* =========================================================
+   PRICES
+   ========================================================= */
+
+.price-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin:
+        16px 0;
+}
+
+.old-price {
+    color: #9ca3af;
+
+    text-decoration: line-through;
+
+    font-size: 13px;
+}
+
+.price {
+    color:
+        var(--blue);
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    margin-top: 2px;
+}
+
+.discount {
+    display: inline-block;
+
+    padding:
+        6px 9px;
+
+    border-radius: 9px;
+
+    background:
+        #dcfce7;
+
+    color:
+        #166534;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding:
+        13px 16px;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform .1s ease,
+        opacity .1s ease;
+}
+
+button:active {
+    transform: scale(.985);
+}
+
+.primary-btn {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    box-shadow:
+        0 6px 16px
+        rgba(37, 99, 235, .18);
+}
+
+.secondary-btn {
+    background:
+        var(
+            --tg-theme-secondary-bg-color,
+            #e5e7eb
+        );
+
+    color:
+        var(
+            --tg-theme-text-color,
+            #111827
+        );
+
+    border:
+        1px solid
+        var(--border);
+}
+
+.payment-btn {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+}
+
+.back-btn {
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-card {
+    background:
+        var(
+            --tg-theme-secondary-bg-color,
+            var(--card)
+        );
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    border:
+        1px solid
+        var(--border);
+
+    box-shadow:
+        0 6px 20px
+        rgba(15, 23, 42, .05);
+}
+
+.selected-course {
+    padding: 15px;
+
+    background:
+        var(--blue-light);
+
+    border:
+        1px solid
+        var(--blue-border);
+
+    border-radius: 13px;
+
+    margin-bottom: 18px;
+}
+
+.selected-course-label {
+    color:
+        var(--muted);
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+.selected-course-name {
+    color:
+        var(--blue-dark);
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    line-height: 1.5;
+}
+
+.selected-course-price {
+    color:
+        var(--blue);
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    margin-top: 5px;
+}
+
+label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+input {
+    width: 100%;
+
+    padding:
+        13px 14px;
+
+    border-radius: 11px;
+
+    border:
+        1px solid
+        #d1d5db;
+
+    background:
+        var(
+            --tg-theme-bg-color,
+            white
+        );
+
+    color:
+        var(
+            --tg-theme-text-color,
+            #111827
+        );
+
+    font-size: 16px;
+
+    outline: none;
+
+    margin-bottom: 7px;
+}
+
+input:focus {
+    border-color:
+        var(--blue);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, .12);
+}
+
+.help-text {
+    color:
+        var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   PAYMENT INSTRUCTION
+   ========================================================= */
+
+.payment-instruction {
+    background:
+        var(--blue-light);
+
+    border:
+        1px solid
+        var(--blue-border);
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 18px;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.payment-step-title {
+    color:
+        var(--blue-dark);
+
+    font-weight: 800;
+
+    margin-bottom: 3px;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status-box {
+    padding: 17px;
+
+    border-radius: 14px;
+
+    margin-bottom: 16px;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.status-success {
+    background:
+        #ecfdf5;
+
+    border:
+        1px solid
+        #a7f3d0;
+
+    color:
+        #065f46;
+}
+
+.status-waiting {
+    background:
+        #eff6ff;
+
+    border:
+        1px solid
+        #bfdbfe;
+
+    color:
+        #1e40af;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    text-align: center;
+
+    color:
+        var(
+            --tg-theme-hint-color,
+            #9ca3af
+        );
+
+    font-size: 12px;
+
+    margin-top: 30px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   SPINNER
+   ========================================================= */
+
+.spinner {
+    width: 18px;
+
+    height: 18px;
+
+    border:
+        3px solid
+        rgba(255,255,255,.4);
+
+    border-top-color:
+        white;
+
+    border-radius: 50%;
+
+    display: inline-block;
+
+    vertical-align: middle;
+
+    animation:
+        spin .8s linear infinite;
+
+    margin-right: 7px;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    :root {
+        --blue-light: #172554;
+        --blue-border: #1e40af;
+        --border: #374151;
+    }
+
+    .old-price {
+        color: #9ca3af;
+    }
+
+    input {
+        border-color: #4b5563;
+    }
+
+    .discount {
+        background: #14532d;
+        color: #bbf7d0;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- ========================================================
+     HOME
+     ======================================================== -->
+
+<div id="homePage">
+
+    <div class="header">
+
+        <div class="logo">
+            VL
+        </div>
+
+        <h1>
+            Vlearn Together
+        </h1>
+
+        <div class="subtitle">
+
+            Professional online English courses
+
+            <br>
+
+            វគ្គសិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត
+            ប្រកបដោយគុណភាព
+
+        </div>
+
+    </div>
+
+
+    <div class="section-title">
+        Our Programmes
+    </div>
+
+    <div class="section-subtitle">
+
+        Choose a programme to explore the
+        courses available inside it.
+
+        <br>
+
+        សូមជ្រើសរើសកម្មវិធីសិក្សា
+        ដើម្បីមើលវគ្គសិក្សាដែលមាននៅក្នុងកម្មវិធីនីមួយៗ។
+
+    </div>
+
+
+    <!-- GENERAL ENGLISH -->
+
+    <div
+        class="card major-card"
+        onclick="openMajor('general')"
+    >
+
+        <div class="major-title">
+            General English Programme
+        </div>
+
+        <div class="major-khmer">
+            កម្មវិធីភាសាអង់គ្លេសទូទៅ
+        </div>
+
+        <div class="major-description">
+
+            Develop practical English skills
+            through structured levels covering
+            speaking, listening, reading,
+            writing, grammar and vocabulary.
+
+            <br><br>
+
+            អភិវឌ្ឍជំនាញភាសាអង់គ្លេសដែលអាច
+            ប្រើប្រាស់បានជាក់ស្តែង តាមរយៈកម្រិត
+            សិក្សាដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់។
+
+        </div>
+
+        <div class="major-arrow">
+            Explore Programme →
+        </div>
+
+    </div>
+
+
+    <!-- GRAMMAR -->
+
+    <div
+        class="card major-card"
+        onclick="openMajor('grammar')"
+    >
+
+        <div class="major-title">
+            English Grammar Course
+        </div>
+
+        <div class="major-khmer">
+            វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស
+        </div>
+
+        <div class="major-description">
+
+            Build strong grammar knowledge
+            and improve accuracy in speaking
+            and writing from elementary to
+            advanced level.
+
+            <br><br>
+
+            រៀន និងពង្រឹងចំណេះដឹងវេយ្យាករណ៍
+            ដើម្បីប្រើប្រាស់ភាសាអង់គ្លេសបាន
+            ត្រឹមត្រូវ និងមានទំនុកចិត្ត។
+
+        </div>
+
+        <div class="major-arrow">
+            Explore Programme →
+        </div>
+
+    </div>
+
+
+    <!-- VOCABULARY -->
+
+    <div
+        class="card major-card"
+        onclick="openMajor('vocabulary')"
+    >
+
+        <div class="major-title">
+            English Vocabulary Course
+        </div>
+
+        <div class="major-khmer">
+            វគ្គវាក្យសព្ទភាសាអង់គ្លេស
+        </div>
+
+        <div class="major-description">
+
+            Expand your vocabulary with useful
+            words and expressions for clearer,
+            richer and more confident communication.
+
+            <br><br>
+
+            ពង្រីកវាក្យសព្ទ និងឃ្លាដែលមានប្រយោជន៍
+            ដើម្បីជួយឱ្យការនិយាយ និងការសរសេរ
+            កាន់តែច្បាស់ និងមានទំនុកចិត្ត។
+
+        </div>
+
+        <div class="major-arrow">
+            Explore Programme →
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Vlearn Together
+
+        <br>
+
+        Online English Learning
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     MAJOR COURSE PAGE
+     ======================================================== -->
+
+<div
+    id="majorPage"
+    class="hidden"
+>
+
+    <button
+        class="secondary-btn back-btn"
+        onclick="goHome()"
+    >
+        ← Back to Programmes
+    </button>
+
+
+    <div class="header">
+
+        <h1 id="majorTitle">
+        </h1>
+
+        <div
+            id="majorKhmer"
+            class="subtitle"
+        >
+        </div>
+
+    </div>
+
+
+    <div
+        id="courseList"
+    >
+    </div>
+
+
+    <div class="footer">
+
+        Vlearn Together
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     COURSE DETAIL PAGE
+     ======================================================== -->
+
+<div
+    id="detailPage"
+    class="hidden"
+>
+
+    <button
+        class="secondary-btn back-btn"
+        onclick="backToMajor()"
+    >
+        ← Back to Courses
+    </button>
+
+
+    <div class="detail-card">
+
+        <div
+            id="detailTitle"
+            class="detail-title"
+        >
+        </div>
+
+        <div
+            id="detailKhmer"
+            class="detail-khmer"
+        >
+        </div>
+
+        <div
+            id="detailDescription"
+            class="detail-description"
+        >
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Course level
+                </span>
+
+                <span
+                    id="detailLevel"
+                    class="info-value"
+                >
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Video lessons
+                </span>
+
+                <span
+                    id="detailVideos"
+                    class="info-value"
+                >
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Course price
+                </span>
+
+                <span
+                    id="detailPrice"
+                    class="info-value"
+                >
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="advantage-title">
+            Course Advantages
+        </div>
+
+        <div
+            id="detailAdvantages"
+        >
+        </div>
+
+
+        <div class="advantage-title">
+            អត្ថប្រយោជន៍នៃវគ្គសិក្សា
+        </div>
+
+        <div
+            id="detailAdvantagesKhmer"
+        >
+        </div>
+
+
+        <div class="price-row">
+
+            <div>
+
+                <div
+                    id="detailOldPrice"
+                    class="old-price"
+                >
+                </div>
+
+                <div
+                    id="detailCurrentPrice"
+                    class="price"
+                >
+                </div>
+
+            </div>
+
+            <span
+                id="detailDiscount"
+                class="discount"
+            >
+            </span>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="chooseSelectedCourse()"
+        >
+            Choose Course
+            <br>
+            ជ្រើសរើសវគ្គសិក្សា
+        </button>
+
+    </div>
+
+
+    <div class="footer">
+
+        Vlearn Together
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     PAYMENT PAGE
+     ======================================================== -->
+
+<div
+    id="paymentPage"
+    class="hidden"
+>
+
+    <button
+        class="secondary-btn back-btn"
+        onclick="backToDetail()"
+    >
+        ← Back to Course
+    </button>
+
+
+    <div class="form-card">
+
+        <div class="section-title">
+            Complete Your Registration
+        </div>
+
+        <div class="section-subtitle">
+
+            បំពេញព័ត៌មានសម្រាប់ការចុះឈ្មោះ
+
+        </div>
+
+
+        <div class="selected-course">
+
+            <div class="selected-course-label">
+                Selected course
+                <br>
+                វគ្គសិក្សាដែលបានជ្រើសរើស
+            </div>
+
+            <div
+                id="selectedCourseName"
+                class="selected-course-name"
+            >
+            </div>
+
+            <div
+                id="selectedCoursePrice"
+                class="selected-course-price"
+            >
+            </div>
+
+        </div>
+
+
+        <div class="payment-instruction">
+
+            <div class="payment-step-title">
+                Step 1 — Make your payment
+            </div>
+
+            សូមចុចប៊ូតុងខាងក្រោម
+            ដើម្បីបង់ប្រាក់តាម ABA Pay។
+
+            <br><br>
+
+
+            <div class="payment-step-title">
+                Step 2 — Return to Vlearn Together
+            </div>
+
+            បន្ទាប់ពីបង់ប្រាក់រួច
+            សូមត្រឡប់មកកាន់ទំព័រនេះ។
+
+            <br><br>
+
+
+            <div class="payment-step-title">
+                Step 3 — Enter your payment information
+            </div>
+
+            បញ្ចូលកាលបរិច្ឆេទបង់ប្រាក់
+            និងលេខ APV ដែលមាននៅលើបង្កាន់ដៃ ABA
+            របស់អ្នក។
+
+        </div>
+
+
+        <button
+            class="payment-btn"
+            onclick="openPayment()"
+        >
+            Pay via ABA Pay
+            <br>
+            បង់ប្រាក់តាម ABA Pay
+        </button>
+
+
+        <br>
+        <br>
+
+
+        <label for="paymentDate">
+            Payment Date
+            <br>
+            កាលបរិច្ឆេទបង់ប្រាក់
+        </label>
+
+        <input
+            id="paymentDate"
+            type="text"
+            inputmode="numeric"
+            placeholder="DD/MM/YYYY"
+            maxlength="10"
+        >
+
+        <div class="help-text">
+
+            The date is automatically set to today.
+            You can change it if you made the payment
+            on another date.
+
+            <br>
+
+            កាលបរិច្ឆេទត្រូវបានកំណត់ដោយស្វ័យប្រវត្តិ
+            ជាកាលបរិច្ឆេទថ្ងៃនេះ។ អ្នកអាចប្តូរ
+            ប្រសិនបើអ្នកបានបង់ប្រាក់នៅថ្ងៃផ្សេង។
+
+        </div>
+
+
+        <label for="apv">
+
+            APV
+            <br>
+            លេខ APV
+
+        </label>
+
+        <input
+            id="apv"
+            type="text"
+            inputmode="numeric"
+            placeholder="Enter your APV"
+            maxlength="10"
+        >
+
+        <div class="help-text">
+
+            Enter the APV shown on your ABA
+            payment receipt.
+
+            <br>
+
+            សូមបញ្ចូលលេខ APV ដែលបង្ហាញនៅលើ
+            បង្កាន់ដៃបង់ប្រាក់ ABA របស់អ្នក។
+
+        </div>
+
+
+        <button
+            id="confirmButton"
+            class="primary-btn"
+            onclick="confirmPayment()"
+        >
+            Confirm Payment
+            <br>
+            បញ្ជាក់ការទូទាត់
+        </button>
+
+
+        <br>
+        <br>
+
+
+        <button
+            class="secondary-btn"
+            onclick="goHome()"
+        >
+            Cancel
+            <br>
+            បោះបង់
+        </button>
+
+    </div>
+
+
+    <div class="footer">
+
+        Vlearn Together
+
+        <br>
+
+        Your payment information is securely
+        submitted through Telegram.
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     STATUS PAGE
+     ======================================================== -->
+
+<div
+    id="statusPage"
+    class="hidden"
+>
+
+    <div class="form-card">
+
+        <div
+            id="statusBox"
+            class="status-box status-waiting"
+        >
+
+            <strong>
+                Payment information sent successfully.
+            </strong>
+
+            <br><br>
+
+            ព័ត៌មានការទូទាត់ត្រូវបានផ្ញើដោយជោគជ័យ។
+
+            <br><br>
+
+            Please return to Telegram to receive
+            your payment verification message.
+
+            <br><br>
+
+            សូមត្រឡប់ទៅ Telegram
+            ដើម្បីទទួលបានសារបញ្ជាក់ការទូទាត់។
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="closeMiniApp()"
+        >
+            Close
+            <br>
+            បិទ
+        </button>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   TELEGRAM
+   ============================================================ */
+
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+
+tg.expand();
+
+
+/* ============================================================
+   COURSE DATA
+   ============================================================ */
+
+const courses = {
 
     "General English | Beginner 1–2": {
-        "price": 15.00,
-        "old_price": 30.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAY1e499924g",
+
+        major: "general",
+
+        level: "Beginner 1–2",
+
+        title:
+            "General English | Beginner 1–2",
+
+        khmer:
+            "ភាសាអង់គ្លេសទូទៅ | កម្រិត Beginner 1–2",
+
+        description:
+            "A structured beginner programme designed to build a strong foundation in everyday English. Students develop essential grammar, vocabulary, listening, reading and communication skills step by step.",
+
+        descriptionKhmer:
+            "វគ្គសិក្សាសម្រាប់អ្នកចាប់ផ្តើមរៀនភាសាអង់គ្លេស ដើម្បីកសាងមូលដ្ឋានរឹងមាំលើវេយ្យាករណ៍ វាក្យសព្ទ ការស្តាប់ ការអាន និងជំនាញទំនាក់ទំនងប្រចាំថ្ងៃ។",
+
+        advantages: [
+            "Build a strong foundation in English.",
+            "Develop essential everyday vocabulary.",
+            "Improve basic listening and communication skills.",
+            "Learn important grammar structures step by step."
+        ],
+
+        advantagesKhmer: [
+            "កសាងមូលដ្ឋានភាសាអង់គ្លេសឱ្យរឹងមាំ។",
+            "រៀនវាក្យសព្ទសំខាន់ៗសម្រាប់ជីវិតប្រចាំថ្ងៃ។",
+            "អភិវឌ្ឍការស្តាប់ និងការទំនាក់ទំនងជាមូលដ្ឋាន។",
+            "រៀនរចនាសម្ព័ន្ធវេយ្យាករណ៍សំខាន់ៗជាបន្តបន្ទាប់។"
+        ],
+
+        videos: 100,
+
+        price: 15.00,
+
+        oldPrice: 30.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY1e499924g"
     },
+
 
     "General English | Elementary 3–4": {
-        "price": 16.00,
-        "old_price": 32.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAY12499938C",
+
+        major: "general",
+
+        level: "Elementary 3–4",
+
+        title:
+            "General English | Elementary 3–4",
+
+        khmer:
+            "ភាសាអង់គ្លេសទូទៅ | កម្រិត Elementary 3–4",
+
+        description:
+            "Improve everyday communication with a wider range of grammar, vocabulary and practical English. This level helps learners become more comfortable using English in familiar situations.",
+
+        descriptionKhmer:
+            "ពង្រឹងការប្រើប្រាស់ភាសាអង់គ្លេសប្រចាំថ្ងៃ ដោយបន្ថែមចំណេះដឹងវេយ្យាករណ៍ និងវាក្យសព្ទ ហើយអភិវឌ្ឍទំនុកចិត្តក្នុងស្ថានភាពទូទៅ។",
+
+        advantages: [
+            "Communicate more comfortably in everyday situations.",
+            "Strengthen grammar and vocabulary.",
+            "Improve reading and listening comprehension.",
+            "Develop greater confidence using English."
+        ],
+
+        advantagesKhmer: [
+            "ទំនាក់ទំនងបានកាន់តែប្រសើរក្នុងស្ថានភាពប្រចាំថ្ងៃ។",
+            "ពង្រឹងវេយ្យាករណ៍ និងវាក្យសព្ទ។",
+            "បង្កើនសមត្ថភាពអាន និងស្តាប់យល់។",
+            "បង្កើនទំនុកចិត្តក្នុងការប្រើប្រាស់ភាសាអង់គ្លេស។"
+        ],
+
+        videos: 100,
+
+        price: 16.00,
+
+        oldPrice: 32.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY12499938C"
     },
+
 
     "General English | Pre-intermediate 5–6": {
-        "price": 19.00,
-        "old_price": 38.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYW4499941w",
+
+        major: "general",
+
+        level: "Pre-intermediate 5–6",
+
+        title:
+            "General English | Pre-intermediate 5–6",
+
+        khmer:
+            "ភាសាអង់គ្លេសទូទៅ | កម្រិត Pre-intermediate 5–6",
+
+        description:
+            "Develop greater confidence and communicate more naturally through broader grammar, vocabulary and practical language practice.",
+
+        descriptionKhmer:
+            "អភិវឌ្ឍទំនុកចិត្ត និងសមត្ថភាពប្រើប្រាស់ភាសាអង់គ្លេសបានធម្មជាតិកាន់តែប្រសើរ តាមរយៈវេយ្យាករណ៍ វាក្យសព្ទ និងការអនុវត្តភាសាជាក់ស្តែង។",
+
+        advantages: [
+            "Build stronger communication skills.",
+            "Use a wider range of grammar structures.",
+            "Expand practical vocabulary.",
+            "Improve fluency and confidence."
+        ],
+
+        advantagesKhmer: [
+            "ពង្រឹងជំនាញទំនាក់ទំនង។",
+            "ប្រើប្រាស់រចនាសម្ព័ន្ធវេយ្យាករណ៍បានទូលំទូលាយជាងមុន។",
+            "ពង្រីកវាក្យសព្ទដែលអាចប្រើប្រាស់បានជាក់ស្តែង។",
+            "បង្កើនភាពរលូន និងទំនុកចិត្ត។"
+        ],
+
+        videos: 100,
+
+        price: 19.00,
+
+        oldPrice: 38.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYW4499941w"
     },
+
 
     "General English | Intermediate 7–8": {
-        "price": 20.00,
-        "old_price": 40.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYoS499945e",
+
+        major: "general",
+
+        level: "Intermediate 7–8",
+
+        title:
+            "General English | Intermediate 7–8",
+
+        khmer:
+            "ភាសាអង់គ្លេសទូទៅ | កម្រិត Intermediate 7–8",
+
+        description:
+            "Strengthen fluency, accuracy and vocabulary for more confident communication. The course develops the ability to understand and express ideas in a wider range of situations.",
+
+        descriptionKhmer:
+            "ពង្រឹងភាពរលូន ភាពត្រឹមត្រូវ និងវាក្យសព្ទ ដើម្បីទំនាក់ទំនងបានកាន់តែមានទំនុកចិត្ត និងអាចបង្ហាញគំនិតបានក្នុងស្ថានភាពជាច្រើន។",
+
+        advantages: [
+            "Improve overall English fluency.",
+            "Develop more accurate grammar usage.",
+            "Expand vocabulary for wider communication.",
+            "Communicate ideas with greater confidence."
+        ],
+
+        advantagesKhmer: [
+            "បង្កើនភាពរលូនក្នុងការប្រើប្រាស់ភាសាអង់គ្លេស។",
+            "ប្រើប្រាស់វេយ្យាករណ៍បានត្រឹមត្រូវជាងមុន។",
+            "ពង្រីកវាក្យសព្ទសម្រាប់ការទំនាក់ទំនងកាន់តែទូលំទូលាយ។",
+            "បង្ហាញគំនិត និងទំនាក់ទំនងបានដោយមានទំនុកចិត្ត។"
+        ],
+
+        videos: 132,
+
+        price: 20.00,
+
+        oldPrice: 40.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYoS499945e"
     },
 
-
-    # --------------------------------------------------------
-    # ENGLISH GRAMMAR
-    # --------------------------------------------------------
 
     "English Grammar | Elementary": {
-        "price": 25.20,
-        "old_price": 42.00,
-        "discount": 40,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAY0V500157n",
+
+        major: "grammar",
+
+        level: "Elementary",
+
+        title:
+            "English Grammar | Elementary",
+
+        khmer:
+            "វេយ្យាករណ៍ភាសាអង់គ្លេស | Elementary",
+
+        description:
+            "Build a clear understanding of essential English grammar structures and learn how to use them accurately in everyday communication.",
+
+        descriptionKhmer:
+            "ស្វែងយល់អំពីរចនាសម្ព័ន្ធវេយ្យាករណ៍សំខាន់ៗ និងរៀនប្រើប្រាស់វេយ្យាករណ៍បានត្រឹមត្រូវក្នុងការទំនាក់ទំនងប្រចាំថ្ងៃ។",
+
+        advantages: [
+            "Understand essential grammar structures.",
+            "Improve sentence formation.",
+            "Reduce common grammar mistakes.",
+            "Build a stronger foundation for further study."
+        ],
+
+        advantagesKhmer: [
+            "យល់ដឹងអំពីរចនាសម្ព័ន្ធវេយ្យាករណ៍សំខាន់ៗ។",
+            "បង្កើនសមត្ថភាពបង្កើតប្រយោគ។",
+            "កាត់បន្ថយកំហុសវេយ្យាករណ៍ទូទៅ។",
+            "កសាងមូលដ្ឋានល្អសម្រាប់ការសិក្សាបន្ត។"
+        ],
+
+        videos: 230,
+
+        price: 25.20,
+
+        oldPrice: 42.00,
+
+        discount: 40,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY0V500157n"
     },
+
 
     "English Grammar | Intermediate": {
-        "price": 27.00,
-        "old_price": 45.00,
-        "discount": 40,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYqL500160G",
+
+        major: "grammar",
+
+        level: "Intermediate",
+
+        title:
+            "English Grammar | Intermediate",
+
+        khmer:
+            "វេយ្យាករណ៍ភាសាអង់គ្លេស | Intermediate",
+
+        description:
+            "Develop stronger control of intermediate grammar and learn to use more complex structures accurately in speaking and writing.",
+
+        descriptionKhmer:
+            "ពង្រឹងការយល់ដឹង និងការប្រើប្រាស់វេយ្យាករណ៍កម្រិតមធ្យម ជាពិសេសរចនាសម្ព័ន្ធដែលស្មុគស្មាញជាងមុនក្នុងការនិយាយ និងការសរសេរ។",
+
+        advantages: [
+            "Master a wider range of grammar structures.",
+            "Improve accuracy in speaking and writing.",
+            "Understand more complex sentence patterns.",
+            "Build confidence using English correctly."
+        ],
+
+        advantagesKhmer: [
+            "ស្ទាត់ជំនាញរចនាសម្ព័ន្ធវេយ្យាករណ៍កាន់តែទូលំទូលាយ។",
+            "បង្កើនភាពត្រឹមត្រូវក្នុងការនិយាយ និងការសរសេរ។",
+            "យល់ពីទម្រង់ប្រយោគដែលស្មុគស្មាញជាងមុន។",
+            "បង្កើនទំនុកចិត្តក្នុងការប្រើភាសាអង់គ្លេសឱ្យបានត្រឹមត្រូវ។"
+        ],
+
+        videos: 290,
+
+        price: 27.00,
+
+        oldPrice: 45.00,
+
+        discount: 40,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYqL500160G"
     },
+
 
     "English Grammar | Advanced": {
-        "price": 30.00,
-        "old_price": 50.00,
-        "discount": 40,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYKr500161M",
+
+        major: "grammar",
+
+        level: "Advanced",
+
+        title:
+            "English Grammar | Advanced",
+
+        khmer:
+            "វេយ្យាករណ៍ភាសាអង់គ្លេស | Advanced",
+
+        description:
+            "Refine advanced grammar knowledge and develop greater precision when using sophisticated English structures in professional and academic contexts.",
+
+        descriptionKhmer:
+            "ពង្រឹងវេយ្យាករណ៍កម្រិតខ្ពស់ និងបង្កើនភាពច្បាស់លាស់ក្នុងការប្រើប្រាស់រចនាសម្ព័ន្ធភាសាអង់គ្លេសស្មុគស្មាញ សម្រាប់ការសិក្សា និងការងារ។",
+
+        advantages: [
+            "Improve advanced grammar accuracy.",
+            "Use sophisticated sentence structures.",
+            "Develop greater precision in writing.",
+            "Strengthen professional and academic English."
+        ],
+
+        advantagesKhmer: [
+            "បង្កើនភាពត្រឹមត្រូវនៃវេយ្យាករណ៍កម្រិតខ្ពស់។",
+            "ប្រើប្រាស់រចនាសម្ព័ន្ធប្រយោគស្មុគស្មាញបានល្អ។",
+            "បង្កើនភាពច្បាស់លាស់ក្នុងការសរសេរ។",
+            "ពង្រឹងភាសាអង់គ្លេសសម្រាប់ការងារ និងការសិក្សា។"
+        ],
+
+        videos: 200,
+
+        price: 30.00,
+
+        oldPrice: 50.00,
+
+        discount: 40,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYKr500161M"
     },
 
-
-    # --------------------------------------------------------
-    # ENGLISH VOCABULARY
-    # --------------------------------------------------------
 
     "English Vocabulary | Elementary": {
-        "price": 10.00,
-        "old_price": 20.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYHH5001622",
+
+        major: "vocabulary",
+
+        level: "Elementary",
+
+        title:
+            "English Vocabulary | Elementary",
+
+        khmer:
+            "វាក្យសព្ទភាសាអង់គ្លេស | Elementary",
+
+        description:
+            "Learn useful everyday words and expressions that help you understand and communicate more effectively in familiar situations.",
+
+        descriptionKhmer:
+            "រៀនពាក្យ និងឃ្លាដែលមានប្រយោជន៍សម្រាប់ជីវិតប្រចាំថ្ងៃ ដើម្បីជួយឱ្យអ្នកយល់ និងទំនាក់ទំនងបានកាន់តែមានប្រសិទ្ធភាព។",
+
+        advantages: [
+            "Learn useful everyday vocabulary.",
+            "Improve basic communication.",
+            "Understand common English expressions.",
+            "Build a stronger vocabulary foundation."
+        ],
+
+        advantagesKhmer: [
+            "រៀនវាក្យសព្ទដែលមានប្រយោជន៍សម្រាប់ជីវិតប្រចាំថ្ងៃ។",
+            "បង្កើនសមត្ថភាពទំនាក់ទំនងជាមូលដ្ឋាន។",
+            "យល់ឃ្លាភាសាអង់គ្លេសដែលគេប្រើញឹកញាប់។",
+            "កសាងមូលដ្ឋានវាក្យសព្ទឱ្យរឹងមាំ។"
+        ],
+
+        videos: 120,
+
+        price: 10.00,
+
+        oldPrice: 20.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYHH5001622"
     },
+
 
     "English Vocabulary | Intermediate": {
-        "price": 11.00,
-        "old_price": 22.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYi3500163U",
+
+        major: "vocabulary",
+
+        level: "Intermediate",
+
+        title:
+            "English Vocabulary | Intermediate",
+
+        khmer:
+            "វាក្យសព្ទភាសាអង់គ្លេស | Intermediate",
+
+        description:
+            "Expand your vocabulary with a wider range of useful words and expressions for clearer and more confident communication.",
+
+        descriptionKhmer:
+            "ពង្រីកវាក្យសព្ទជាមួយពាក្យ និងឃ្លាដែលមានប្រយោជន៍ជាច្រើន ដើម្បីជួយឱ្យការទំនាក់ទំនងកាន់តែច្បាស់ និងមានទំនុកចិត្ត។",
+
+        advantages: [
+            "Expand your active vocabulary.",
+            "Express ideas more clearly.",
+            "Understand a wider range of English.",
+            "Communicate with greater confidence."
+        ],
+
+        advantagesKhmer: [
+            "ពង្រីកវាក្យសព្ទដែលអាចប្រើប្រាស់បាន។",
+            "បង្ហាញគំនិតបានកាន់តែច្បាស់។",
+            "យល់ភាសាអង់គ្លេសបានទូលំទូលាយជាងមុន។",
+            "ទំនាក់ទំនងបានដោយមានទំនុកចិត្តកាន់តែខ្លាំង។"
+        ],
+
+        videos: 200,
+
+        price: 11.00,
+
+        oldPrice: 22.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYi3500163U"
     },
+
 
     "English Vocabulary | Upper-intermediate": {
-        "price": 12.00,
-        "old_price": 24.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAY1u500164h",
+
+        major: "vocabulary",
+
+        level: "Upper-intermediate",
+
+        title:
+            "English Vocabulary | Upper-intermediate",
+
+        khmer:
+            "វាក្យសព្ទភាសាអង់គ្លេស | Upper-intermediate",
+
+        description:
+            "Develop a wider and more sophisticated vocabulary for expressing ideas naturally and accurately across a range of topics.",
+
+        descriptionKhmer:
+            "ពង្រឹងវាក្យសព្ទកាន់តែទូលំទូលាយ និងសម្បូរបែប ដើម្បីបង្ហាញគំនិតបានធម្មជាតិ និងត្រឹមត្រូវក្នុងប្រធានបទជាច្រើន។",
+
+        advantages: [
+            "Develop a richer vocabulary.",
+            "Use more precise words and expressions.",
+            "Improve natural communication.",
+            "Understand more advanced English content."
+        ],
+
+        advantagesKhmer: [
+            "អភិវឌ្ឍវាក្យសព្ទឱ្យសម្បូរបែប។",
+            "ប្រើពាក្យ និងឃ្លាបានច្បាស់លាស់ជាងមុន។",
+            "បង្កើនភាពធម្មជាតិក្នុងការទំនាក់ទំនង។",
+            "យល់មាតិកាភាសាអង់គ្លេសកម្រិតខ្ពស់ជាងមុន។"
+        ],
+
+        videos: 202,
+
+        price: 12.00,
+
+        oldPrice: 24.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAY1u500164h"
     },
+
 
     "English Vocabulary | Advanced": {
-        "price": 13.00,
-        "old_price": 26.00,
-        "discount": 50,
-        "payment_link":
-            "https://link.payway.com.kh/ABAPAYrH500165p",
+
+        major: "vocabulary",
+
+        level: "Advanced",
+
+        title:
+            "English Vocabulary | Advanced",
+
+        khmer:
+            "វាក្យសព្ទភាសាអង់គ្លេស | Advanced",
+
+        description:
+            "Master advanced vocabulary and precise expressions for sophisticated communication in academic, professional and everyday contexts.",
+
+        descriptionKhmer:
+            "ស្ទាត់ជំនាញវាក្យសព្ទកម្រិតខ្ពស់ និងឃ្លាដែលមានភាពច្បាស់លាស់ សម្រាប់ការទំនាក់ទំនងក្នុងការសិក្សា ការងារ និងជីវិតប្រចាំថ្ងៃ។",
+
+        advantages: [
+            "Master advanced vocabulary.",
+            "Express complex ideas precisely.",
+            "Improve professional and academic communication.",
+            "Develop greater confidence using sophisticated English."
+        ],
+
+        advantagesKhmer: [
+            "ស្ទាត់ជំនាញវាក្យសព្ទកម្រិតខ្ពស់។",
+            "បង្ហាញគំនិតស្មុគស្មាញបានយ៉ាងច្បាស់លាស់។",
+            "ពង្រឹងការទំនាក់ទំនងសម្រាប់ការងារ និងការសិក្សា។",
+            "បង្កើនទំនុកចិត្តក្នុងការប្រើភាសាអង់គ្លេសកម្រិតខ្ពស់។"
+        ],
+
+        videos: 202,
+
+        price: 13.00,
+
+        oldPrice: 26.00,
+
+        discount: 50,
+
+        paymentLink:
+            "https://link.payway.com.kh/ABAPAYrH500165p"
+    }
+
+};
+
+
+/* ============================================================
+   MAJOR INFORMATION
+   ============================================================ */
+
+const majors = {
+
+    general: {
+
+        title:
+            "General English Programme",
+
+        khmer:
+            "កម្មវិធីភាសាអង់គ្លេសទូទៅ"
+
     },
-}
 
+    grammar: {
 
-# ============================================================
-# EXACT PRIVATE CHANNEL → COURSE MAPPING
-# ============================================================
-#
-# We deliberately use Channel IDs instead of guessing from
-# channel names.
-#
-# This prevents:
-#
-# EGC Elementary → General English Elementary
-#
-# or
-#
-# EVC Intermediate → General English Intermediate
-#
-# etc.
-# ============================================================
+        title:
+            "English Grammar Course",
 
-CHANNEL_COURSES = {
+        khmer:
+            "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស"
 
-    # General English Programme
-    -1003735010941:
-        "General English | Beginner 1–2",
+    },
 
-    -1004374742844:
-        "General English | Elementary 3–4",
+    vocabulary: {
 
-    -1004328527422:
-        "General English | Pre-intermediate 5–6",
+        title:
+            "English Vocabulary Course",
 
-    -1004422599502:
-        "General English | Intermediate 7–8",
+        khmer:
+            "វគ្គវាក្យសព្ទភាសាអង់គ្លេស"
 
-
-    # English Grammar Course
-    -1004379760804:
-        "English Grammar | Elementary",
-
-    -1003948056040:
-        "English Grammar | Intermediate",
-
-    -1004289604790:
-        "English Grammar | Advanced",
-
-
-    # English Vocabulary Course
-    -1003926967374:
-        "English Vocabulary | Elementary",
-
-    -1003956642474:
-        "English Vocabulary | Intermediate",
-
-    -1003899637601:
-        "English Vocabulary | Upper-intermediate",
-
-    -1004407300311:
-        "English Vocabulary | Advanced",
-}
-
-
-# ============================================================
-# REVERSE COURSE → CHANNEL MAPPING
-# ============================================================
-
-COURSE_CHANNELS = {
-    course: channel_id
-    for channel_id, course in CHANNEL_COURSES.items()
-}
-
-
-# ============================================================
-# DATABASE HELPERS
-# ============================================================
-
-def get_connection():
-
-    connection = sqlite3.connect(DATABASE)
-
-    connection.row_factory = sqlite3.Row
-
-    return connection
-
-
-# ============================================================
-# DATABASE CREATION + MIGRATION
-# ============================================================
-
-def create_database():
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
-
-
-    # --------------------------------------------------------
-    # STUDENT REGISTRATIONS
-    # --------------------------------------------------------
-
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS payment_registrations (
-
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-            telegram_id INTEGER NOT NULL,
-
-            telegram_name TEXT,
-
-            username TEXT,
-
-            course TEXT NOT NULL,
-
-            price REAL NOT NULL,
-
-            payment_date TEXT,
-
-            payment_day INTEGER,
-
-            payment_month INTEGER,
-
-            payment_year INTEGER,
-
-            student_apv TEXT,
-
-            status TEXT DEFAULT 'WAITING_PAYMENT',
-
-            transaction_id TEXT,
-
-            payer_name TEXT,
-
-            payer_account TEXT,
-
-            matched_at TIMESTAMP,
-
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-        )
-        """
-    )
-
-
-    # --------------------------------------------------------
-    # ABA PAYMENTS
-    # --------------------------------------------------------
-
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS aba_payments (
-
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-            amount REAL NOT NULL,
-
-            payment_date TEXT,
-
-            payment_day INTEGER,
-
-            payment_month INTEGER,
-
-            payment_year INTEGER,
-
-            apv TEXT UNIQUE,
-
-            transaction_id TEXT,
-
-            payer_name TEXT,
-
-            payer_account TEXT,
-
-            source TEXT,
-
-            matched_registration_id INTEGER,
-
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-        )
-        """
-    )
-
-
-    # --------------------------------------------------------
-    # MIGRATION
-    #
-    # Add new columns if the database already existed.
-    # --------------------------------------------------------
-
-    cursor.execute(
-        """
-        PRAGMA table_info(payment_registrations)
-        """
-    )
-
-    existing_columns = {
-        row[1]
-        for row in cursor.fetchall()
     }
 
+};
 
-    new_columns = {
 
-        "channel_id":
-            "INTEGER",
+/* ============================================================
+   CURRENT STATE
+   ============================================================ */
 
-        "access_invite_link":
-            "TEXT",
+let selectedMajor = "";
 
-        "access_granted":
-            "INTEGER DEFAULT 0",
+let selectedCourse = "";
 
-        "access_granted_at":
-            "TIMESTAMP",
+
+/* ============================================================
+   PAGE HELPER
+   ============================================================ */
+
+function hideAllPages() {
+
+    document
+        .getElementById("homePage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("majorPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("detailPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("paymentPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("statusPage")
+        .classList.add("hidden");
+
+}
+
+
+/* ============================================================
+   OPEN MAJOR
+   ============================================================ */
+
+function openMajor(major) {
+
+    selectedMajor = major;
+
+    const majorData = majors[major];
+
+    if (!majorData) {
+
+        return;
 
     }
 
 
-    for column_name, column_definition in new_columns.items():
+    hideAllPages();
 
-        if column_name not in existing_columns:
 
-            cursor.execute(
-                f"""
-                ALTER TABLE payment_registrations
-                ADD COLUMN {column_name}
-                {column_definition}
-                """
-            )
+    document
+        .getElementById("majorPage")
+        .classList.remove("hidden");
 
 
-    connection.commit()
-
-    connection.close()
-
-
-# ============================================================
-# SAVE OR UPDATE REGISTRATION
-# ============================================================
+    document
+        .getElementById("majorTitle")
+        .textContent = majorData.title;
 
-def save_student_registration(
-    telegram_id,
-    telegram_name,
-    username,
-    course,
-    price,
-    payment_date,
-    payment_day,
-    payment_month,
-    payment_year,
-    student_apv,
-):
-
-    channel_id = COURSE_CHANNELS.get(course)
-
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-
-    # --------------------------------------------------------
-    # Check existing waiting registration
-    # --------------------------------------------------------
-
-    cursor.execute(
-        """
-        SELECT id
-
-        FROM payment_registrations
-
-        WHERE
-            telegram_id = ?
-            AND course = ?
-            AND status IN (
-                'WAITING_PAYMENT',
-                'WAITING_MATCH',
-                'PAID'
-            )
-
-        ORDER BY id DESC
-
-        LIMIT 1
-        """,
-        (
-            telegram_id,
-            course,
-        ),
-    )
-
-
-    existing = cursor.fetchone()
-
-
-    if existing:
-
-        registration_id = existing["id"]
-
-
-        cursor.execute(
-            """
-            UPDATE payment_registrations
-
-            SET
-                telegram_name = ?,
-                username = ?,
-                price = ?,
-                payment_date = ?,
-                payment_day = ?,
-                payment_month = ?,
-                payment_year = ?,
-                student_apv = ?,
-                channel_id = ?,
-                status = CASE
-                    WHEN status = 'PAID'
-                    THEN status
-                    ELSE 'WAITING_MATCH'
-                END
 
-            WHERE id = ?
-            """,
-            (
-                telegram_name,
-                username,
-                price,
-                payment_date,
-                payment_day,
-                payment_month,
-                payment_year,
-                student_apv,
-                channel_id,
-                registration_id,
-            ),
-        )
+    document
+        .getElementById("majorKhmer")
+        .textContent = majorData.khmer;
 
-
-    else:
-
-        cursor.execute(
-            """
-            INSERT INTO payment_registrations
-            (
-                telegram_id,
-                telegram_name,
-                username,
-                course,
-                price,
-                payment_date,
-                payment_day,
-                payment_month,
-                payment_year,
-                student_apv,
-                channel_id,
-                status
-            )
 
-            VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'WAITING_MATCH'
-            )
-            """,
-            (
-                telegram_id,
-                telegram_name,
-                username,
-                course,
-                price,
-                payment_date,
-                payment_day,
-                payment_month,
-                payment_year,
-                student_apv,
-                channel_id,
-            ),
-        )
+    const courseList =
+        document.getElementById("courseList");
 
 
-        registration_id = cursor.lastrowid
+    courseList.innerHTML = "";
 
 
-    connection.commit()
+    Object.keys(courses).forEach(
+        function(courseName) {
 
-    connection.close()
+            const course =
+                courses[courseName];
 
 
-    return registration_id
+            if (
+                course.major !== major
+            ) {
 
+                return;
 
-# ============================================================
-# FIND ABA PAYMENT
-# ============================================================
+            }
 
-def find_matching_aba_payment(
-    amount,
-    payment_day,
-    payment_month,
-    payment_year,
-    apv,
-):
 
-    connection = get_connection()
+            const card =
+                document.createElement("div");
 
-    cursor = connection.cursor()
 
+            card.className =
+                "card";
 
-    cursor.execute(
-        """
-        SELECT *
 
-        FROM aba_payments
+            card.innerHTML = `
 
-        WHERE
+                <div class="course-title">
+                    ${course.title}
+                </div>
 
-            ABS(amount - ?) < 0.01
+                <div class="course-khmer">
+                    ${course.khmer}
+                </div>
 
-            AND payment_day = ?
+                <div class="course-description">
+                    ${course.description}
+                </div>
 
-            AND apv = ?
+                <div class="video-count">
+                    ${course.videos}+ video lessons
+                </div>
 
-            AND (
-                payment_month = ?
-                OR payment_month IS NULL
-            )
+                <button
+                    class="primary-btn"
+                    onclick="openCourseDetail(${JSON.stringify(courseName)})"
+                >
+                    View Course
+                    <br>
+                    មើលព័ត៌មានវគ្គសិក្សា
+                </button>
 
-            AND (
-                payment_year = ?
-                OR payment_year IS NULL
-            )
+            `;
 
-            AND matched_registration_id IS NULL
 
-        ORDER BY id ASC
+            courseList.appendChild(card);
 
-        LIMIT 1
-        """,
-        (
-            amount,
-            payment_day,
-            apv,
-            payment_month,
-            payment_year,
-        ),
-    )
+        }
+    );
 
 
-    result = cursor.fetchone()
+    window.scrollTo(
+        0,
+        0
+    );
 
-    connection.close()
+}
 
 
-    return result
+/* ============================================================
+   OPEN COURSE DETAIL
+   ============================================================ */
 
+function openCourseDetail(courseName) {
 
-# ============================================================
-# FIND MATCHING REGISTRATION
-# ============================================================
+    const course =
+        courses[courseName];
 
-def find_matching_registration(
-    amount,
-    payment_day,
-    payment_month,
-    payment_year,
-    apv,
-):
 
-    connection = get_connection()
+    if (!course) {
 
-    cursor = connection.cursor()
+        return;
 
-
-    cursor.execute(
-        """
-        SELECT *
-
-        FROM payment_registrations
-
-        WHERE
-
-            ABS(price - ?) < 0.01
-
-            AND payment_day = ?
-
-            AND student_apv = ?
-
-            AND (
-                payment_month = ?
-                OR payment_month IS NULL
-            )
-
-            AND (
-                payment_year = ?
-                OR payment_year IS NULL
-            )
-
-            AND status = 'WAITING_MATCH'
-
-        ORDER BY id ASC
-
-        LIMIT 1
-        """,
-        (
-            amount,
-            payment_day,
-            apv,
-            payment_month,
-            payment_year,
-        ),
-    )
-
-
-    result = cursor.fetchone()
-
-    connection.close()
-
-
-    return result
-
-
-# ============================================================
-# SAVE ABA PAYMENT
-# ============================================================
-
-def save_aba_payment(
-    amount,
-    payment_date,
-    payment_day,
-    payment_month,
-    payment_year,
-    apv,
-    transaction_id,
-    payer_name,
-    payer_account,
-    source,
-):
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
-
-
-    try:
-
-        cursor.execute(
-            """
-            INSERT INTO aba_payments
-            (
-                amount,
-                payment_date,
-                payment_day,
-                payment_month,
-                payment_year,
-                apv,
-                transaction_id,
-                payer_name,
-                payer_account,
-                source
-            )
-
-            VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-            )
-            """,
-            (
-                amount,
-                payment_date,
-                payment_day,
-                payment_month,
-                payment_year,
-                apv,
-                transaction_id,
-                payer_name,
-                payer_account,
-                source,
-            ),
-        )
-
-
-        payment_id = cursor.lastrowid
-
-        connection.commit()
-
-        connection.close()
-
-
-        return payment_id
-
-
-    except sqlite3.IntegrityError:
-
-        connection.close()
-
-        return None
-
-
-# ============================================================
-# MARK REGISTRATION AS PAID
-# ============================================================
-
-def mark_registration_paid(
-    registration_id,
-    payment_id,
-    transaction_id,
-    payer_name,
-    payer_account,
-):
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
-
-
-    cursor.execute(
-        """
-        UPDATE payment_registrations
-
-        SET
-
-            status = 'PAID',
-
-            transaction_id = ?,
-
-            payer_name = ?,
-
-            payer_account = ?,
-
-            matched_at = CURRENT_TIMESTAMP
-
-        WHERE id = ?
-        """,
-        (
-            transaction_id,
-            payer_name,
-            payer_account,
-            registration_id,
-        ),
-    )
-
-
-    cursor.execute(
-        """
-        UPDATE aba_payments
-
-        SET matched_registration_id = ?
-
-        WHERE id = ?
-        """,
-        (
-            registration_id,
-            payment_id,
-        ),
-    )
-
-
-    connection.commit()
-
-    connection.close()
-
-
-# ============================================================
-# GET REGISTRATION
-# ============================================================
-
-def get_registration(registration_id):
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-
-    cursor.execute(
-        """
-        SELECT *
-
-        FROM payment_registrations
-
-        WHERE id = ?
-        """,
-        (registration_id,),
-    )
-
-
-    result = cursor.fetchone()
-
-    connection.close()
-
-
-    return result
-
-
-# ============================================================
-# PARSE STUDENT DATE
-# ============================================================
-
-def parse_student_date(date_text):
-
-    if not date_text:
-
-        return None
-
-
-    date_text = date_text.strip()
-
-
-    try:
-
-        parsed = datetime.strptime(
-            date_text,
-            "%d/%m/%Y",
-        )
-
-
-        return (
-            parsed.day,
-            parsed.month,
-            parsed.year,
-            parsed.strftime("%d/%m/%Y"),
-        )
-
-
-    except ValueError:
-
-        return None
-
-
-# ============================================================
-# EXTRACT APV
-# ============================================================
-
-def extract_apv(message):
-
-    if not message:
-
-        return None
-
-
-    patterns = [
-
-        r"\bAPV\s*[:\-]?\s*(\d{4,10})\b",
-
-        r"\bAPV\s+(\d{4,10})\b",
-
-        r"លេខ\s*APV\s*[:\-]?\s*(\d{4,10})",
-
-    ]
-
-
-    for pattern in patterns:
-
-        match = re.search(
-            pattern,
-            message,
-            re.IGNORECASE,
-        )
-
-
-        if match:
-
-            return match.group(1)
-
-
-    return None
-
-
-# ============================================================
-# EXTRACT AMOUNT
-# ============================================================
-
-def extract_amount(message):
-
-    if not message:
-
-        return None
-
-
-    match = re.search(
-        r"\$(\d+(?:\.\d{1,2})?)",
-        message,
-    )
-
-
-    if match:
-
-        return float(
-            match.group(1)
-        )
-
-
-    match = re.search(
-        r"Amount\s*:\s*\$?\s*(\d+(?:\.\d{1,2})?)",
-        message,
-        re.IGNORECASE,
-    )
-
-
-    if match:
-
-        return float(
-            match.group(1)
-        )
-
-
-    return None
-
-
-# ============================================================
-# EXTRACT ENGLISH DATE
-# ============================================================
-
-def extract_english_date(message):
-
-    month_names = {
-
-        "jan": 1,
-        "january": 1,
-
-        "feb": 2,
-        "february": 2,
-
-        "mar": 3,
-        "march": 3,
-
-        "apr": 4,
-        "april": 4,
-
-        "may": 5,
-
-        "jun": 6,
-        "june": 6,
-
-        "jul": 7,
-        "july": 7,
-
-        "aug": 8,
-        "august": 8,
-
-        "sep": 9,
-        "sept": 9,
-        "september": 9,
-
-        "oct": 10,
-        "october": 10,
-
-        "nov": 11,
-        "november": 11,
-
-        "dec": 12,
-        "december": 12,
     }
 
 
-    pattern = (
-        r"\b("
-        + "|".join(month_names.keys())
-        + r")\s+"
-        r"(\d{1,2})"
-    )
+    selectedCourse =
+        courseName;
 
 
-    match = re.search(
-        pattern,
-        message,
-        re.IGNORECASE,
-    )
+    hideAllPages();
 
 
-    if not match:
-
-        return None
-
-
-    month_text = (
-        match.group(1).lower()
-    )
+    document
+        .getElementById("detailPage")
+        .classList.remove("hidden");
 
 
-    day = int(
-        match.group(2)
-    )
+    document
+        .getElementById("detailTitle")
+        .textContent =
+        course.title;
 
 
-    month = month_names[
-        month_text
-    ]
+    document
+        .getElementById("detailKhmer")
+        .textContent =
+        course.khmer;
 
 
-    year = datetime.now().year
+    document
+        .getElementById("detailDescription")
+        .textContent =
+        course.description;
+
+
+    document
+        .getElementById("detailLevel")
+        .textContent =
+        course.level;
+
+
+    document
+        .getElementById("detailVideos")
+        .textContent =
+        course.videos + "+";
+
+
+    document
+        .getElementById("detailPrice")
+        .textContent =
+        "$" +
+        course.price.toFixed(2);
+
+
+    document
+        .getElementById("detailOldPrice")
+        .textContent =
+        "$" +
+        course.oldPrice.toFixed(2);
+
+
+    document
+        .getElementById("detailCurrentPrice")
+        .textContent =
+        "$" +
+        course.price.toFixed(2);
+
+
+    document
+        .getElementById("detailDiscount")
+        .textContent =
+        course.discount +
+        "% OFF";
+
+
+    const advantages =
+        document.getElementById(
+            "detailAdvantages"
+        );
+
+
+    advantages.innerHTML = "";
+
+
+    course.advantages.forEach(
+        function(item) {
+
+            const div =
+                document.createElement("div");
+
+            div.className =
+                "advantage";
+
+            div.textContent =
+                "• " + item;
+
+            advantages.appendChild(div);
+
+        }
+    );
+
+
+    const advantagesKhmer =
+        document.getElementById(
+            "detailAdvantagesKhmer"
+        );
+
+
+    advantagesKhmer.innerHTML = "";
+
+
+    course.advantagesKhmer.forEach(
+        function(item) {
+
+            const div =
+                document.createElement("div");
+
+            div.className =
+                "advantage";
+
+            div.textContent =
+                "• " + item;
+
+            advantagesKhmer.appendChild(div);
+
+        }
+    );
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+/* ============================================================
+   CHOOSE COURSE
+   ============================================================ */
+
+function chooseSelectedCourse() {
+
+    if (!selectedCourse) {
+
+        return;
+
+    }
+
+
+    const course =
+        courses[selectedCourse];
+
+
+    if (!course) {
+
+        return;
+
+    }
+
+
+    hideAllPages();
+
+
+    document
+        .getElementById("paymentPage")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("selectedCourseName")
+        .textContent =
+        course.title;
+
+
+    document
+        .getElementById("selectedCoursePrice")
+        .textContent =
+        "$" +
+        course.price.toFixed(2);
+
+
+    setTodayDate();
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+/* ============================================================
+   OPEN ABA PAYMENT
+   ============================================================ */
+
+function openPayment() {
+
+    if (!selectedCourse) {
+
+        alert(
+            "Please select a course first."
+        );
+
+        return;
+
+    }
+
+
+    const course =
+        courses[selectedCourse];
+
+
+    if (
+        !course ||
+        !course.paymentLink
+    ) {
+
+        alert(
+            "Payment link is not available."
+        );
+
+        return;
+
+    }
+
+
+    tg.openLink(
+        course.paymentLink
+    );
+
+}
+
+
+/* ============================================================
+   TODAY DATE
+   ============================================================ */
+
+function setTodayDate() {
+
+    const now =
+        new Date();
+
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const year =
+        now.getFullYear();
+
+
+    document
+        .getElementById(
+            "paymentDate"
+        )
+        .value =
+        `${day}/${month}/${year}`;
+
+}
+
+
+/* ============================================================
+   DATE VALIDATION
+   ============================================================ */
+
+function validateDate(dateText) {
+
+    const pattern =
+        /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+
+    const match =
+        dateText.match(
+            pattern
+        );
+
+
+    if (!match) {
+
+        return false;
+
+    }
+
+
+    const day =
+        parseInt(
+            match[1],
+            10
+        );
+
+
+    const month =
+        parseInt(
+            match[2],
+            10
+        );
+
+
+    const year =
+        parseInt(
+            match[3],
+            10
+        );
+
+
+    const date =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
 
 
     return (
-        day,
-        month,
-        year,
-        f"{day:02d}/{month:02d}/{year}",
-    )
+
+        date.getFullYear()
+        === year
+
+        &&
+
+        date.getMonth()
+        === month - 1
+
+        &&
+
+        date.getDate()
+        === day
+
+    );
+
+}
 
 
-# ============================================================
-# EXTRACT PAYMENT DATE
-# ============================================================
+/* ============================================================
+   APV VALIDATION
+   ============================================================ */
 
-def extract_payment_date(message):
+function validateAPV(apv) {
 
-    patterns = [
+    return /^\d{4,10}$/.test(
+        apv
+    );
 
-        r"\b(\d{1,2}/\d{1,2}/\d{4})\b",
-
-        r"\b(\d{1,2}-\d{1,2}-\d{4})\b",
-
-    ]
+}
 
 
-    for pattern in patterns:
+/* ============================================================
+   CONFIRM PAYMENT
+   ============================================================ */
 
-        match = re.search(
-            pattern,
-            message,
-        )
+function confirmPayment() {
+
+    if (!selectedCourse) {
+
+        alert(
+            "Please select a course first."
+        );
+
+        return;
+
+    }
 
 
-        if match:
-
-            date_text = (
-                match.group(1)
-                .replace("-", "/")
+    const paymentDate =
+        document
+            .getElementById(
+                "paymentDate"
             )
+            .value
+            .trim();
 
 
-            parsed = parse_student_date(
-                date_text
+    const apv =
+        document
+            .getElementById(
+                "apv"
             )
+            .value
+            .trim();
 
 
-            if parsed:
-
-                return parsed
-
-
-    english_date = extract_english_date(
-        message
-    )
-
-
-    if english_date:
-
-        return english_date
-
-
-    return None
-
-
-# ============================================================
-# EXTRACT TRANSACTION ID
-# ============================================================
-
-def extract_transaction_id(message):
-
-    patterns = [
-
-        r"Trx\.\s*ID:\s*(\d+)",
-
-        r"Transaction\s*ID:\s*(\d+)",
-
-        r"លេខប្រតិបត្តិការ:\s*(\d+)",
-
-    ]
-
-
-    for pattern in patterns:
-
-        match = re.search(
-            pattern,
-            message,
-            re.IGNORECASE,
-        )
-
-
-        if match:
-
-            return match.group(1)
-
-
-    return None
-
-
-# ============================================================
-# EXTRACT PAYER
-# ============================================================
-
-def extract_payer(message):
-
-    patterns = [
-
-        r"paid by\s+(.*?)\s+\(\*(\d+)\)",
-
-        r"ត្រូវបានបង់ដោយ\s+(.*?)\s+\(\*(\d+)\)",
-
-    ]
-
-
-    for pattern in patterns:
-
-        match = re.search(
-            pattern,
-            message,
-            re.IGNORECASE,
-        )
-
-
-        if match:
-
-            return (
-                match.group(1).strip(),
-                "*" + match.group(2),
-            )
-
-
-    return (
-        "Unknown",
-        "",
-    )
-
-
-# ============================================================
-# SEND STUDENT RECEIPT
-# ============================================================
-
-async def send_student_receipt(
-    context,
-    registration,
-    payment,
-):
-
-    receipt_text = (
-
-        "Vlearn Together\n\n"
-
-        "REGISTRATION SUCCESSFUL\n"
-        "ការចុះឈ្មោះបានជោគជ័យ\n\n"
-
-        f"Course:\n"
-        f"{registration['course']}\n\n"
-
-        f"Amount Paid:\n"
-        f"${payment['amount']:.2f}\n\n"
-
-        f"Payment Date:\n"
-        f"{payment['payment_date']}\n\n"
-
-        f"APV:\n"
-        f"{payment['apv']}\n\n"
-
-        f"Transaction ID:\n"
-        f"{payment['transaction_id'] or 'N/A'}\n\n"
-
-        "Payment Status:\n"
-        "PAID\n"
-        "បានបង់ប្រាក់រួចរាល់\n\n"
-
-        "Your payment has been verified successfully.\n"
-        "ការទូទាត់របស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់ដោយជោគជ័យ។\n\n"
-
-        "You will receive your private course access "
-        "after verification.\n\n"
-
-        "Please keep this message as your "
-        "payment and registration record.\n\n"
-
-        "Contact Vlearn Together\n"
-        "077 448 388\n\n"
-
-        "https://t.me/Vlearn_together"
-    )
-
-
-    try:
-
-        await context.bot.send_message(
-
-            chat_id=registration["telegram_id"],
-
-            text=receipt_text,
-
-        )
-
-
-    except Exception as error:
-
-        print(
-            "Could not send receipt:",
-            error,
-        )
-
-
-# ============================================================
-# SEND WAITING MESSAGE
-# ============================================================
-
-async def send_waiting_message(
-    context,
-    registration,
-):
-
-    text = (
-
-        "Vlearn Together\n\n"
-
-        "PAYMENT INFORMATION RECEIVED\n"
-        "ព័ត៌មានការទូទាត់ត្រូវបានទទួល\n\n"
-
-        f"Course:\n"
-        f"{registration['course']}\n\n"
-
-        f"Payment Date:\n"
-        f"{registration['payment_date']}\n\n"
-
-        f"APV:\n"
-        f"{registration['student_apv']}\n\n"
-
-        "Payment Status:\n"
-        "WAITING FOR VERIFICATION\n"
-        "កំពុងរង់ចាំការផ្ទៀងផ្ទាត់\n\n"
-
-        "Your payment information has been "
-        "successfully submitted.\n\n"
-
-        "The bot will automatically verify your "
-        "payment when the ABA payment information "
-        "is received."
-    )
-
-
-    try:
-
-        await context.bot.send_message(
-
-            chat_id=registration["telegram_id"],
-
-            text=text,
-
-        )
-
-
-    except Exception as error:
-
-        print(
-            "Could not send waiting message:",
-            error,
-        )
-
-
-# ============================================================
-# CREATE PRIVATE JOIN-REQUEST INVITE
-# ============================================================
-#
-# IMPORTANT SECURITY FEATURE:
-#
-# The invite link uses creates_join_request=True.
-#
-# A student can technically forward the link, but the bot
-# will ONLY approve the join request if the Telegram ID
-# belongs to the paid registration connected to that link.
-#
-# Therefore another person cannot use the forwarded link
-# to enter the course.
-# ============================================================
-
-async def create_student_invite(
-    context,
-    registration,
-):
-
-    registration_id = registration["id"]
-
-    telegram_id = registration["telegram_id"]
-
-    course = registration["course"]
-
-    channel_id = registration["channel_id"]
-
-
-    if not channel_id:
-
-        print(
-            "ERROR: No channel ID for course:",
-            course,
-        )
-
-        return None
-
-
-    # --------------------------------------------------------
-    # Check whether access was already granted
-    # --------------------------------------------------------
-
-    if registration["access_granted"]:
-
-        return None
-
-
-    # --------------------------------------------------------
-    # Check existing invite
-    # --------------------------------------------------------
-
-    if registration["access_invite_link"]:
-
-        return registration["access_invite_link"]
-
-
-    try:
-
-        invite = await context.bot.create_chat_invite_link(
-
-            chat_id=channel_id,
-
-            name=f"Vlearn-{registration_id}-{telegram_id}",
-
-            creates_join_request=True,
-
-        )
-
-
-        invite_link = invite.invite_link
-
-
-        connection = sqlite3.connect(DATABASE)
-
-        cursor = connection.cursor()
-
-
-        cursor.execute(
-            """
-            UPDATE payment_registrations
-
-            SET access_invite_link = ?
-
-            WHERE id = ?
-            """,
-            (
-                invite_link,
-                registration_id,
-            ),
-        )
-
-
-        connection.commit()
-
-        connection.close()
-
-
-        print(
-            "PRIVATE JOIN REQUEST LINK CREATED"
-        )
-
-        print(
-            "Registration:",
-            registration_id,
-        )
-
-        print(
-            "Student Telegram ID:",
-            telegram_id,
-        )
-
-        print(
-            "Course:",
-            course,
-        )
-
-        print(
-            "Channel ID:",
-            channel_id,
-        )
-
-
-        return invite_link
-
-
-    except Exception as error:
-
-        print(
-            "ERROR CREATING INVITE LINK:",
-            error,
-        )
-
-        return None
-
-
-# ============================================================
-# SEND COURSE ACCESS
-# ============================================================
-
-async def send_course_access(
-    context,
-    registration_id,
-):
-
-    registration = get_registration(
-        registration_id
-    )
-
-
-    if not registration:
-
-        print(
-            "Cannot send course access:"
-            " registration not found."
-        )
-
-        return False
-
-
-    if registration["status"] != "PAID":
-
-        print(
-            "Cannot send course access:"
-            " registration is not PAID."
-        )
-
-        return False
-
-
-    if registration["access_granted"]:
-
-        print(
-            "Course access already granted."
-        )
-
-        return True
-
-
-    invite_link = await create_student_invite(
-
-        context=context,
-
-        registration=registration,
-
-    )
-
-
-    if not invite_link:
-
-        return False
-
-
-    text = (
-
-        "Vlearn Together\n\n"
-
-        "PAYMENT VERIFIED SUCCESSFULLY\n"
-        "ការទូទាត់ត្រូវបានផ្ទៀងផ្ទាត់ដោយជោគជ័យ\n\n"
-
-        f"Course:\n"
-        f"{registration['course']}\n\n"
-
-        "Your private course access is ready.\n"
-        "តំណចូលវគ្គសិក្សាឯកជនរបស់អ្នករួចរាល់ហើយ។\n\n"
-
-        "Please press the button below to request "
-        "access to your private course channel.\n\n"
-
-        "IMPORTANT:\n"
-        "This access is connected to your Telegram "
-        "account. Do not share the link with another "
-        "person.\n\n"
-
-        "សំខាន់៖\n"
-        "ការចូលប្រើនេះត្រូវបានភ្ជាប់ជាមួយគណនី "
-        "Telegram របស់អ្នក។ សូមកុំចែករំលែកតំណនេះ "
-        "ទៅអ្នកផ្សេង។"
-    )
-
-
-    keyboard = [
-
-        [
-
-            InlineKeyboardButton(
-
-                "🔐 Join My Private Course",
-
-                url=invite_link,
-
-            )
-
-        ]
-
-    ]
-
-
-    reply_markup = InlineKeyboardMarkup(
-        keyboard
-    )
-
-
-    try:
-
-        await context.bot.send_message(
-
-            chat_id=registration["telegram_id"],
-
-            text=text,
-
-            reply_markup=reply_markup,
-
-        )
-
-
-        print(
-            "COURSE ACCESS LINK SENT"
-        )
-
-        print(
-            "Student:",
-            registration["telegram_name"],
-        )
-
-        print(
-            "Telegram ID:",
-            registration["telegram_id"],
-        )
-
-        print(
-            "Course:",
-            registration["course"],
-        )
-
-
-        return True
-
-
-    except Exception as error:
-
-        print(
-            "ERROR SENDING COURSE ACCESS:",
-            error,
-        )
-
-        return False
-
-
-# ============================================================
-# MATCH PAYMENT
-# ============================================================
-
-async def try_match_payment(
-    update,
-    context,
-    payment_id,
-):
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-
-    cursor.execute(
-        """
-        SELECT *
-
-        FROM aba_payments
-
-        WHERE id = ?
-        """,
-        (payment_id,),
-    )
-
-
-    payment = cursor.fetchone()
-
-    connection.close()
-
-
-    if not payment:
-
-        return
-
-
-    registration = find_matching_registration(
-
-        amount=payment["amount"],
-
-        payment_day=payment["payment_day"],
-
-        payment_month=payment["payment_month"],
-
-        payment_year=payment["payment_year"],
-
-        apv=payment["apv"],
-
-    )
-
-
-    if not registration:
-
-        print(
-            "Payment saved, but no matching "
-            "student registration was found yet."
-        )
-
-        print(
-            "The payment remains in the database "
-            "and will be checked again when the "
-            "student submits the registration."
-        )
-
-        print(
-            "Amount:",
-            payment["amount"],
-        )
-
-        print(
-            "Date:",
-            payment["payment_date"],
-        )
-
-        print(
-            "APV:",
-            payment["apv"],
-        )
-
-        return
-
-
-    # --------------------------------------------------------
-    # MATCH FOUND
-    # --------------------------------------------------------
-
-    mark_registration_paid(
-
-        registration_id=registration["id"],
-
-        payment_id=payment["id"],
-
-        transaction_id=payment["transaction_id"],
-
-        payer_name=payment["payer_name"],
-
-        payer_account=payment["payer_account"],
-
-    )
-
-
-    print(
-        "\n======================================"
-    )
-
-    print(
-        "PAYMENT MATCHED"
-    )
-
-    print(
-        "Student:",
-        registration["telegram_name"],
-    )
-
-    print(
-        "Telegram ID:",
-        registration["telegram_id"],
-    )
-
-    print(
-        "Course:",
-        registration["course"],
-    )
-
-    print(
-        "Amount:",
-        payment["amount"],
-    )
-
-    print(
-        "Date:",
-        payment["payment_date"],
-    )
-
-    print(
-        "APV:",
-        payment["apv"],
-    )
-
-    print(
-        "Transaction:",
-        payment["transaction_id"],
-    )
-
-    print(
-        "Channel ID:",
-        registration["channel_id"],
-    )
-
-    print(
-        "======================================\n"
-    )
-
-
-    # --------------------------------------------------------
-    # ADMIN / GROUP NOTIFICATION
-    # --------------------------------------------------------
-
-    if update and update.effective_message:
-
-        try:
-
-            await update.effective_message.reply_text(
-
-                "PAYMENT MATCHED\n\n"
-
-                f"Student:\n"
-                f"{registration['telegram_name']}\n\n"
-
-                f"Course:\n"
-                f"{registration['course']}\n\n"
-
-                f"Amount:\n"
-                f"${payment['amount']:.2f}\n\n"
-
-                f"Payment date:\n"
-                f"{payment['payment_date']}\n\n"
-
-                f"APV:\n"
-                f"{payment['apv']}\n\n"
-
-                f"Transaction ID:\n"
-                f"{payment['transaction_id'] or 'N/A'}\n\n"
-
-                "Payment status: PAID\n\n"
-
-                "Private course access will now be "
-                "sent to the student."
-
-            )
-
-        except Exception as error:
-
-            print(
-                "Could not send admin notification:",
-                error,
-            )
-
-
-    # --------------------------------------------------------
-    # STUDENT RECEIPT
-    # --------------------------------------------------------
-
-    await send_student_receipt(
-
-        context=context,
-
-        registration=registration,
-
-        payment=payment,
-
-    )
-
-
-    # --------------------------------------------------------
-    # PRIVATE COURSE ACCESS
-    # --------------------------------------------------------
-
-    await send_course_access(
-
-        context=context,
-
-        registration_id=registration["id"],
-
-    )
-
-
-# ============================================================
-# START COMMAND
-# ============================================================
-
-async def start(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    keyboard = [
-
-        [
-
-            InlineKeyboardButton(
-
-                "Open Vlearn Together",
-
-                web_app=WebAppInfo(
-                    url=MINI_APP_URL
-                ),
-
-            )
-
-        ]
-
-    ]
-
-
-    reply_markup = InlineKeyboardMarkup(
-        keyboard
-    )
-
-
-    await update.message.reply_text(
-
-        "Welcome to Vlearn Together!\n"
-        "សូមស្វាគមន៍មកកាន់ Vlearn Together!\n\n"
-
-        "Learn English online with our video courses.\n"
-        "សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត "
-        "ជាមួយវគ្គសិក្សាវីដេអូរបស់យើង។\n\n"
-
-        "General English Programme\n"
-        "កម្មវិធីភាសាអង់គ្លេសទូទៅ\n\n"
-
-        "English Grammar Course\n"
-        "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស\n\n"
-
-        "English Vocabulary Course\n"
-        "វគ្គវាក្យសព្ទភាសាអង់គ្លេស\n\n"
-
-        "Choose the button below to explore "
-        "our courses.\n"
-        "សូមចុចប៊ូតុងខាងក្រោម "
-        "ដើម្បីមើលវគ្គសិក្សារបស់យើង។",
-
-        reply_markup=reply_markup,
-
-    )
-
-
-# ============================================================
-# MINI APP DATA HANDLER
-# ============================================================
-
-async def web_app_data_handler(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    if not update.effective_message:
-
-        return
-
-
-    web_app_data = (
-        update.effective_message.web_app_data
-    )
-
-
-    if not web_app_data:
-
-        return
-
-
-    print(
-        "\n========== MINI APP DATA =========="
-    )
-
-
-    print(
-        "Raw data:",
-        web_app_data.data,
-    )
-
-
-    try:
-
-        data = json.loads(
-            web_app_data.data
-        )
-
-
-    except json.JSONDecodeError:
-
-        print(
-            "Invalid Mini App JSON."
-        )
-
-
-        await update.effective_message.reply_text(
-
-            "The information could not be read.\n\n"
-
-            "ព័ត៌មានមិនអាចអានបានទេ។\n\n"
-
-            "Please open Vlearn Together again "
-            "and try again."
-
-        )
-
-
-        return
-
-
-    print(
-        "Mini App data:",
-        data,
-    )
-
-
-    action = str(
-        data.get(
-            "action",
-            ""
-        )
-    ).strip().lower()
-
-
-    user = update.effective_user
-
-
-    if not user:
-
-        return
-
-
-    telegram_id = user.id
-
-
-    telegram_name = " ".join(
-
-        part
-
-        for part in [
-
-            user.first_name,
-
-            user.last_name,
-
-        ]
-
-        if part
-
-    )
-
-
-    username = (
-        user.username or ""
-    )
-
-
-    # ========================================================
-    # PAYMENT COMPLETED
-    # ========================================================
-
-    if action == "payment_completed":
-
-        course = str(
-            data.get(
-                "course",
-                ""
-            )
-        ).strip()
-
-
-        payment_date_text = str(
-            data.get(
-                "payment_date",
-                ""
-            )
-        ).strip()
-
-
-        student_apv = str(
-            data.get(
-                "apv",
-                ""
-            )
-        ).strip()
-
-
-        print(
-            "Course:",
-            course,
-        )
-
-        print(
-            "Payment date:",
-            payment_date_text,
-        )
-
-        print(
-            "APV:",
-            student_apv,
-        )
-
-
-        # ----------------------------------------------------
-        # Validate course
-        # ----------------------------------------------------
-
-        if course not in COURSES:
-
-            await update.effective_message.reply_text(
-
-                "The selected course could not be found.\n\n"
-
-                "មិនអាចរកឃើញវគ្គសិក្សានេះទេ."
-
-            )
-
-            return
-
-
-        # ----------------------------------------------------
-        # Make sure course has a private channel
-        # ----------------------------------------------------
-
-        channel_id = COURSE_CHANNELS.get(
-            course
-        )
-
-
-        if not channel_id:
-
-            await update.effective_message.reply_text(
-
-                "The private course channel has not "
-                "been configured yet.\n\n"
-
-                "Please contact Vlearn Together."
-
-            )
-
-            print(
-                "ERROR: No channel configured for:",
-                course,
-            )
-
-            return
-
-
-        # ----------------------------------------------------
-        # Validate date
-        # ----------------------------------------------------
-
-        parsed_date = parse_student_date(
-            payment_date_text
-        )
-
-
-        if not parsed_date:
-
-            await update.effective_message.reply_text(
-
-                "Invalid payment date.\n\n"
-
-                "Please enter the date in this format:\n"
-
-                "DD/MM/YYYY\n\n"
-
-                "Example:\n"
-
-                "15/08/2026\n\n"
-
-                "កាលបរិច្ឆេទមិនត្រឹមត្រូវទេ។"
-
-            )
-
-            return
-
-
-        (
-            payment_day,
-            payment_month,
-            payment_year,
-            normalized_date,
-        ) = parsed_date
-
-
-        # ----------------------------------------------------
-        # Validate APV
-        # ----------------------------------------------------
-
-        if not re.fullmatch(
-            r"\d{4,10}",
-            student_apv,
-        ):
-
-            await update.effective_message.reply_text(
-
-                "Invalid APV.\n\n"
-
-                "Please enter the APV shown "
-                "on your ABA payment receipt.\n\n"
-
-                "APV មិនត្រឹមត្រូវទេ।"
-
-            )
-
-            return
-
-
-        # ----------------------------------------------------
-        # Official price
-        # ----------------------------------------------------
-
-        price = COURSES[
-            course
-        ]["price"]
-
-
-        # ----------------------------------------------------
-        # Save registration
-        # ----------------------------------------------------
-
-        registration_id = save_student_registration(
-
-            telegram_id=telegram_id,
-
-            telegram_name=telegram_name,
-
-            username=username,
-
-            course=course,
-
-            price=price,
-
-            payment_date=normalized_date,
-
-            payment_day=payment_day,
-
-            payment_month=payment_month,
-
-            payment_year=payment_year,
-
-            student_apv=student_apv,
-
-        )
-
-
-        print(
-            "\n========== STUDENT PAYMENT DATA =========="
-        )
-
-        print(
-            "Registration ID:",
-            registration_id,
-        )
-
-        print(
-            "Student:",
-            telegram_name,
-        )
-
-        print(
-            "Telegram ID:",
-            telegram_id,
-        )
-
-        print(
-            "Course:",
-            course,
-        )
-
-        print(
-            "Amount:",
-            price,
-        )
-
-        print(
-            "Date:",
-            normalized_date,
-        )
-
-        print(
-            "APV:",
-            student_apv,
-        )
-
-        print(
-            "Channel ID:",
-            channel_id,
-        )
-
-        print(
-            "===========================================\n"
-        )
-
-
-        # ----------------------------------------------------
-        # Check whether ABA payment already exists
-        # ----------------------------------------------------
-
-        aba_payment = find_matching_aba_payment(
-
-            amount=price,
-
-            payment_day=payment_day,
-
-            payment_month=payment_month,
-
-            payment_year=payment_year,
-
-            apv=student_apv,
-
-        )
-
-
-        if aba_payment:
-
-            print(
-                "ABA PAYMENT ALREADY EXISTS."
-            )
-
-            print(
-                "Matching registration immediately."
-            )
-
-
-            mark_registration_paid(
-
-                registration_id=registration_id,
-
-                payment_id=aba_payment["id"],
-
-                transaction_id=aba_payment[
-                    "transaction_id"
-                ],
-
-                payer_name=aba_payment[
-                    "payer_name"
-                ],
-
-                payer_account=aba_payment[
-                    "payer_account"
-                ],
-
-            )
-
-
-            registration = get_registration(
-                registration_id
-            )
-
-
-            # ------------------------------------------------
-            # Send receipt
-            # ------------------------------------------------
-
-            await send_student_receipt(
-
-                context=context,
-
-                registration=registration,
-
-                payment=aba_payment,
-
-            )
-
-
-            # ------------------------------------------------
-            # Send private course access
-            # ------------------------------------------------
-
-            await send_course_access(
-
-                context=context,
-
-                registration_id=registration_id,
-
-            )
-
-
-            return
-
-
-        # ----------------------------------------------------
-        # Payment not found yet
-        # ----------------------------------------------------
-
-        registration = get_registration(
-            registration_id
-        )
-
-
-        await send_waiting_message(
-
-            context=context,
-
-            registration=registration,
-
-        )
-
-
-        print(
-            "Payment information sent successfully."
-        )
-
-        print(
-            "Waiting for matching ABA payment."
-        )
-
-
-        return
-
-
-    # ========================================================
-    # OLD START REGISTRATION ACTION
-    # ========================================================
-
-    if action == "start_registration":
-
-        course = str(
-            data.get(
-                "course",
-                ""
-            )
-        ).strip()
-
-
-        if course not in COURSES:
-
-            await update.effective_message.reply_text(
-
-                "The selected course could not be found."
-
-            )
-
-            return
-
-
-        course_data = COURSES[
-            course
-        ]
-
-
-        price = course_data[
-            "price"
-        ]
-
-
-        keyboard = [
-
-            [
-
-                InlineKeyboardButton(
-
-                    f"Pay ${price:.2f} via ABA",
-
-                    url=course_data[
-                        "payment_link"
-                    ],
-
-                )
-
-            ]
-
-        ]
-
-
-        reply_markup = InlineKeyboardMarkup(
-            keyboard
-        )
-
-
-        await update.effective_message.reply_text(
-
-            "Registration received.\n\n"
-
-            f"Course:\n"
-            f"{course}\n\n"
-
-            f"Amount:\n"
-            f"${price:.2f}\n\n"
-
-            "Please complete your payment "
-            "using the button below.\n\n"
-
-            "After completing the payment, "
-            "return to Vlearn Together and "
-            "enter your payment date and APV.",
-
-            reply_markup=reply_markup,
-
-        )
-
-
-        return
-
-
-    # ========================================================
-    # UNKNOWN ACTION
-    # ========================================================
-
-    print(
-        "Unknown Mini App action:",
-        action,
-    )
-
-
-# ============================================================
-# ABA PAYMENT MESSAGE
-# ============================================================
-
-async def group_message(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    if not update.message:
-
-        return
-
-
-    if not update.message.text:
-
-        return
-
-
-    message = update.message.text.strip()
-
-
-    print(
-        "\n========== GROUP MESSAGE =========="
-    )
-
-    print(
-        message
-    )
-
-
-    # ========================================================
-    # EXTRACT INFORMATION
-    # ========================================================
-
-    manual_apv = extract_apv(
-        message
-    )
-
-
-    manual_amount = extract_amount(
-        message
-    )
-
-
-    manual_date = extract_payment_date(
-        message
-    )
-
-
-    transaction_id = extract_transaction_id(
-        message
-    )
-
-
-    # ========================================================
-    # CHECK ABA MESSAGE
-    # ========================================================
-
-    looks_like_aba = (
-
-        "paid by" in message.lower()
-
-        or
-
-        "ត្រូវបានបង់ដោយ" in message
-
-        or
-
-        "APV" in message.upper()
-
-        or
-
-        "ABA" in message.upper()
-
-    )
-
-
-    if not looks_like_aba:
-
-        return
-
-
-    if not manual_apv:
-
-        print(
-            "No APV detected."
-        )
-
-        return
-
-
-    if not manual_amount:
-
-        print(
-            "No amount detected."
-        )
-
-        return
-
-
-    if not manual_date:
-
-        print(
-            "No payment date detected."
-        )
-
-        return
-
-
-    (
-        payment_day,
-        payment_month,
-        payment_year,
-        payment_date,
-    ) = manual_date
-
-
-    payer_name, payer_account = extract_payer(
-        message
-    )
-
-
-    # ========================================================
-    # SAVE ABA PAYMENT
-    # ========================================================
-
-    payment_id = save_aba_payment(
-
-        amount=manual_amount,
-
-        payment_date=payment_date,
-
-        payment_day=payment_day,
-
-        payment_month=payment_month,
-
-        payment_year=payment_year,
-
-        apv=manual_apv,
-
-        transaction_id=transaction_id,
-
-        payer_name=payer_name,
-
-        payer_account=payer_account,
-
-        source="telegram_group",
-
-    )
-
-
-    # ========================================================
-    # DUPLICATE APV
-    # ========================================================
-
-    if payment_id is None:
-
-        print(
-            "APV already exists:",
-            manual_apv,
-        )
-
-        return
-
-
-    print(
-        "ABA PAYMENT SAVED"
-    )
-
-    print(
-        "Amount:",
-        manual_amount,
-    )
-
-    print(
-        "Date:",
-        payment_date,
-    )
-
-    print(
-        "APV:",
-        manual_apv,
-    )
-
-
-    # ========================================================
-    # TRY MATCH
-    # ========================================================
-
-    await try_match_payment(
-
-        update=update,
-
-        context=context,
-
-        payment_id=payment_id,
-
-    )
-
-
-# ============================================================
-# PRIVATE CHANNEL POST HANDLER
-# ============================================================
-#
-# This handler is ONLY for checking the private channels.
-#
-# It prints the exact channel ID and configured course.
-# It no longer tries to guess the course from the name.
-# ============================================================
-
-async def channel_post_handler(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    if not update.channel_post:
-
-        return
-
-
-    channel = update.channel_post.chat
-
-
-    channel_id = channel.id
-
-    channel_title = channel.title or ""
-
-    channel_type = channel.type
-
-
-    correct_course = CHANNEL_COURSES.get(
-        channel_id
-    )
-
-
-    print(
-        "\n======================================"
-    )
-
-    print(
-        "========== CHANNEL POST ============="
-    )
-
-    print(
-        "Channel:",
-        channel_title,
-    )
-
-    print(
-        "Channel ID:",
-        channel_id,
-    )
-
-    print(
-        "Type:",
-        channel_type,
-    )
-
-
-    if correct_course:
-
-        print(
-            "Configured course:",
-            correct_course,
-        )
-
-    else:
-
-        print(
-            "WARNING: This channel is NOT configured."
-        )
-
-
-    print(
-        "======================================"
-    )
-
-
-# ============================================================
-# JOIN REQUEST HANDLER
-# ============================================================
-#
-# This is the security mechanism for private channels.
-#
-# When someone clicks the student's invite link, Telegram
-# sends a join request to the bot.
-#
-# The bot checks:
-#
-# 1. Which channel?
-# 2. Which invite link?
-# 3. Which Telegram user?
-# 4. Is there a PAID registration?
-#
-# Only the correct paid student is approved.
-# ============================================================
-
-async def join_request_handler(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    request = update.chat_join_request
-
-
-    if not request:
-
-        return
-
-
-    user_id = request.from_user.id
-
-    channel_id = request.chat.id
-
-
-    invite_link = None
-
-
-    if request.invite_link:
-
-        invite_link = request.invite_link.invite_link
-
-
-    print(
-        "\n======================================"
-    )
-
-    print(
-        "========== JOIN REQUEST =============="
-    )
-
-    print(
-        "Student:",
-        request.from_user.full_name,
-    )
-
-    print(
-        "Telegram ID:",
-        user_id,
-    )
-
-    print(
-        "Channel:",
-        request.chat.title,
-    )
-
-    print(
-        "Channel ID:",
-        channel_id,
-    )
-
-    print(
-        "Invite link:",
-        invite_link,
-    )
-
-
-    if not invite_link:
-
-        print(
-            "DENIED: No invite link information."
-        )
-
-        await request.decline()
-
-        print(
-            "======================================"
-        )
-
-        return
-
-
-    # --------------------------------------------------------
-    # Find registration by Telegram ID + invite link
-    # --------------------------------------------------------
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-
-    cursor.execute(
-        """
-        SELECT *
-
-        FROM payment_registrations
-
-        WHERE
-            telegram_id = ?
-            AND channel_id = ?
-            AND access_invite_link = ?
-            AND status = 'PAID'
-
-        ORDER BY id DESC
-
-        LIMIT 1
-        """,
-        (
-            user_id,
-            channel_id,
-            invite_link,
-        ),
-    )
-
-
-    registration = cursor.fetchone()
-
-    connection.close()
-
-
-    # --------------------------------------------------------
-    # No valid registration
-    # --------------------------------------------------------
-
-    if not registration:
-
-        print(
-            "DENIED: No valid paid registration "
-            "matched this student/channel/invite."
-        )
-
-
-        try:
-
-            await request.decline()
-
-        except Exception as error:
-
-            print(
-                "Could not decline join request:",
-                error,
-            )
-
-
-        print(
-            "======================================"
-        )
-
-        return
-
-
-    # --------------------------------------------------------
-    # Verify course/channel relationship
-    # --------------------------------------------------------
-
-    configured_course = CHANNEL_COURSES.get(
-        channel_id
-    )
-
-
-    if configured_course != registration["course"]:
-
-        print(
-            "DENIED: Course/channel mismatch."
-        )
-
-        print(
-            "Registration course:",
-            registration["course"],
-        )
-
-        print(
-            "Configured channel course:",
-            configured_course,
-        )
-
-
-        try:
-
-            await request.decline()
-
-        except Exception as error:
-
-            print(
-                "Could not decline join request:",
-                error,
-            )
-
-
-        print(
-            "======================================"
+    if (
+        !validateDate(
+            paymentDate
         )
-
-        return
-
+    ) {
 
-    # --------------------------------------------------------
-    # APPROVE STUDENT
-    # --------------------------------------------------------
+        alert(
 
-    try:
+            "Please enter a valid payment date.\n\n" +
 
-        await request.approve()
+            "Example:\n" +
 
+            "15/08/2026"
 
-        connection = sqlite3.connect(DATABASE)
+        );
 
-        cursor = connection.cursor()
+        return;
 
+    }
 
-        cursor.execute(
-            """
-            UPDATE payment_registrations
 
-            SET
-                access_granted = 1,
-                access_granted_at = CURRENT_TIMESTAMP
-
-            WHERE id = ?
-            """,
-            (
-                registration["id"],
-            ),
+    if (
+        !validateAPV(
+            apv
         )
-
+    ) {
 
-        connection.commit()
+        alert(
 
-        connection.close()
+            "Please enter a valid APV.\n\n" +
 
-
-        print(
-            "======================================"
-        )
+            "The APV should contain 4–10 digits."
 
-        print(
-            "ACCESS GRANTED"
-        )
+        );
 
-        print(
-            "Student:",
-            registration["telegram_name"],
-        )
+        return;
 
-        print(
-            "Telegram ID:",
-            user_id,
-        )
+    }
 
-        print(
-            "Course:",
-            registration["course"],
-        )
 
-        print(
-            "Channel:",
-            request.chat.title,
-        )
+    const button =
+        document.getElementById(
+            "confirmButton"
+        );
 
-        print(
-            "Channel ID:",
-            channel_id,
-        )
 
-        print(
-            "Registration ID:",
-            registration["id"],
-        )
+    button.disabled = true;
 
-        print(
-            "======================================"
-        )
 
+    button.innerHTML =
 
-        # ----------------------------------------------------
-        # Revoke the invite link after approval
-        #
-        # This makes the link unusable for another person.
-        # ----------------------------------------------------
+        '<span class="spinner"></span>' +
 
-        try:
+        'Sending...';
 
-            await context.bot.revoke_chat_invite_link(
 
-                chat_id=channel_id,
+    const data = {
 
-                invite_link=invite_link,
+        action:
+            "payment_completed",
 
-            )
+        course:
+            selectedCourse,
 
+        payment_date:
+            paymentDate,
 
-            print(
-                "Invite link revoked after successful access."
-            )
+        apv:
+            apv
 
+    };
 
-        except Exception as error:
 
-            print(
-                "Could not revoke invite link:",
-                error,
-            )
+    console.log(
+        "Sending data to Telegram:",
+        data
+    );
 
 
-        # ----------------------------------------------------
-        # Notify student
-        # ----------------------------------------------------
+    try {
 
-        try:
+        tg.sendData(
+            JSON.stringify(data)
+        );
 
-            await context.bot.send_message(
 
-                chat_id=user_id,
+        setTimeout(
+            function() {
 
-                text=(
+                hideAllPages();
 
-                    "Vlearn Together\n\n"
 
-                    "ACCESS APPROVED ✅\n"
-                    "ការចូលប្រើត្រូវបានអនុម័ត\n\n"
+                document
+                    .getElementById(
+                        "statusPage"
+                    )
+                    .classList.remove(
+                        "hidden"
+                    );
 
-                    f"Course:\n"
-                    f"{registration['course']}\n\n"
 
-                    "You have successfully joined "
-                    "your private course channel.\n\n"
+            },
+            700
+        );
 
-                    "សូមស្វាគមន៍មកកាន់វគ្គសិក្សា "
-                    "ឯកជនរបស់អ្នក។"
 
-                ),
+    } catch (error) {
 
-            )
+        console.error(
+            error
+        );
 
-        except Exception as error:
 
-            print(
-                "Could not notify student:",
-                error,
-            )
+        button.disabled =
+            false;
 
 
-    except Exception as error:
+        button.innerHTML =
 
-        print(
-            "ERROR APPROVING JOIN REQUEST:",
-            error,
-        )
+            "Confirm Payment" +
 
+            "<br>" +
 
-        try:
+            "បញ្ជាក់ការទូទាត់";
 
-            await request.decline()
 
-        except Exception:
+        alert(
 
-            pass
+            "The information could not be sent.\n\n" +
 
+            "ព័ត៌មានមិនអាចផ្ញើបានទេ។"
 
-# ============================================================
-# MAIN
-# ============================================================
+        );
 
-def main():
+    }
 
-    # --------------------------------------------------------
-    # Create / migrate database
-    # --------------------------------------------------------
+}
 
-    create_database()
 
+/* ============================================================
+   GO HOME
+   ============================================================ */
 
-    # --------------------------------------------------------
-    # Check course/channel configuration
-    # --------------------------------------------------------
+function goHome() {
 
-    print(
-        "\n======================================"
-    )
+    selectedMajor = "";
 
-    print(
-        "COURSE / CHANNEL CONFIGURATION"
-    )
+    selectedCourse = "";
 
-    print(
-        "======================================"
-    )
 
+    hideAllPages();
 
-    for channel_id, course in CHANNEL_COURSES.items():
 
-        print(
-            channel_id,
-            "→",
-            course,
+    document
+        .getElementById(
+            "homePage"
         )
+        .classList.remove(
+            "hidden"
+        );
 
 
-    print(
-        "======================================\n"
-    )
-
-
-    # --------------------------------------------------------
-    # Build application
-    # --------------------------------------------------------
-
-    application = (
-
-        Application
-
-        .builder()
-
-        .token(TOKEN)
-
-        .build()
+    window.scrollTo(
+        0,
+        0
+    );
 
-    )
-
+}
 
-    # --------------------------------------------------------
-    # /start
-    # --------------------------------------------------------
 
-    application.add_handler(
-
-        CommandHandler(
-            "start",
-            start,
-        )
+/* ============================================================
+   BACK TO MAJOR
+   ============================================================ */
 
-    )
+function backToMajor() {
 
+    if (
+        selectedMajor
+    ) {
 
-    # --------------------------------------------------------
-    # Telegram Mini App
-    # --------------------------------------------------------
+        openMajor(
+            selectedMajor
+        );
 
-    application.add_handler(
+    } else {
 
-        MessageHandler(
+        goHome();
 
-            filters.StatusUpdate.WEB_APP_DATA,
+    }
 
-            web_app_data_handler,
+}
 
-        )
 
-    )
+/* ============================================================
+   BACK TO DETAIL
+   ============================================================ */
 
+function backToDetail() {
 
-    # --------------------------------------------------------
-    # Private channel posts
-    #
-    # Used for testing / confirming channel IDs.
-    # --------------------------------------------------------
+    if (
+        selectedCourse
+    ) {
 
-    application.add_handler(
+        openCourseDetail(
+            selectedCourse
+        );
 
-        MessageHandler(
+    } else {
 
-            filters.ChatType.CHANNEL
-            & filters.TEXT,
+        goHome();
 
-            channel_post_handler,
+    }
 
-        )
+}
 
-    )
 
+/* ============================================================
+   CLOSE
+   ============================================================ */
 
-    # --------------------------------------------------------
-    # Private channel join requests
-    # --------------------------------------------------------
+function closeMiniApp() {
 
-    application.add_handler(
+    tg.close();
 
-        ChatJoinRequestHandler(
+}
 
-            join_request_handler
 
-        )
+/* ============================================================
+   FORMAT DATE INPUT
+   ============================================================ */
 
+document
+    .getElementById(
+        "paymentDate"
     )
-
-
-    # --------------------------------------------------------
-    # ABA payment messages
-    #
-    # Exclude channel messages so channel posts do not go
-    # through the ABA payment parser.
-    # --------------------------------------------------------
+    .addEventListener(
+        "input",
+        function(event) {
 
-    application.add_handler(
+            let value =
+                event.target.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    );
 
-        MessageHandler(
 
-            filters.ChatType.GROUPS
-            & filters.TEXT
-            & ~filters.COMMAND,
+            if (
+                value.length > 8
+            ) {
 
-            group_message,
+                value =
+                    value.substring(
+                        0,
+                        8
+                    );
 
-        )
+            }
 
-    )
 
+            if (
+                value.length >= 5
+            ) {
 
-    # --------------------------------------------------------
-    # START BOT
-    # --------------------------------------------------------
+                value =
+                    value.substring(
+                        0,
+                        2
+                    )
+                    +
+                    "/"
+                    +
+                    value.substring(
+                        2,
+                        4
+                    )
+                    +
+                    "/"
+                    +
+                    value.substring(
+                        4
+                    );
 
-    print(
-        "======================================"
-    )
+            }
 
-    print(
-        "Vlearn Together Bot is running..."
-    )
+            else if (
+                value.length >= 3
+            ) {
 
-    print(
-        "Database:",
-        DATABASE,
-    )
+                value =
+                    value.substring(
+                        0,
+                        2
+                    )
+                    +
+                    "/"
+                    +
+                    value.substring(
+                        2
+                    );
 
-    print(
-        "Payment system:",
-        "DATE + APV",
-    )
+            }
 
-    print(
-        "Mini App:",
-        "ENABLED",
-    )
 
-    print(
-        "Payment matching:",
-        "AUTOMATIC",
-    )
+            event.target.value =
+                value;
 
-    print(
-        "Private channel access:",
-        "AUTOMATIC JOIN REQUEST",
-    )
+        }
+    );
 
-    print(
-        "Courses:",
-        len(COURSES),
-    )
 
-    print(
-        "Private channels:",
-        len(CHANNEL_COURSES),
-    )
+/* ============================================================
+   APV NUMBERS ONLY
+   ============================================================ */
 
-    print(
-        "======================================"
+document
+    .getElementById(
+        "apv"
     )
+    .addEventListener(
+        "input",
+        function(event) {
 
-
-    application.run_polling(
-        allowed_updates=Update.ALL_TYPES
-    )
+            event.target.value =
+                event.target.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .substring(
+                        0,
+                        10
+                    );
 
+        }
+    );
 
-# ============================================================
-# START PROGRAM
-# ============================================================
+</script>
 
-if __name__ == "__main__":
+</body>
 
-    main()
+</html>
