@@ -38,6 +38,38 @@ MINI_APP_URL = (
 
 
 # ============================================================
+# PRIVATE TELEGRAM CHANNEL
+# ============================================================
+#
+# IMPORTANT:
+#
+# Put your private channel ID here after you discover it.
+#
+# Example:
+#
+# CHANNEL_ID = -1001234567890
+#
+# Until you know the ID, leave it as None.
+#
+# The bot will print the channel ID when you post a message
+# in the private channel.
+# ============================================================
+
+CHANNEL_ID = None
+
+
+# ============================================================
+# INVITE LINK SETTINGS
+# ============================================================
+
+# The invite link will expire after this many hours.
+INVITE_LINK_EXPIRY_HOURS = 24
+
+# Only ONE Telegram account can use each generated link.
+INVITE_MEMBER_LIMIT = 1
+
+
+# ============================================================
 # DATABASE
 # ============================================================
 
@@ -49,58 +81,8 @@ DATABASE = "vlearn.db"
 # ============================================================
 
 CONTACT_USERNAME = "Vlearn_together"
+
 CONTACT_PHONE = "077 448 388"
-
-
-# ============================================================
-# COURSE CHANNEL IDs
-#
-# IMPORTANT:
-#
-# Replace the empty strings with the private Telegram
-# channel IDs after you find them using /id.
-#
-# Example:
-#
-# "General English | Beginner 1–2": -1001234567890,
-#
-# ============================================================
-
-COURSE_CHANNELS = {
-
-    "General English | Beginner 1–2": None,
-
-    "General English | Elementary 3–4": None,
-
-    "General English | Pre-intermediate 5–6": None,
-
-    "General English | Intermediate 7–8": None,
-
-
-    "English Grammar | Elementary": None,
-
-    "English Grammar | Intermediate": None,
-
-    "English Grammar | Advanced": None,
-
-
-    "English Vocabulary | Elementary": None,
-
-    "English Vocabulary | Intermediate": None,
-
-    "English Vocabulary | Upper-intermediate": None,
-
-    "English Vocabulary | Advanced": None,
-}
-
-
-# ============================================================
-# INVITE LINK SETTINGS
-# ============================================================
-
-INVITE_EXPIRE_HOURS = 24
-
-INVITE_MEMBER_LIMIT = 1
 
 
 # ============================================================
@@ -214,14 +196,34 @@ COURSES = {
 
 
 # ============================================================
+# DATABASE CONNECTION
+# ============================================================
+
+def get_connection():
+
+    connection = sqlite3.connect(
+        DATABASE
+    )
+
+    connection.row_factory = sqlite3.Row
+
+    return connection
+
+
+# ============================================================
 # DATABASE CREATION
 # ============================================================
 
 def create_database():
 
-    connection = sqlite3.connect(DATABASE)
+    connection = get_connection()
 
     cursor = connection.cursor()
+
+
+    # --------------------------------------------------------
+    # STUDENT REGISTRATIONS
+    # --------------------------------------------------------
 
     cursor.execute(
         """
@@ -259,14 +261,22 @@ def create_database():
 
             matched_at TIMESTAMP,
 
-            invite_link TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            channel_invite_link TEXT,
 
             invite_created_at TIMESTAMP,
 
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            access_sent INTEGER DEFAULT 0
+
         )
         """
     )
+
+
+    # --------------------------------------------------------
+    # ABA PAYMENTS
+    # --------------------------------------------------------
 
     cursor.execute(
         """
@@ -297,39 +307,47 @@ def create_database():
             matched_registration_id INTEGER,
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
         )
         """
     )
 
+
     connection.commit()
 
-    connection.close()
 
-    # --------------------------------------------------------
-    # Add new columns to old databases if necessary.
-    # --------------------------------------------------------
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
+    # ========================================================
+    # DATABASE MIGRATION
+    # ========================================================
+    #
+    # Your existing vlearn.db may have been created by an
+    # earlier version of the bot.
+    #
+    # These ALTER TABLE commands add the new access columns
+    # without deleting your existing registrations/payments.
+    # ========================================================
 
     cursor.execute(
-        "PRAGMA table_info(payment_registrations)"
+        """
+        PRAGMA table_info(payment_registrations)
+        """
     )
 
-    columns = [
-        row[1]
+    columns = {
+        row["name"]
         for row in cursor.fetchall()
-    ]
+    }
 
-    if "invite_link" not in columns:
+
+    if "channel_invite_link" not in columns:
 
         cursor.execute(
             """
             ALTER TABLE payment_registrations
-            ADD COLUMN invite_link TEXT
+            ADD COLUMN channel_invite_link TEXT
             """
         )
+
 
     if "invite_created_at" not in columns:
 
@@ -339,6 +357,17 @@ def create_database():
             ADD COLUMN invite_created_at TIMESTAMP
             """
         )
+
+
+    if "access_sent" not in columns:
+
+        cursor.execute(
+            """
+            ALTER TABLE payment_registrations
+            ADD COLUMN access_sent INTEGER DEFAULT 0
+            """
+        )
+
 
     connection.commit()
 
@@ -362,9 +391,10 @@ def save_student_registration(
     student_apv,
 ):
 
-    connection = sqlite3.connect(DATABASE)
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     cursor.execute(
         """
@@ -390,11 +420,14 @@ def save_student_registration(
         ),
     )
 
+
     existing = cursor.fetchone()
+
 
     if existing:
 
-        registration_id = existing[0]
+        registration_id = existing["id"]
+
 
         cursor.execute(
             """
@@ -425,6 +458,7 @@ def save_student_registration(
                 registration_id,
             ),
         )
+
 
     else:
 
@@ -463,11 +497,14 @@ def save_student_registration(
             ),
         )
 
+
         registration_id = cursor.lastrowid
+
 
     connection.commit()
 
     connection.close()
+
 
     return registration_id
 
@@ -484,11 +521,10 @@ def find_matching_aba_payment(
     apv,
 ):
 
-    connection = sqlite3.connect(DATABASE)
-
-    connection.row_factory = sqlite3.Row
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     cursor.execute(
         """
@@ -529,9 +565,11 @@ def find_matching_aba_payment(
         ),
     )
 
+
     result = cursor.fetchone()
 
     connection.close()
+
 
     return result
 
@@ -548,11 +586,10 @@ def find_matching_registration(
     apv,
 ):
 
-    connection = sqlite3.connect(DATABASE)
-
-    connection.row_factory = sqlite3.Row
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     cursor.execute(
         """
@@ -593,9 +630,11 @@ def find_matching_registration(
         ),
     )
 
+
     result = cursor.fetchone()
 
     connection.close()
+
 
     return result
 
@@ -617,9 +656,10 @@ def save_aba_payment(
     source,
 ):
 
-    connection = sqlite3.connect(DATABASE)
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     try:
 
@@ -657,13 +697,16 @@ def save_aba_payment(
             ),
         )
 
+
         payment_id = cursor.lastrowid
 
         connection.commit()
 
         connection.close()
 
+
         return payment_id
+
 
     except sqlite3.IntegrityError:
 
@@ -684,19 +727,25 @@ def mark_registration_paid(
     payer_account,
 ):
 
-    connection = sqlite3.connect(DATABASE)
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     cursor.execute(
         """
         UPDATE payment_registrations
 
         SET
+
             status = 'PAID',
+
             transaction_id = ?,
+
             payer_name = ?,
+
             payer_account = ?,
+
             matched_at = CURRENT_TIMESTAMP
 
         WHERE id = ?
@@ -708,6 +757,7 @@ def mark_registration_paid(
             registration_id,
         ),
     )
+
 
     cursor.execute(
         """
@@ -723,39 +773,6 @@ def mark_registration_paid(
         ),
     )
 
-    connection.commit()
-
-    connection.close()
-
-
-# ============================================================
-# SAVE INVITE LINK
-# ============================================================
-
-def save_invite_link(
-    registration_id,
-    invite_link,
-):
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
-
-    cursor.execute(
-        """
-        UPDATE payment_registrations
-
-        SET
-            invite_link = ?,
-            invite_created_at = CURRENT_TIMESTAMP
-
-        WHERE id = ?
-        """,
-        (
-            invite_link,
-            registration_id,
-        ),
-    )
 
     connection.commit()
 
@@ -770,6 +787,7 @@ def parse_student_date(date_text):
 
     date_text = date_text.strip()
 
+
     try:
 
         parsed = datetime.strptime(
@@ -777,12 +795,14 @@ def parse_student_date(date_text):
             "%d/%m/%Y",
         )
 
+
         return (
             parsed.day,
             parsed.month,
             parsed.year,
             parsed.strftime("%d/%m/%Y"),
         )
+
 
     except ValueError:
 
@@ -799,6 +819,7 @@ def extract_apv(message):
 
         return None
 
+
     patterns = [
 
         r"\bAPV\s*[:\-]?\s*(\d{4,10})\b",
@@ -809,6 +830,7 @@ def extract_apv(message):
 
     ]
 
+
     for pattern in patterns:
 
         match = re.search(
@@ -817,9 +839,11 @@ def extract_apv(message):
             re.IGNORECASE,
         )
 
+
         if match:
 
             return match.group(1)
+
 
     return None
 
@@ -834,16 +858,19 @@ def extract_amount(message):
 
         return None
 
+
     match = re.search(
         r"\$(\d+(?:\.\d{1,2})?)",
         message,
     )
+
 
     if match:
 
         return float(
             match.group(1)
         )
+
 
     match = re.search(
         r"Amount\s*:\s*\$?\s*(\d+(?:\.\d{1,2})?)",
@@ -851,11 +878,13 @@ def extract_amount(message):
         re.IGNORECASE,
     )
 
+
     if match:
 
         return float(
             match.group(1)
         )
+
 
     return None
 
@@ -905,6 +934,7 @@ def extract_english_date(message):
         "december": 12,
     }
 
+
     pattern = (
         r"\b("
         + "|".join(month_names.keys())
@@ -912,29 +942,36 @@ def extract_english_date(message):
         r"(\d{1,2})"
     )
 
+
     match = re.search(
         pattern,
         message,
         re.IGNORECASE,
     )
 
+
     if not match:
 
         return None
+
 
     month_text = (
         match.group(1).lower()
     )
 
+
     day = int(
         match.group(2)
     )
+
 
     month = month_names[
         month_text
     ]
 
+
     year = datetime.now().year
+
 
     return (
         day,
@@ -953,27 +990,38 @@ def extract_khmer_date(message):
     match = re.search(
 
         r"នៅថ្ងៃទី\s*(\d{1,2})"
+
         r"(?:\s*ខែ[^0-9\s]+)?"
+
         r"(?:\s*ឆ្នាំ\s*(\d{4}))?",
 
         message,
     )
 
+
     if not match:
 
         return None
+
 
     day = int(
         match.group(1)
     )
 
+
     year = (
+
         int(match.group(2))
+
         if match.group(2)
+
         else datetime.now().year
+
     )
 
+
     month = datetime.now().month
+
 
     return (
         day,
@@ -997,12 +1045,14 @@ def extract_payment_date(message):
 
     ]
 
+
     for pattern in patterns:
 
         match = re.search(
             pattern,
             message,
         )
+
 
         if match:
 
@@ -1011,29 +1061,36 @@ def extract_payment_date(message):
                 .replace("-", "/")
             )
 
+
             parsed = parse_student_date(
                 date_text
             )
+
 
             if parsed:
 
                 return parsed
 
+
     english_date = extract_english_date(
         message
     )
+
 
     if english_date:
 
         return english_date
 
+
     khmer_date = extract_khmer_date(
         message
     )
 
+
     if khmer_date:
 
         return khmer_date
+
 
     return None
 
@@ -1054,6 +1111,7 @@ def extract_transaction_id(message):
 
     ]
 
+
     for pattern in patterns:
 
         match = re.search(
@@ -1062,9 +1120,11 @@ def extract_transaction_id(message):
             re.IGNORECASE,
         )
 
+
         if match:
 
             return match.group(1)
+
 
     return None
 
@@ -1083,6 +1143,7 @@ def extract_payer(message):
 
     ]
 
+
     for pattern in patterns:
 
         match = re.search(
@@ -1091,12 +1152,14 @@ def extract_payer(message):
             re.IGNORECASE,
         )
 
+
         if match:
 
             return (
                 match.group(1).strip(),
                 "*" + match.group(2),
             )
+
 
     return (
         "Unknown",
@@ -1105,108 +1168,85 @@ def extract_payer(message):
 
 
 # ============================================================
-# CREATE SECURE COURSE INVITE
+# CREATE PRIVATE INVITE LINK
 # ============================================================
 
-async def create_course_invite(
+async def create_student_invite_link(
     context,
     registration,
 ):
 
-    course = registration["course"]
-
     telegram_id = registration["telegram_id"]
 
-    channel_id = COURSE_CHANNELS.get(
-        course
-    )
 
-    if not channel_id:
+    # --------------------------------------------------------
+    # Check channel ID
+    # --------------------------------------------------------
+
+    if CHANNEL_ID is None:
 
         print(
-            "WARNING: No channel ID configured for:",
-            course,
+            "CHANNEL_ID is not configured."
+        )
+
+        print(
+            "Cannot create private invite link yet."
         )
 
         return None
 
 
-    try:
+    # --------------------------------------------------------
+    # Check whether access was already sent
+    # --------------------------------------------------------
 
-        # ----------------------------------------------------
-        # 24-hour expiration
-        # ----------------------------------------------------
+    if registration["access_sent"]:
 
-        expire_time = (
-            datetime.now(timezone.utc)
-            + timedelta(
-                hours=INVITE_EXPIRE_HOURS
-            )
+        print(
+            "Channel access was already sent."
         )
 
+        return registration["channel_invite_link"]
 
-        # ----------------------------------------------------
-        # Create a unique one-member invite
-        # ----------------------------------------------------
 
-        invite = (
-            await context.bot
-            .create_chat_invite_link(
+    # --------------------------------------------------------
+    # Expiration time
+    # --------------------------------------------------------
 
-                chat_id=channel_id,
+    expire_date = (
+        datetime.now(timezone.utc)
+        + timedelta(
+            hours=INVITE_LINK_EXPIRY_HOURS
+        )
+    )
+
+
+    try:
+
+        invite_link = (
+            await context.bot.create_chat_invite_link(
+
+                chat_id=CHANNEL_ID,
 
                 name=(
-                    f"Vlearn Together - "
-                    f"{course}"
+                    "Vlearn - "
+                    + registration["course"]
                 )[:32],
 
-                expire_date=expire_time,
+                expire_date=expire_date,
 
                 member_limit=INVITE_MEMBER_LIMIT,
 
+                creates_join_request=False,
+
             )
         )
-
-
-        invite_link = invite.invite_link
-
-
-        save_invite_link(
-
-            registration_id=registration["id"],
-
-            invite_link=invite_link,
-
-        )
-
-
-        print(
-            "SECURE INVITE CREATED"
-        )
-
-        print(
-            "Student:",
-            telegram_id,
-        )
-
-        print(
-            "Course:",
-            course,
-        )
-
-        print(
-            "Invite:",
-            invite_link,
-        )
-
-
-        return invite_link
 
 
     except Exception as error:
 
         print(
-            "Could not create course invite:"
+            "Could not create channel invite link:"
         )
 
         print(
@@ -1216,8 +1256,124 @@ async def create_course_invite(
         return None
 
 
+    # --------------------------------------------------------
+    # Save invite link
+    # --------------------------------------------------------
+
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+
+    cursor.execute(
+        """
+        UPDATE payment_registrations
+
+        SET
+            channel_invite_link = ?,
+            invite_created_at = CURRENT_TIMESTAMP,
+            access_sent = 1
+
+        WHERE id = ?
+        """,
+        (
+            invite_link.invite_link,
+            registration["id"],
+        ),
+    )
+
+
+    connection.commit()
+
+    connection.close()
+
+
+    # --------------------------------------------------------
+    # Send invite to student
+    # --------------------------------------------------------
+
+    access_message = (
+
+        "Vlearn Together\n\n"
+
+        "🎉 PAYMENT VERIFIED\n"
+        "ការទូទាត់ត្រូវបានផ្ទៀងផ្ទាត់\n\n"
+
+        "Your payment has been successfully "
+        "verified.\n\n"
+
+        f"Course:\n"
+        f"{registration['course']}\n\n"
+
+        "🔵 YOUR PRIVATE COURSE ACCESS\n\n"
+
+        "Please use the private link below "
+        "to join your course channel:\n\n"
+
+        f"{invite_link.invite_link}\n\n"
+
+        "Important:\n"
+
+        "• This link is for your account only.\n"
+        "• The link can be used by only one "
+        "Telegram account.\n"
+        "• The link will expire after "
+        f"{INVITE_LINK_EXPIRY_HOURS} hours.\n"
+        "• Please do not share this link with "
+        "another person.\n\n"
+
+        "If you have any problem joining the "
+        "channel, please contact Vlearn Together.\n\n"
+
+        f"☎ {CONTACT_PHONE}\n"
+        f"@{CONTACT_USERNAME}"
+
+    )
+
+
+    try:
+
+        await context.bot.send_message(
+
+            chat_id=telegram_id,
+
+            text=access_message,
+
+        )
+
+
+        print(
+            "PRIVATE CHANNEL INVITE SENT"
+        )
+
+        print(
+            "Student Telegram ID:",
+            telegram_id,
+        )
+
+        print(
+            "Invite:",
+            invite_link.invite_link,
+        )
+
+
+    except Exception as error:
+
+        print(
+            "Could not send private channel "
+            "invite to student:"
+        )
+
+        print(
+            error
+        )
+
+
+    return invite_link.invite_link
+
+
 # ============================================================
-# SEND STUDENT RECEIPT
+# SEND PAYMENT RECEIPT
 # ============================================================
 
 async def send_student_receipt(
@@ -1225,12 +1381,6 @@ async def send_student_receipt(
     registration,
     payment,
 ):
-
-    invite_link = await create_course_invite(
-        context,
-        registration,
-    )
-
 
     receipt_text = (
 
@@ -1258,86 +1408,20 @@ async def send_student_receipt(
         "PAID\n"
         "បានបង់ប្រាក់រួចរាល់\n\n"
 
-    )
-
-
-    if invite_link:
-
-        receipt_text += (
-
-            "Your course access is ready.\n"
-            "វគ្គសិក្សារបស់អ្នករួចរាល់ហើយ!\n\n"
-
-            "Please press the button below "
-            "to join your course.\n"
-            "សូមចុចប៊ូតុងខាងក្រោម "
-            "ដើម្បីចូលរៀន។\n\n"
-
-            "IMPORTANT:\n"
-            "This invitation is personal "
-            "and can only be used once.\n\n"
-
-            "សំខាន់៖\n"
-            "តំណភ្ជាប់នេះសម្រាប់អ្នកតែប៉ុណ្ណោះ "
-            "ហើយអាចប្រើបានតែម្តង។"
-
-        )
-
-    else:
-
-        receipt_text += (
-
-            "Your payment has been verified.\n"
-            "ការទូទាត់របស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់។\n\n"
-
-            "Course access is being prepared.\n"
-            "យើងកំពុងរៀបចំការចូលរៀនរបស់អ្នក។\n\n"
-
-            "Please contact Vlearn Together "
-            "if you do not receive your course "
-            "access."
-
-        )
-
-
-    receipt_text += (
-
-        "\n\n"
+        "Your payment has been verified.\n"
 
         "Please keep this message as your "
         "payment and registration record.\n\n"
 
+        "Your private course access link will "
+        "be sent separately.\n\n"
+
         "Contact Vlearn Together\n"
         f"{CONTACT_PHONE}\n"
+
         f"https://t.me/{CONTACT_USERNAME}"
 
     )
-
-
-    keyboard = None
-
-
-    if invite_link:
-
-        keyboard = InlineKeyboardMarkup(
-
-            [
-
-                [
-
-                    InlineKeyboardButton(
-
-                        "🔵 Join Your Course",
-
-                        url=invite_link,
-
-                    )
-
-                ]
-
-            ]
-
-        )
 
 
     try:
@@ -1348,15 +1432,185 @@ async def send_student_receipt(
 
             text=receipt_text,
 
-            reply_markup=keyboard,
-
         )
+
 
     except Exception as error:
 
         print(
             "Could not send receipt:",
             error,
+        )
+
+
+# ============================================================
+# GET REGISTRATION
+# ============================================================
+
+def get_registration_by_id(
+    registration_id,
+):
+
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+
+    cursor.execute(
+        """
+        SELECT *
+
+        FROM payment_registrations
+
+        WHERE id = ?
+        """,
+        (
+            registration_id,
+        ),
+    )
+
+
+    registration = cursor.fetchone()
+
+    connection.close()
+
+
+    return registration
+
+
+# ============================================================
+# COMPLETE PAID REGISTRATION
+# ============================================================
+
+async def complete_paid_registration(
+    context,
+    registration,
+    payment,
+):
+
+    # --------------------------------------------------------
+    # Mark registration as paid
+    # --------------------------------------------------------
+
+    mark_registration_paid(
+
+        registration_id=registration["id"],
+
+        payment_id=payment["id"],
+
+        transaction_id=payment["transaction_id"],
+
+        payer_name=payment["payer_name"],
+
+        payer_account=payment["payer_account"],
+
+    )
+
+
+    # --------------------------------------------------------
+    # Reload registration
+    # --------------------------------------------------------
+
+    registration = get_registration_by_id(
+        registration["id"]
+    )
+
+
+    # --------------------------------------------------------
+    # Console notification
+    # --------------------------------------------------------
+
+    print(
+        "\n======================================"
+    )
+
+    print(
+        "PAYMENT MATCHED"
+    )
+
+    print(
+        "Student:",
+        registration["telegram_name"],
+    )
+
+    print(
+        "Telegram ID:",
+        registration["telegram_id"],
+    )
+
+    print(
+        "Course:",
+        registration["course"],
+    )
+
+    print(
+        "Amount:",
+        payment["amount"],
+    )
+
+    print(
+        "Date:",
+        payment["payment_date"],
+    )
+
+    print(
+        "APV:",
+        payment["apv"],
+    )
+
+    print(
+        "Transaction:",
+        payment["transaction_id"],
+    )
+
+    print(
+        "Payment status: PAID"
+    )
+
+    print(
+        "======================================\n"
+    )
+
+
+    # --------------------------------------------------------
+    # Create private channel invite
+    # --------------------------------------------------------
+
+    invite_link = await create_student_invite_link(
+
+        context=context,
+
+        registration=registration,
+
+    )
+
+
+    # --------------------------------------------------------
+    # Send receipt
+    # --------------------------------------------------------
+
+    await send_student_receipt(
+
+        context=context,
+
+        registration=registration,
+
+        payment=payment,
+
+    )
+
+
+    if invite_link:
+
+        print(
+            "Student received private channel access."
+        )
+
+    else:
+
+        print(
+            "Payment is PAID, but private channel "
+            "invite could not be created."
         )
 
 
@@ -1370,13 +1624,10 @@ async def try_match_payment(
     payment_id,
 ):
 
-    connection = sqlite3.connect(
-        DATABASE
-    )
-
-    connection.row_factory = sqlite3.Row
+    connection = get_connection()
 
     cursor = connection.cursor()
+
 
     cursor.execute(
         """
@@ -1386,8 +1637,11 @@ async def try_match_payment(
 
         WHERE id = ?
         """,
-        (payment_id,),
+        (
+            payment_id,
+        ),
     )
+
 
     payment = cursor.fetchone()
 
@@ -1442,109 +1696,22 @@ async def try_match_payment(
             payment["apv"],
         )
 
+        print(
+            "Payment stored successfully."
+        )
+
+        print(
+            "Waiting for matching student registration."
+        )
+
         return
 
 
     # --------------------------------------------------------
-    # MATCH FOUND
+    # Match found
     # --------------------------------------------------------
 
-    mark_registration_paid(
-
-        registration_id=registration["id"],
-
-        payment_id=payment["id"],
-
-        transaction_id=payment["transaction_id"],
-
-        payer_name=payment["payer_name"],
-
-        payer_account=payment["payer_account"],
-
-    )
-
-
-    print(
-        "\n======================================"
-    )
-
-    print(
-        "PAYMENT MATCHED"
-    )
-
-    print(
-        "Student:",
-        registration["telegram_name"],
-    )
-
-    print(
-        "Course:",
-        registration["course"],
-    )
-
-    print(
-        "Amount:",
-        payment["amount"],
-    )
-
-    print(
-        "Date:",
-        payment["payment_date"],
-    )
-
-    print(
-        "APV:",
-        payment["apv"],
-    )
-
-    print(
-        "Transaction:",
-        payment["transaction_id"],
-    )
-
-    print(
-        "======================================\n"
-    )
-
-
-    # --------------------------------------------------------
-    # ADMIN / GROUP NOTIFICATION
-    # --------------------------------------------------------
-
-    if update and update.message:
-
-        await update.message.reply_text(
-
-            "PAYMENT MATCHED\n\n"
-
-            f"Student:\n"
-            f"{registration['telegram_name']}\n\n"
-
-            f"Course:\n"
-            f"{registration['course']}\n\n"
-
-            f"Amount:\n"
-            f"${payment['amount']:.2f}\n\n"
-
-            f"Payment date:\n"
-            f"{payment['payment_date']}\n\n"
-
-            f"APV:\n"
-            f"{payment['apv']}\n\n"
-
-            f"Transaction ID:\n"
-            f"{payment['transaction_id'] or 'N/A'}\n\n"
-
-            "Payment status: PAID"
-
-        )
-
-
-    # --------------------------------------------------------
-    # STUDENT RECEIPT + SECURE INVITE
-    # --------------------------------------------------------
-
-    await send_student_receipt(
+    await complete_paid_registration(
 
         context=context,
 
@@ -1553,6 +1720,51 @@ async def try_match_payment(
         payment=payment,
 
     )
+
+
+    # --------------------------------------------------------
+    # Group/admin notification
+    # --------------------------------------------------------
+
+    if update and update.message:
+
+        try:
+
+            await update.message.reply_text(
+
+                "PAYMENT MATCHED\n\n"
+
+                f"Student:\n"
+                f"{registration['telegram_name']}\n\n"
+
+                f"Course:\n"
+                f"{registration['course']}\n\n"
+
+                f"Amount:\n"
+                f"${payment['amount']:.2f}\n\n"
+
+                f"Payment date:\n"
+                f"{payment['payment_date']}\n\n"
+
+                f"APV:\n"
+                f"{payment['apv']}\n\n"
+
+                f"Transaction ID:\n"
+                f"{payment['transaction_id'] or 'N/A'}\n\n"
+
+                "Payment status: PAID\n\n"
+
+                "Private channel access has been "
+                "sent to the student."
+
+            )
+
+        except Exception as error:
+
+            print(
+                "Could not send group notification:",
+                error,
+            )
 
 
 # ============================================================
@@ -1582,9 +1794,11 @@ async def start(
 
     ]
 
+
     reply_markup = InlineKeyboardMarkup(
         keyboard
     )
+
 
     await update.message.reply_text(
 
@@ -1593,55 +1807,25 @@ async def start(
 
         "Learn English online with our video courses.\n"
         "សិក្សាភាសាអង់គ្លេសតាមអ៊ីនធឺណិត "
-        "ជាមួយវគ្គសិក្សាវីដេអូរបស់យើង។\n\n"
+        "ជាមួយវគ្គវីដេអូរបស់យើង។\n\n"
 
-        "Choose a course and register through "
-        "our Mini App.",
+        "General English Programme\n"
+        "កម្មវិធីភាសាអង់គ្លេសទូទៅ\n\n"
+
+        "English Grammar Course\n"
+        "វគ្គវេយ្យាករណ៍ភាសាអង់គ្លេស\n\n"
+
+        "English Vocabulary Course\n"
+        "វគ្គវាក្យសព្ទភាសាអង់គ្លេស\n\n"
+
+        "Choose the button below to explore "
+        "our courses.\n"
+        "សូមចុចប៊ូតុងខាងក្រោម "
+        "ដើម្បីមើលវគ្គសិក្សារបស់យើង។",
 
         reply_markup=reply_markup,
 
     )
-
-
-# ============================================================
-# SHOW CHAT ID
-#
-# Use /id in a private channel or group.
-# ============================================================
-
-async def show_chat_id(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
-
-    chat = update.effective_chat
-
-    if not chat:
-
-        return
-
-
-    text = (
-
-        "Vlearn Together\n\n"
-
-        f"Chat ID:\n"
-        f"{chat.id}\n\n"
-
-        f"Chat type:\n"
-        f"{chat.type}\n\n"
-
-        f"Chat title:\n"
-        f"{chat.title or 'N/A'}"
-
-    )
-
-
-    if update.effective_message:
-
-        await update.effective_message.reply_text(
-            text
-        )
 
 
 # ============================================================
@@ -1672,6 +1856,7 @@ async def web_app_data_handler(
         "\n========== MINI APP DATA =========="
     )
 
+
     print(
         "Raw data:",
         web_app_data.data,
@@ -1684,7 +1869,13 @@ async def web_app_data_handler(
             web_app_data.data
         )
 
+
     except json.JSONDecodeError:
+
+        print(
+            "Invalid Mini App JSON."
+        )
+
 
         await update.effective_message.reply_text(
 
@@ -1697,6 +1888,7 @@ async def web_app_data_handler(
 
         )
 
+
         return
 
 
@@ -1706,6 +1898,10 @@ async def web_app_data_handler(
     )
 
 
+    # ========================================================
+    # ACTION
+    # ========================================================
+
     action = str(
         data.get(
             "action",
@@ -1713,6 +1909,10 @@ async def web_app_data_handler(
         )
     ).strip().lower()
 
+
+    # ========================================================
+    # USER
+    # ========================================================
 
     user = update.effective_user
 
@@ -1872,7 +2072,7 @@ async def web_app_data_handler(
 
 
         # ----------------------------------------------------
-        # Official price
+        # Get official price from BOT
         # ----------------------------------------------------
 
         price = COURSES[
@@ -1954,7 +2154,7 @@ async def web_app_data_handler(
 
 
         # ----------------------------------------------------
-        # Check existing ABA payment
+        # Check whether ABA payment already exists
         # ----------------------------------------------------
 
         aba_payment = find_matching_aba_payment(
@@ -1974,62 +2174,18 @@ async def web_app_data_handler(
 
         if aba_payment:
 
-            # ------------------------------------------------
-            # Match immediately
-            # ------------------------------------------------
-
-            mark_registration_paid(
-
-                registration_id=registration_id,
-
-                payment_id=aba_payment["id"],
-
-                transaction_id=aba_payment[
-                    "transaction_id"
-                ],
-
-                payer_name=aba_payment[
-                    "payer_name"
-                ],
-
-                payer_account=aba_payment[
-                    "payer_account"
-                ],
-
+            print(
+                "Matching ABA payment found."
             )
 
 
-            connection = sqlite3.connect(
-                DATABASE
-            )
-
-            connection.row_factory = sqlite3.Row
-
-            cursor = connection.cursor()
-
-
-            cursor.execute(
-                """
-                SELECT *
-
-                FROM payment_registrations
-
-                WHERE id = ?
-                """,
-                (registration_id,),
-            )
-
-
-            registration = cursor.fetchone()
-
-            connection.close()
-
-
-            await send_student_receipt(
+            await complete_paid_registration(
 
                 context=context,
 
-                registration=registration,
+                registration=get_registration_by_id(
+                    registration_id
+                ),
 
                 payment=aba_payment,
 
@@ -2066,13 +2222,111 @@ async def web_app_data_handler(
             "Your payment information has been "
             "successfully submitted.\n\n"
 
-            "ការទូទាត់របស់អ្នកនឹងត្រូវបាន "
-            "ផ្ទៀងផ្ទាត់នៅពេលព័ត៌មាន "
-            "ការទូទាត់ពី ABA ត្រូវបានទទួល។"
+            "When the ABA payment is detected, "
+            "your payment will be verified "
+            "automatically.\n\n"
+
+            "After verification, you will receive "
+            "your private course access link."
 
         )
 
+
         return
+
+
+    # ========================================================
+    # OLD START REGISTRATION ACTION
+    # ========================================================
+
+    if action == "start_registration":
+
+        course = str(
+            data.get(
+                "course",
+                ""
+            )
+        ).strip()
+
+
+        if course not in COURSES:
+
+            await update.effective_message.reply_text(
+
+                "The selected course could not be found."
+
+            )
+
+            return
+
+
+        course_data = COURSES[
+            course
+        ]
+
+
+        price = course_data[
+            "price"
+        ]
+
+
+        keyboard = [
+
+            [
+
+                InlineKeyboardButton(
+
+                    f"Pay ${price:.2f} via ABA",
+
+                    url=course_data[
+                        "payment_link"
+                    ],
+
+                )
+
+            ]
+
+        ]
+
+
+        reply_markup = InlineKeyboardMarkup(
+            keyboard
+        )
+
+
+        await update.effective_message.reply_text(
+
+            "Registration received.\n\n"
+
+            f"Course:\n"
+            f"{course}\n\n"
+
+            f"Amount:\n"
+            f"${price:.2f}\n\n"
+
+            "Please complete your payment "
+            "using the button below.\n\n"
+
+            "After completing the payment, "
+            "return to Vlearn Together and "
+            "enter your payment date and APV.",
+
+            reply_markup=reply_markup,
+
+        )
+
+
+        return
+
+
+    # ========================================================
+    # UNKNOWN ACTION
+    # ========================================================
+
+    print(
+        "Unknown Mini App action:",
+        action,
+    )
 
 
 # ============================================================
@@ -2106,6 +2360,10 @@ async def group_message(
     )
 
 
+    # ========================================================
+    # EXTRACT INFORMATION
+    # ========================================================
+
     manual_apv = extract_apv(
         message
     )
@@ -2125,6 +2383,10 @@ async def group_message(
         message
     )
 
+
+    # ========================================================
+    # CHECK ABA MESSAGE
+    # ========================================================
 
     looks_like_aba = (
 
@@ -2190,6 +2452,10 @@ async def group_message(
     )
 
 
+    # ========================================================
+    # SAVE ABA PAYMENT
+    # ========================================================
+
     payment_id = save_aba_payment(
 
         amount=manual_amount,
@@ -2214,6 +2480,10 @@ async def group_message(
 
     )
 
+
+    # ========================================================
+    # DUPLICATE APV
+    # ========================================================
 
     if payment_id is None:
 
@@ -2245,6 +2515,10 @@ async def group_message(
     )
 
 
+    # ========================================================
+    # TRY MATCH
+    # ========================================================
+
     await try_match_payment(
 
         update=update,
@@ -2257,13 +2531,77 @@ async def group_message(
 
 
 # ============================================================
+# PRIVATE CHANNEL ID DIAGNOSTIC
+# ============================================================
+#
+# When the bot is an admin in your private channel and you
+# publish a message there, this function prints the channel ID.
+#
+# Example:
+#
+# Channel name: Vlearn Together
+# Channel ID: -1001234567890
+#
+# Once you know the ID, put it into CHANNEL_ID above.
+# ============================================================
+
+async def channel_post_handler(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    if not update.channel_post:
+
+        return
+
+
+    chat = update.channel_post.chat
+
+
+    print(
+        "\n========== CHANNEL POST =========="
+    )
+
+
+    print(
+        "Channel name:",
+        chat.title,
+    )
+
+
+    print(
+        "Channel ID:",
+        chat.id,
+    )
+
+
+    print(
+        "Channel username:",
+        chat.username,
+    )
+
+
+    print(
+        "==================================\n"
+    )
+
+
+# ============================================================
 # MAIN
 # ============================================================
 
 def main():
 
+    # --------------------------------------------------------
+    # Create database
+    # --------------------------------------------------------
+
     create_database()
 
+
+    # --------------------------------------------------------
+    # Build application
+    # --------------------------------------------------------
 
     application = (
 
@@ -2293,23 +2631,7 @@ def main():
 
 
     # --------------------------------------------------------
-    # /id
-    #
-    # Use this inside each private channel.
-    # --------------------------------------------------------
-
-    application.add_handler(
-
-        CommandHandler(
-            "id",
-            show_chat_id,
-        )
-
-    )
-
-
-    # --------------------------------------------------------
-    # Mini App
+    # Telegram Mini App
     # --------------------------------------------------------
 
     application.add_handler(
@@ -2326,7 +2648,7 @@ def main():
 
 
     # --------------------------------------------------------
-    # ABA payment messages
+    # ABA / payment messages
     # --------------------------------------------------------
 
     application.add_handler(
@@ -2341,6 +2663,30 @@ def main():
 
     )
 
+
+    # --------------------------------------------------------
+    # PRIVATE CHANNEL ID DIAGNOSTIC
+    # --------------------------------------------------------
+    #
+    # This receives messages posted in Telegram channels.
+    # --------------------------------------------------------
+
+    application.add_handler(
+
+        MessageHandler(
+
+            filters.ChatType.CHANNEL,
+
+            channel_post_handler,
+
+        )
+
+    )
+
+
+    # --------------------------------------------------------
+    # Start bot
+    # --------------------------------------------------------
 
     print(
         "======================================"
@@ -2367,20 +2713,29 @@ def main():
         "Payment matching: AUTOMATIC"
     )
 
-    print(
-        "Course access: ONE-TIME INVITES"
-    )
 
-    print(
-        "Invite expiry:",
-        INVITE_EXPIRE_HOURS,
-        "hours"
-    )
+    if CHANNEL_ID is None:
 
-    print(
-        "Invite member limit:",
-        INVITE_MEMBER_LIMIT
-    )
+        print(
+            "Private channel: ID NOT CONFIGURED"
+        )
+
+        print(
+            "Post a test message in your "
+            "private channel to see its ID."
+        )
+
+    else:
+
+        print(
+            "Private channel ID:",
+            CHANNEL_ID,
+        )
+
+        print(
+            "Automatic course access: ENABLED"
+        )
+
 
     print(
         "======================================"
